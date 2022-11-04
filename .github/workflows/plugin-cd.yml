@@ -1,0 +1,10 @@
+name: Plugin CD
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  plugin-cd:
+    uses:  outoftheboxplugins/BuildMachines/.github/workflows/package-plugin.yml@master

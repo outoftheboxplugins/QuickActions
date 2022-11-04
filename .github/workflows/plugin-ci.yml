@@ -1,0 +1,14 @@
+name: Plugin CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches: 
+      - main
+
+jobs:
+  plugin-ci:
+    uses:  outoftheboxplugins/BuildMachines/.github/workflows/compile-plugin.yml@master
+    secrets: inherit

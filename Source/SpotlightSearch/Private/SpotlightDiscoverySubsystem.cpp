@@ -7,6 +7,7 @@
 #include "LevelEditorActions.h"
 #include "MRUFavoritesList.h"
 #include "Toolkits/GlobalEditorCommonCommands.h"
+#include "WtfHdiTutorialSettings.h"
 
 #define LOCTEXT_NAMESPACE "LevelEditorMenu"
 
@@ -46,6 +47,41 @@ void USpotlightDiscoverySubsystem::Deinitialize()
 }
 
 void USpotlightDiscoverySubsystem::GatherCommandsInternal(TArray<FQuickCommandEntry>& OutCommands) const
+{
+	PopulateTutorials(OutCommands);
+	PopulateMenuEntries(OutCommands);
+}
+void USpotlightDiscoverySubsystem::PopulateTutorials(TArray<FQuickCommandEntry>& OutCommands) const
+{
+	const UWtfHdiTutorialSettings* TutorialSettings = GetDefault<UWtfHdiTutorialSettings>();
+	if (!TutorialSettings->bIncludeTutorials)
+	{
+		return;
+	}
+
+	for (const FTutorialInfo& Tutorial : TutorialSettings->Tutorials)
+	{
+		FQuickCommandEntry TutorialEntry;
+		TutorialEntry.Title = FText::FromString(Tutorial.Title);
+		TutorialEntry.Tooltip = FText::FromString(Tutorial.Description);
+		TutorialEntry.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "Icons.Documentation");
+		TutorialEntry.CanExecuteCallback = TDelegate<bool()>::CreateLambda(
+			[]()
+			{
+				return true;
+			}
+		);
+		TutorialEntry.ExecuteCallback = FSimpleDelegate::CreateLambda(
+			[Tutorial]()
+			{
+				FPlatformProcess::LaunchURL(*Tutorial.Url, nullptr, nullptr);
+			}
+		);
+
+		OutCommands.Emplace(TutorialEntry);
+	}
+}
+void USpotlightDiscoverySubsystem::PopulateMenuEntries(TArray<FQuickCommandEntry>& OutCommands) const
 {
 	const FLevelEditorModule& LevelEditorModule = FModuleManager::Get().LoadModuleChecked<FLevelEditorModule>("LevelEditor");
 	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
@@ -97,9 +133,9 @@ void USpotlightDiscoverySubsystem::GatherCommandsInternal(TArray<FQuickCommandEn
 						return FText::Format(LOCTEXT("ToggleFavorite_Add", "Add to Favorites: {0}"), LevelName);
 					}
 					return FText::Format(LOCTEXT("ToggleFavorite_Remove", "Remove from Favorites: {0}"), LevelName);
-				});
-			FQuickCommandEntry AddOrRemoveLevel =
-				FQuickCommandEntry(FLevelEditorCommands::Get().ToggleFavorite.ToSharedRef(), LevelEditorCommands);
+				}
+			);
+			FQuickCommandEntry AddOrRemoveLevel = FQuickCommandEntry(FLevelEditorCommands::Get().ToggleFavorite.ToSharedRef(), LevelEditorCommands);
 			AddOrRemoveLevel.Title = ToggleFavoriteLabel;
 			AddOrRemoveLevel.Tooltip = ToggleFavoriteLabel;
 			AddOrRemoveLevel.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "MainFrame.FavoriteLevels");
@@ -107,8 +143,7 @@ void USpotlightDiscoverySubsystem::GatherCommandsInternal(TArray<FQuickCommandEn
 			OutCommands.Emplace(AddOrRemoveLevel);
 		}
 
-		const int32 AllowedFavorites =
-			FMath::Min(MRUFavorites.GetNumFavorites(), FLevelEditorCommands::Get().OpenFavoriteFileCommands.Num());
+		const int32 AllowedFavorites = FMath::Min(MRUFavorites.GetNumFavorites(), FLevelEditorCommands::Get().OpenFavoriteFileCommands.Num());
 		for (int32 CurFavoriteIndex = 0; CurFavoriteIndex < AllowedFavorites; ++CurFavoriteIndex)
 		{
 			TSharedPtr<FUICommandInfo> OpenFavoriteFile = FLevelEditorCommands::Get().OpenFavoriteFileCommands[CurFavoriteIndex];
@@ -129,8 +164,7 @@ void USpotlightDiscoverySubsystem::GatherCommandsInternal(TArray<FQuickCommandEn
 	}
 
 	{
-		FQuickCommandEntry OpenAsset =
-			FQuickCommandEntry(FGlobalEditorCommonCommands::Get().SummonOpenAssetDialog.ToSharedRef(), MainFrameCommands);
+		FQuickCommandEntry OpenAsset = FQuickCommandEntry(FGlobalEditorCommonCommands::Get().SummonOpenAssetDialog.ToSharedRef(), MainFrameCommands);
 		OutCommands.Emplace(OpenAsset);
 	}
 }

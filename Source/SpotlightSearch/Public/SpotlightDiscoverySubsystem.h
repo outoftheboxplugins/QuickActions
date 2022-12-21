@@ -3,11 +3,12 @@
 #pragma once
 
 #include "EditorSubsystem.h"
-
 #include "SpotlightDiscoverySubsystem.generated.h"
 
 struct FQuickCommandEntry
 {
+	// TODO: Check if we need to default the move constructor as well
+	FQuickCommandEntry() = default;
 	FQuickCommandEntry(const TSharedRef<FUICommandInfo>& Command, const TSharedRef<FUICommandList> CommandList);
 
 	TAttribute<FText> Title;
@@ -16,6 +17,7 @@ struct FQuickCommandEntry
 	FSlateIcon Icon;
 
 	FSimpleDelegate ExecuteCallback;
+	// TODO: Change this delegate type to something nice like: FCanExecuteAction
 	TDelegate<bool()> CanExecuteCallback;
 };
 
@@ -37,4 +39,8 @@ private:
 	virtual void Deinitialize() override;
 
 	void GatherCommandsInternal(TArray<FQuickCommandEntry>& OutCommands) const;
+
+	// TODO: The populate commands should be refactored into classes similar to UCheatManagerExtensions and automatically gather
+	void PopulateTutorials(TArray<FQuickCommandEntry>& OutCommands) const;
+	void PopulateMenuEntries(TArray<FQuickCommandEntry>& OutCommands) const;
 };

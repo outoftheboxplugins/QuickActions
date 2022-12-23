@@ -1,13 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "HdiTutorialsExtensions.h"
+#include "HdiTutorialsExtension.h"
 
 #include "WtfHdiTutorialSettings.h"
 
 #define LOCTEXT_NAMESPACE "QuickActions"
 
-TArray<FQuickCommandEntry> UHdiTutorialsExtensions::GetCommands()
+TArray<FQuickCommandEntry> UHdiTutorialsExtension::GetCommands()
 {
 	TArray<FQuickCommandEntry> OutCommands;
 	const UWtfHdiTutorialSettings* TutorialSettings = GetDefault<UWtfHdiTutorialSettings>();
@@ -36,7 +36,7 @@ TArray<FQuickCommandEntry> UHdiTutorialsExtensions::GetCommands()
 		return OutCommands;
 	}
 
-	for (const FTutorialInfo& Tutorial : TutorialSettings->Tutorials)
+	for (const FTutorialInfo& Tutorial : Tutorials)
 	{
 		FQuickCommandEntry TutorialEntry;
 		TutorialEntry.Title = FText::FromString(Tutorial.Title);
@@ -60,7 +60,7 @@ TArray<FQuickCommandEntry> UHdiTutorialsExtensions::GetCommands()
 
 	return OutCommands;
 }
-int32 UHdiTutorialsExtensions::GetPriority() const
+int32 UHdiTutorialsExtension::GetPriority() const
 {
 	return -100;
 }

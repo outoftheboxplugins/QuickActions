@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 // TODO: Decide if we should introduce this include here, maybe we can remove the hard dependency on FQuickCommandEntry
-#include "SpotlightDiscoverySubsystem.h"
+#include "QuickMenuDiscoverySubsystem.h"
 
 class SQuickCommandsListView : public SListView<TSharedRef<FQuickCommandEntry>>
 {

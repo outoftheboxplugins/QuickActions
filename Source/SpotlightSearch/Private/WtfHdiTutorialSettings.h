@@ -42,4 +42,6 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Customization, config)
 	bool bIncludeTutorials = true;
+
+	void ToggleIncludeTutorials();
 };

@@ -27,7 +27,5 @@ private:
 
 	void GatherCommandsInternal(TArray<FQuickCommandEntry>& OutCommands) const;
 
-	// TODO: The populate commands should be refactored into classes similar to UCheatManagerExtensions and automatically gather
-	void PopulateTutorials(TArray<FQuickCommandEntry>& OutCommands) const;
 	void PopulateMenuEntries(TArray<FQuickCommandEntry>& OutCommands) const;
 };

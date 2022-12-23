@@ -1,11 +1,10 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "SpotlightDiscoverySubsystem.h"
-
 #include "Interfaces/IMainFrameModule.h"
 #include "LevelEditor.h"
 #include "LevelEditorActions.h"
 #include "MRUFavoritesList.h"
+#include "QuickMenuDiscoverySubsystem.h"
 #include "Toolkits/GlobalEditorCommonCommands.h"
 #include "WtfHdiTutorialSettings.h"
 
@@ -26,7 +25,7 @@ FQuickCommandEntry::FQuickCommandEntry(const TSharedRef<FUICommandInfo>& Command
 	}
 }
 
-TArray<FQuickCommandEntry> USpotlightDiscoverySubsystem::GetAllCommands() const
+TArray<FQuickCommandEntry> UQuickMenuDiscoverySubsystem::GetAllCommands() const
 {
 	TArray<FQuickCommandEntry> Result;
 
@@ -36,22 +35,22 @@ TArray<FQuickCommandEntry> USpotlightDiscoverySubsystem::GetAllCommands() const
 	return Result;
 }
 
-void USpotlightDiscoverySubsystem::Initialize(FSubsystemCollectionBase& Collection)
+void UQuickMenuDiscoverySubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 }
 
-void USpotlightDiscoverySubsystem::Deinitialize()
+void UQuickMenuDiscoverySubsystem::Deinitialize()
 {
 	Super::Deinitialize();
 }
 
-void USpotlightDiscoverySubsystem::GatherCommandsInternal(TArray<FQuickCommandEntry>& OutCommands) const
+void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<FQuickCommandEntry>& OutCommands) const
 {
 	PopulateTutorials(OutCommands);
 	PopulateMenuEntries(OutCommands);
 }
-void USpotlightDiscoverySubsystem::PopulateTutorials(TArray<FQuickCommandEntry>& OutCommands) const
+void UQuickMenuDiscoverySubsystem::PopulateTutorials(TArray<FQuickCommandEntry>& OutCommands) const
 {
 	const UWtfHdiTutorialSettings* TutorialSettings = GetDefault<UWtfHdiTutorialSettings>();
 
@@ -101,7 +100,7 @@ void USpotlightDiscoverySubsystem::PopulateTutorials(TArray<FQuickCommandEntry>&
 		OutCommands.Emplace(TutorialEntry);
 	}
 }
-void USpotlightDiscoverySubsystem::PopulateMenuEntries(TArray<FQuickCommandEntry>& OutCommands) const
+void UQuickMenuDiscoverySubsystem::PopulateMenuEntries(TArray<FQuickCommandEntry>& OutCommands) const
 {
 	const FLevelEditorModule& LevelEditorModule = FModuleManager::Get().LoadModuleChecked<FLevelEditorModule>("LevelEditor");
 	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "QuickMenuExtension.generated.h"
 
 struct FQuickCommandEntry
@@ -30,6 +31,11 @@ class SPOTLIGHTSEARCH_API UQuickMenuExtension : public UObject
 	GENERATED_BODY()
 
 public:
-	UFUNCTION()
-	virtual TArray<FQuickCommandEntry> GetCommands() PURE_VIRTUAL(return {};)
+	// TODO: Create a blueprint friendly version of this
+	virtual TArray<FQuickCommandEntry> GetCommands() { return {}; }
+
+	// Bigger priority will be show before. Lower priority will show up after
+	virtual int32 GetPriority() const { return 0; }
+
+	virtual bool ShouldShow() const { return true; }
 };

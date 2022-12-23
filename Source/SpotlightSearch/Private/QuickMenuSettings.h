@@ -20,4 +20,9 @@ public:
 	 */
 	UPROPERTY(EditAnywhere, Category = Customization, config)
 	int32 MaxEntriesToShow = 10;
+
+	UPROPERTY(EditAnywhere, Category = Customization, config)
+	bool bIncludeTutorials = true;
+
+	void ToggleIncludeTutorials();
 };

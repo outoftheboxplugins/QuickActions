@@ -2,30 +2,17 @@
 
 #pragma once
 
-#include "EditorSubsystem.h"
-#include "SpotlightDiscoverySubsystem.generated.h"
+#include <EditorSubsystem.h>
 
-struct FQuickCommandEntry
-{
-	// TODO: Check if we need to default the move constructor as well
-	FQuickCommandEntry() = default;
-	FQuickCommandEntry(const TSharedRef<FUICommandInfo>& Command, const TSharedRef<FUICommandList> CommandList);
+#include "QuickMenuExtension.h"
 
-	TAttribute<FText> Title;
-	TAttribute<FText> Tooltip;
-
-	FSlateIcon Icon;
-
-	FSimpleDelegate ExecuteCallback;
-	// TODO: Change this delegate type to something nice like: FCanExecuteAction
-	TDelegate<bool()> CanExecuteCallback;
-};
+#include "QuickMenuDiscoverySubsystem.generated.h"
 
 /**
  *
  */
 UCLASS()
-class SPOTLIGHTSEARCH_API USpotlightDiscoverySubsystem : public UEditorSubsystem
+class SPOTLIGHTSEARCH_API UQuickMenuDiscoverySubsystem : public UEditorSubsystem
 {
 	GENERATED_BODY()
 

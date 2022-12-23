@@ -36,7 +36,7 @@ void SQuickCommandsMenu::OnFilterTextChanged(const FText& Text)
 
 void SQuickCommandsMenu::Construct(const FArguments& InArgs)
 {
-	USpotlightDiscoverySubsystem* DiscoverySubsystem = GEditor->GetEditorSubsystem<USpotlightDiscoverySubsystem>();
+	UQuickMenuDiscoverySubsystem* DiscoverySubsystem = GEditor->GetEditorSubsystem<UQuickMenuDiscoverySubsystem>();
 	TArray<FQuickCommandEntry> AllEntries = DiscoverySubsystem->GetAllCommands();
 	for (FQuickCommandEntry Entry : AllEntries)
 	{

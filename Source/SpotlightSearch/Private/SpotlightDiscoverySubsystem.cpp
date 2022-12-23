@@ -54,6 +54,26 @@ void USpotlightDiscoverySubsystem::GatherCommandsInternal(TArray<FQuickCommandEn
 void USpotlightDiscoverySubsystem::PopulateTutorials(TArray<FQuickCommandEntry>& OutCommands) const
 {
 	const UWtfHdiTutorialSettings* TutorialSettings = GetDefault<UWtfHdiTutorialSettings>();
+
+	FQuickCommandEntry ToggleTutorials;
+	ToggleTutorials.Title = TutorialSettings->bIncludeTutorials ? LOCTEXT("DisableTutorials", "Disable Tutorials") : LOCTEXT("EnableTutorials", "Enable Tutorials");
+	ToggleTutorials.Tooltip = LOCTEXT("ToggleTutorials", "Toggles the tutorials showing in the menu");
+	ToggleTutorials.Icon = FSlateIcon(FAppStyle::Get().GetStyleSetName(), "Icons.Settings");
+	ToggleTutorials.CanExecuteCallback = TDelegate<bool()>::CreateLambda(
+		[]()
+		{
+			return true;
+		}
+	);
+	ToggleTutorials.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			GetMutableDefault<UWtfHdiTutorialSettings>()->ToggleIncludeTutorials();
+		}
+	);
+
+	OutCommands.Emplace(ToggleTutorials);
+
 	if (!TutorialSettings->bIncludeTutorials)
 	{
 		return;

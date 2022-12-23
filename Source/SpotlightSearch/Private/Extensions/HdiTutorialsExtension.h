@@ -1,4 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Copyright Out-of-the-Box Plugins 2018-2021. All Rights Reserved.
 
 #pragma once
 
@@ -6,7 +6,10 @@
 
 #include "HdiTutorialsExtension.generated.h"
 
-USTRUCT(BlueprintType)
+/**
+ * @brief Holds information about a YouTube tutorial
+ */
+USTRUCT()
 struct FTutorialInfo
 {
 	GENERATED_BODY()
@@ -14,22 +17,23 @@ struct FTutorialInfo
 	/**
 	 * @brief Title of the video
 	 */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY()
 	FString Title;
 	/**
 	 * @brief Description of the video
 	 */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY()
 	FString Description;
 	/**
 	 * @brief YouTube URL
 	 */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	UPROPERTY()
 	FString Url;
 };
 
 /**
- *
+ * Quick Menu extensions adding video tutorials for the "How the fuck do I" and "What the fuck is" YouTube series from Mathew Wadstein
+ * @see https://www.youtube.com/c/MathewWadsteinTutorials
  */
 UCLASS(Config = QuickActions)
 class UHdiTutorialsExtension : public UQuickMenuExtension

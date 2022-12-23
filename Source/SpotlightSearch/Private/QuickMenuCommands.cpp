@@ -12,7 +12,7 @@ FQuickMenuCommands::FQuickMenuCommands() : TCommands<FQuickMenuCommands>(TEXT("S
 
 void FQuickMenuCommands::RegisterCommands()
 {
-	UI_COMMAND(SummonQuickCommands, "Quick Menu", "Summons quick commands menu", EUserInterfaceActionType::Button, FInputChord(EModifierKey::Control, EKeys::O));
+	UI_COMMAND(SummonQuickCommands, "Quick Menu", "Summons quick commands menu", EUserInterfaceActionType::Button, FInputChord(EModifierKey::Control, EKeys::Q));
 }
 
 #undef LOCTEXT_NAMESPACE

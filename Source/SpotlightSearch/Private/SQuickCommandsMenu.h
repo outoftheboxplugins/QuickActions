@@ -36,4 +36,6 @@ private:
 	TSharedPtr<SQuickCommandsListView> ListView;
 	TArray<TSharedRef<FQuickCommandEntry>> Commands;
 	TArray<TSharedRef<FQuickCommandEntry>> FilteredCommands;
+	
+	bool bWasClosed = false;
 };

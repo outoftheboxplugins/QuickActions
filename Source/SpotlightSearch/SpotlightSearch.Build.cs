@@ -14,6 +14,7 @@ public class SpotlightSearch : ModuleRules
 				"CoreUObject",
 				"DeveloperSettings",
 				"EditorStyle",
+				"EditorSubsystem", 
 				"Engine",
 				"InputCore",
 				"LevelEditor",
@@ -22,8 +23,8 @@ public class SpotlightSearch : ModuleRules
 				"SlateCore",
 				"ToolMenus",
 				"ToolWidgets", 
+				"UndoHistoryEditor",
 				"UnrealEd", 
-				"EditorSubsystem",
 		});
 	}
 }

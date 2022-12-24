@@ -3,52 +3,30 @@
 #include "ToolbarMenuEditEditExtension.h"
 
 #include <Framework/Commands/GenericCommands.h>
-#include <Interfaces/IMainFrameModule.h>
+#include <LevelEditor.h>
+#include <LevelEditorActions.h>
 
 TArray<FQuickCommandEntry> UToolbarMenuEditEditExtension::GetCommands()
 {
 	TArray<FQuickCommandEntry> OutCommands;
 
-	UToolMenus* ToolMenus = UToolMenus::Get();
-	UToolMenu* MainTabEditMenu = ToolMenus->ExtendMenu("LevelEditor.MainMenu.Edit");
-	FToolMenuSection* EditSection = MainTabEditMenu->FindSection("EditMain");
+	const FLevelEditorModule& LevelEditorModule = FModuleManager::Get().LoadModuleChecked<FLevelEditorModule>("LevelEditor");
+	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
 
-	return OutCommands;
+	FQuickCommandEntry Cut = FQuickCommandEntry(FGenericCommands::Get().Cut.ToSharedRef(), LevelEditorCommands);
+	OutCommands.Add(Cut);
 
-	for (FToolMenuEntry& Block : EditSection->Blocks)
-	{
-		TSharedPtr<const FUICommandList> EmptyList;
-		const FUIAction* Action = Block.GetActionForCommand(EditSection->Context, EmptyList);
+	FQuickCommandEntry Copy = FQuickCommandEntry(FGenericCommands::Get().Copy.ToSharedRef(), LevelEditorCommands);
+	OutCommands.Add(Copy);
 
-		FQuickCommandEntry NewEntry;
+	FQuickCommandEntry Paste = FQuickCommandEntry(FGenericCommands::Get().Paste.ToSharedRef(), LevelEditorCommands);
+	OutCommands.Add(Paste);
 
-		NewEntry.Title = Block.Label;
-		NewEntry.Tooltip = Block.ToolTip;
-		NewEntry.Icon = Block.Icon;
-		NewEntry.CanExecuteCallback = Action->CanExecuteAction;
-		NewEntry.ExecuteCallback = Action->ExecuteAction;
+	FQuickCommandEntry Duplicate = FQuickCommandEntry(FGenericCommands::Get().Duplicate.ToSharedRef(), LevelEditorCommands);
+	OutCommands.Add(Duplicate);
 
-		OutCommands.Add(NewEntry);
-	}
-
-
-	// IMainFrameModule& MainFrameModule = FModuleManager::Get().LoadModuleChecked<IMainFrameModule>("MainFrame");
-	// TSharedRef<FUICommandList> MainFrameCommands = MainFrameModule.GetMainFrameCommandBindings();
-
-	// FQuickCommandEntry Cut = FQuickCommandEntry(FGenericCommands::Get().Cut.ToSharedRef(), MainFrameCommands);
-	// OutCommands.Add(Cut);
-
-	// FQuickCommandEntry Copy = FQuickCommandEntry(FGenericCommands::Get().Copy.ToSharedRef(), MainFrameCommands);
-	// OutCommands.Add(Copy);
-
-	// FQuickCommandEntry Paste = FQuickCommandEntry(FGenericCommands::Get().Paste.ToSharedRef(), MainFrameCommands);
-	// OutCommands.Add(Paste);
-
-	// FQuickCommandEntry Duplicate = FQuickCommandEntry(FGenericCommands::Get().Duplicate.ToSharedRef(), MainFrameCommands);
-	// OutCommands.Add(Duplicate);
-
-	// FQuickCommandEntry Delete = FQuickCommandEntry(FGenericCommands::Get().Delete.ToSharedRef(), MainFrameCommands);
-	// OutCommands.Add(Delete);
+	FQuickCommandEntry Delete = FQuickCommandEntry(FGenericCommands::Get().Delete.ToSharedRef(), LevelEditorCommands);
+	OutCommands.Add(Delete);
 
 	return OutCommands;
 }

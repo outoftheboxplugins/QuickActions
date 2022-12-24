@@ -5,4 +5,6 @@
 void UQuickMenuSettings::ToggleIncludeTutorials()
 {
 	bIncludeTutorials = !bIncludeTutorials;
+
+	SaveConfig(CPF_Config, *GetDefaultConfigFilename());
 }

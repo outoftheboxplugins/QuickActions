@@ -19,6 +19,8 @@ struct FQuickCommandEntry
 	FSimpleDelegate ExecuteCallback;
 	// TODO: Change this delegate type to something nice like: FCanExecuteAction
 	TDelegate<bool()> CanExecuteCallback;
+
+	bool IsAllowedToExecute() const;
 };
 
 /**

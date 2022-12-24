@@ -19,6 +19,15 @@ FQuickCommandEntry::FQuickCommandEntry(const TSharedRef<FUICommandInfo>& Command
 		CanExecuteCallback = UIAction->CanExecuteAction;
 	}
 }
+bool FQuickCommandEntry::IsAllowedToExecute() const
+{
+	if (!CanExecuteCallback.IsBound())
+	{
+		return true;
+	}
+
+	return CanExecuteCallback.Execute();
+}
 
 TArray<FQuickCommandEntry> UQuickMenuDiscoverySubsystem::GetAllCommands() const
 {

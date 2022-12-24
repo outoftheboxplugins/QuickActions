@@ -142,9 +142,12 @@ TSharedRef<ITableRow> SQuickCommandsMenu::MakeShowWidget(TSharedRef<FQuickComman
 		.SetActiveHighlightedBrush(FSlateRoundedBoxBrush(FStyleColors::Select, 4.0f, FStyleColors::Select, 1.0f))
 		.SetSelectedTextColor(FStyleColors::Foreground);
 
+	const bool bCanExecute = Selection->IsAllowedToExecute();
+
 	// clang-format off
 	return SNew(STableRow<TSharedRef<FQuickCommandEntry>>, OwnerTable)
-	       .Style(&TableRowStyle)
+			.Style(&TableRowStyle)
+			.IsEnabled_Lambda([bCanExecute](){return bCanExecute;})
 	       [
 		       SNew(SHorizontalBox)
 
@@ -231,8 +234,12 @@ void SQuickCommandsMenu::ConfirmSelection()
 	}
 
 	const TSharedRef<FQuickCommandEntry>& CurrentCommand = FilteredCommands[SelectionIndex];
-	(void)CurrentCommand->ExecuteCallback.ExecuteIfBound();
+	if (!CurrentCommand->IsAllowedToExecute())
+	{
+		return;
+	}
 
+	(void)CurrentCommand->ExecuteCallback.ExecuteIfBound();
 	CloseWindow();
 }
 

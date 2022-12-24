@@ -149,34 +149,32 @@ TSharedRef<ITableRow> SQuickCommandsMenu::MakeShowWidget(TSharedRef<FQuickComman
 		       SNew(SHorizontalBox)
 
 		       + SHorizontalBox::Slot()
-		         .Padding(8.0f, 4.f)
-		         .AutoWidth()
-		         .HAlign(HAlign_Center)
-		         .VAlign(VAlign_Center)
+		       .Padding(8.0f, 4.f)
+		       .AutoWidth()
+		       .HAlign(HAlign_Center)
+		       .VAlign(VAlign_Center)
 		       [
 			       SNew(SBox)
-			.WidthOverride(30)
-			.HeightOverride(30)
+					.WidthOverride(30)
+					.HeightOverride(30)
 			       [
 				       SNew(SImage)
-				       .Image(Selection->Icon.GetIcon() && Selection->Icon.GetIcon()->IsSet()
-					              ? Selection->Icon.GetIcon()
-					              : FAppStyle::GetBrush("MediaAsset.AssetActions.Play.Large"))
+				       .Image(Selection->Icon.Get().GetIcon()) 
 			       ]
 		       ]
 
 		       + SHorizontalBox::Slot()
-		         .VAlign(VAlign_Fill)
-		         .Padding(0)
+		       .VAlign(VAlign_Fill)
+		       .Padding(0)
 		       [
 			       SNew(SHorizontalBox)
 			       + SHorizontalBox::Slot()
-			         .Padding(9, 0, 0, 1)
-			         .VAlign(VAlign_Center)
+			       .Padding(9, 0, 0, 1)
+			       .VAlign(VAlign_Center)
 			       [
-				       SNew(STextBlock)
-					.TextStyle(FAppStyle::Get(), "PlacementBrowser.Asset.Name")
-					.Text(Selection->Title)
+						SNew(STextBlock)
+						.TextStyle(FAppStyle::Get(), "PlacementBrowser.Asset.Name")
+						.Text(Selection->Title)
 			       ]
 		       ]
 	       ];

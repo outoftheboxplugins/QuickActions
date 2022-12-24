@@ -14,8 +14,7 @@ struct FQuickCommandEntry
 
 	TAttribute<FText> Title;
 	TAttribute<FText> Tooltip;
-
-	FSlateIcon Icon;
+	TAttribute<FSlateIcon> Icon;
 
 	FSimpleDelegate ExecuteCallback;
 	// TODO: Change this delegate type to something nice like: FCanExecuteAction

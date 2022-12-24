@@ -19,7 +19,7 @@ TArray<FQuickCommandEntry> UToolbarMenuFileSaveExtension::GetCommands()
 	FToolMenuSection* SaveSection = FileMenu->FindSection("FileSave");
 	for (FToolMenuEntry& Block : SaveSection->Blocks)
 	{
-		// NOTE: the FileSave block has no command list assigned, we temporarily assign the MainFrame list to access the FUIAction and revert it afterwards
+		// NOTE: the block has no command list assigned, we temporarily assign the MainFrame list to access the FUIAction and revert it afterwards
 		Block.SetCommandList(MainFrameCommands);
 		if (const FUIAction* FoundAction = Block.GetActionForCommand(SaveSection->Context, MainFrameCommands))
 		{

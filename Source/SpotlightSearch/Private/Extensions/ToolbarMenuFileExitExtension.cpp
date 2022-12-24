@@ -1,10 +1,10 @@
 ﻿// Copyright Out-of-the-Box Plugins 2018-2021. All Rights Reserved.
 
-#include "ToolbarMenuFileProjectExtension.h"
+#include "ToolbarMenuFileExitExtension.h"
 
 #include <Interfaces/IMainFrameModule.h>
 
-TArray<FQuickCommandEntry> UToolbarMenuFileProjectExtension::GetCommands()
+TArray<FQuickCommandEntry> UToolbarMenuFileExitExtension::GetCommands()
 {
 	TArray<FQuickCommandEntry> OutCommands;
 
@@ -13,13 +13,13 @@ TArray<FQuickCommandEntry> UToolbarMenuFileProjectExtension::GetCommands()
 
 	UToolMenus* ToolMenus = UToolMenus::Get();
 	UToolMenu* MainTabFileMenu = ToolMenus->ExtendMenu("MainFrame.MainTabMenu.File");
-	FToolMenuSection* ProjectSection = MainTabFileMenu->FindSection("FileProject");
+	FToolMenuSection* ExitSection = MainTabFileMenu->FindSection("Exit");
 
-	for (FToolMenuEntry& Block : ProjectSection->Blocks)
+	for (FToolMenuEntry& Block : ExitSection->Blocks)
 	{
 		// NOTE: the block has no command list assigned, we temporarily assign the MainFrame list to access the FUIAction and revert it afterwards
 		Block.SetCommandList(MainFrameCommands);
-		if (const FUIAction* FoundAction = Block.GetActionForCommand(ProjectSection->Context, MainFrameCommands))
+		if (const FUIAction* FoundAction = Block.GetActionForCommand(ExitSection->Context, MainFrameCommands))
 		{
 			FQuickCommandEntry MenuEntry;
 			MenuEntry.Title = Block.Label;

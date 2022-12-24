@@ -64,6 +64,7 @@ void SQuickCommandsMenu::Construct(const FArguments& InArgs)
 	                   .ClientSize(FVector2D(680.f, 430.f))
 	                   .SupportsMaximize(false)
 	                   .SupportsMinimize(false)
+	                   .IsPopupWindow(true)
 	[
 		SNew(SVerticalBox)
 

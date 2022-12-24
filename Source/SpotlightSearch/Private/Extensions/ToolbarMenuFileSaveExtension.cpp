@@ -3,13 +3,8 @@
 #include "ToolbarMenuFileSaveExtension.h"
 
 #include <Interfaces/IMainFrameModule.h>
-
-namespace
-{
-	void GatherActionsFromMenuSection(TArray<FQuickCommandEntry>& OutEntries, FToolMenuSection& Section, TSharedRef<FUICommandList> CommandList)
-	{
-	}
-} // namespace
+#include <LevelEditor.h>
+#include <LevelEditorActions.h>
 
 TArray<FQuickCommandEntry> UToolbarMenuFileSaveExtension::GetCommands()
 {
@@ -39,6 +34,15 @@ TArray<FQuickCommandEntry> UToolbarMenuFileSaveExtension::GetCommands()
 		}
 		Block.SetCommandList({});
 	}
+
+	const FLevelEditorModule& LevelEditorModule = FModuleManager::Get().LoadModuleChecked<FLevelEditorModule>("LevelEditor");
+	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
+
+	FQuickCommandEntry SaveCurrentLevel = FQuickCommandEntry(FLevelEditorCommands::Get().Save.ToSharedRef(), LevelEditorCommands);
+	OutCommands.Emplace(SaveCurrentLevel);
+
+	FQuickCommandEntry SaveCurrentLevelAs = FQuickCommandEntry(FLevelEditorCommands::Get().SaveAs.ToSharedRef(), LevelEditorCommands);
+	OutCommands.Emplace(SaveCurrentLevelAs);
 
 	return OutCommands;
 }

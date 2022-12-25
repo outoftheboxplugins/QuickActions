@@ -25,12 +25,6 @@ TArray<FQuickCommandEntry> UToolbarMenuEditHistoryExtension::GetCommands()
 	UndoHistory.Title = LOCTEXT("UndoHistoryTabTitle", "Undo History");
 	UndoHistory.Tooltip = LOCTEXT("UndoHistoryTooltipText", "View the entire undo history.");
 	UndoHistory.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "UndoHistory.TabIcon");
-	UndoHistory.CanExecuteCallback = TDelegate<bool()>::CreateLambda(
-		[]()
-		{
-			return true;
-		}
-	);
 	UndoHistory.ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()
 		{

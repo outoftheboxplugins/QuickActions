@@ -6,6 +6,7 @@
 #include "ISettingsContainer.h"
 #include "ISettingsModule.h"
 #include "ISettingsSection.h"
+#include "QuickMenuSettings.h"
 
 #define LOCTEXT_NAMESPACE "QuickActions"
 
@@ -65,6 +66,16 @@ TArray<FQuickCommandEntry> UOpenSettingsExtension::GetCommands()
 	}
 
 	return OutCommands;
+}
+
+int32 UOpenSettingsExtension::GetPriority() const
+{
+	return -100;
+}
+
+bool UOpenSettingsExtension::ShouldShow() const
+{
+	return GetDefault<UQuickMenuSettings>()->bIncludeSettingSections;
 }
 
 #undef LOCTEXT_NAMESPACE

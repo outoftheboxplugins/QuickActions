@@ -24,6 +24,20 @@ TArray<FQuickCommandEntry> UToolbarMenuWindowLevelEditorExtension::GetCommands()
 	);
 	OutCommands.Add(CameraShakePreviewer);
 
+	FQuickCommandEntry Sequencer;
+	Sequencer.Title = LOCTEXT("Sequencer", "Sequencer");
+	Sequencer.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Tabs.Cinematics");
+	// TODO: Sequence should call this private method to confirm it's allowed to spawn:	SLevelEditor::CanSpawnLevelEditorTab, LevelEditorTabIds::Sequencer
+	Sequencer.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			const FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
+			const TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
+			LevelEditorTabManager->TryInvokeTab(FTabId(TEXT("Sequencer")));
+		}
+	);
+	OutCommands.Add(Sequencer);
+
 	return OutCommands;
 }
 

@@ -34,7 +34,17 @@ TArray<FQuickCommandEntry> UToolbarMenuEditConfigurationExtension::GetCommands()
 	);
 	OutCommands.Add(OpenProjectSettings);
 
-	FGlobalTabmanager::Get()->RegisterNomadTabSpawner();
+	FQuickCommandEntry Plugins;
+	Plugins.Title = LOCTEXT("PluginsEditor", "Plugins");
+	Plugins.Tooltip = LOCTEXT("PluginsEditorTip", "Open the Plugins Browser tab.");
+	Plugins.Icon = FSlateIcon("PluginStyle", "Plugins.TabIcon");
+	Plugins.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("PluginsEditor")));
+		}
+	);
+	OutCommands.Emplace(Plugins);
 
 	return OutCommands;
 }

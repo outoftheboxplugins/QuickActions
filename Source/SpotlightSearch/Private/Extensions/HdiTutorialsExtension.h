@@ -42,6 +42,7 @@ class UHdiTutorialsExtension : public UQuickMenuExtension
 
 	virtual TArray<FQuickCommandEntry> GetCommands() override;
 	virtual int32 GetPriority() const override;
+	virtual bool ShouldShow() const override;
 
 	UPROPERTY(Config)
 	TArray<FTutorialInfo> Tutorials;

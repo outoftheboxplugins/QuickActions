@@ -34,6 +34,8 @@ TArray<FQuickCommandEntry> UToolbarMenuEditConfigurationExtension::GetCommands()
 	);
 	OutCommands.Add(OpenProjectSettings);
 
+	FGlobalTabmanager::Get()->RegisterNomadTabSpawner();
+
 	return OutCommands;
 }
 

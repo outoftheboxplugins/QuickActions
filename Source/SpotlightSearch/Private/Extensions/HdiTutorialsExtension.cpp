@@ -16,12 +16,6 @@ TArray<FQuickCommandEntry> UHdiTutorialsExtension::GetCommands()
 	ToggleTutorials.Title = bIsShowingTutorials ? LOCTEXT("DisableTutorials", "Disable Tutorials") : LOCTEXT("EnableTutorials", "Enable Tutorials");
 	ToggleTutorials.Tooltip = LOCTEXT("ToggleTutorials", "Toggles the tutorials showing in the menu");
 	ToggleTutorials.Icon = FSlateIcon(FAppStyle::Get().GetStyleSetName(), "Icons.Settings");
-	ToggleTutorials.CanExecuteCallback = TDelegate<bool()>::CreateLambda(
-		[]()
-		{
-			return true;
-		}
-	);
 	ToggleTutorials.ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()
 		{
@@ -39,12 +33,6 @@ TArray<FQuickCommandEntry> UHdiTutorialsExtension::GetCommands()
 			TutorialEntry.Title = FText::FromString(Tutorial.Title);
 			TutorialEntry.Tooltip = FText::FromString(Tutorial.Description);
 			TutorialEntry.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "Icons.Documentation");
-			TutorialEntry.CanExecuteCallback = TDelegate<bool()>::CreateLambda(
-				[]()
-				{
-					return true;
-				}
-			);
 			TutorialEntry.ExecuteCallback = FSimpleDelegate::CreateLambda(
 				[Tutorial]()
 				{

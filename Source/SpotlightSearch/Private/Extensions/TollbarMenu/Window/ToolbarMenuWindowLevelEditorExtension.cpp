@@ -200,6 +200,20 @@ TArray<FQuickCommandEntry> UToolbarMenuWindowLevelEditorExtension::GetCommands()
 	);
 	OutCommands.Add(ContentBundles);
 
+	FQuickCommandEntry DataLayerOutliner;
+	DataLayerOutliner.Title = NSLOCTEXT("LevelEditorTabs", "LevelEditorDataLayerBrowser", "Data Layers Outliner");
+	DataLayerOutliner.Tooltip = NSLOCTEXT("LevelEditorTabs", "LevelEditorDataLayerBrowserTooltipText", "Open the Data Layers Outliner.");
+	DataLayerOutliner.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Tabs.DataLayers");
+	DataLayerOutliner.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			const FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
+			const TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
+			LevelEditorTabManager->TryInvokeTab(FTabId(TEXT("LevelEditorDataLayerBrowser")));
+		}
+	);
+	OutCommands.Add(DataLayerOutliner);
+
 	return OutCommands;
 }
 

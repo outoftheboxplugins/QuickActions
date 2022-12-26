@@ -163,6 +163,29 @@ TArray<FQuickCommandEntry> UToolbarMenuWindowLevelEditorExtension::GetCommands()
 		OutCommands.Add(OutlinerTab);
 	}
 
+	constexpr int32 NumViewportTabs = 4;
+	for (int32 ViewportIdx = 0; ViewportIdx < NumViewportTabs; ViewportIdx++)
+	{
+		FQuickCommandEntry ViewportTab;
+		ViewportTab.Title = FText::Format(LOCTEXT("LevelEditorSceneViewportWithIndex", "Viewport {0}"), FText::AsNumber(ViewportIdx + 1));
+		ViewportTab.Tooltip = NSLOCTEXT("LevelEditorTabs", "LevelEditorViewportTooltip", "Open a Viewport tab. Use this to view and edit the current level.");
+		ViewportTab.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Tabs.Viewports");
+		ViewportTab.ExecuteCallback = FSimpleDelegate::CreateLambda(
+			[ViewportIdx]()
+			{
+				static const FName ViewportTabIdentifiers_LevelEditor[] = {"LevelEditorViewport", "LevelEditorViewport_Clone1", "LevelEditorViewport_Clone2", "LevelEditorViewport_Clone3"};
+
+				const FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
+				const TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
+				const FName TabID = ViewportTabIdentifiers_LevelEditor[ViewportIdx];
+
+				LevelEditorTabManager->TryInvokeTab(FTabId(TabID));
+			}
+		);
+
+		OutCommands.Add(ViewportTab);
+	}
+
 	return OutCommands;
 }
 

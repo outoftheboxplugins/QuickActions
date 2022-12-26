@@ -62,6 +62,24 @@ TArray<FQuickCommandEntry> UToolbarMenuWindowLevelEditorExtension::GetCommands()
 	);
 	OutCommands.Add(TakeBrowser);
 
+	constexpr int32 NumContentBrowserTabs = 4;
+	for (int32 BrowserIdx = 0; BrowserIdx < NumContentBrowserTabs; BrowserIdx++)
+	{
+		FQuickCommandEntry ContentBrowserTab;
+		ContentBrowserTab.Title = FText::Format(LOCTEXT("ContentBrowserTabNameWithIndex", "Content Browser {0}"), FText::AsNumber(BrowserIdx + 1));
+		ContentBrowserTab.Tooltip = LOCTEXT("ContentBrowserMenuTooltipText", "Open a Content Browser tab.");
+		ContentBrowserTab.Icon = FSlateIcon(FAppStyle::Get().GetStyleSetName(), "ContentBrowser.TabIcon");
+		ContentBrowserTab.ExecuteCallback = FSimpleDelegate::CreateLambda(
+			[BrowserIdx]()
+			{
+				const FName TabID = FName(*FString::Printf(TEXT("ContentBrowserTab%d"), BrowserIdx + 1));
+				FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TabID));
+			}
+		);
+
+		OutCommands.Add(ContentBrowserTab);
+	}
+
 	return OutCommands;
 }
 

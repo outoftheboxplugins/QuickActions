@@ -140,6 +140,29 @@ TArray<FQuickCommandEntry> UToolbarMenuWindowLevelEditorExtension::GetCommands()
 	);
 	OutCommands.Add(GlobalCache);
 
+	constexpr int32 NumOutlinerTabs = 4;
+	for (int32 OutlinerIdx = 0; OutlinerIdx < NumOutlinerTabs; OutlinerIdx++)
+	{
+		FQuickCommandEntry OutlinerTab;
+		OutlinerTab.Title = FText::Format(LOCTEXT("LevelEditorSceneOutlinerWithIndex", "Outliner {0}"), FText::AsNumber(OutlinerIdx + 1));
+		OutlinerTab.Tooltip = NSLOCTEXT("LevelEditorTabs", "LevelEditorSceneOutlinerTooltipText", "Open the Outliner tab, which provides a searchable and filterable list of all actors in the world.");
+		OutlinerTab.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Tabs.Outliner");
+		OutlinerTab.ExecuteCallback = FSimpleDelegate::CreateLambda(
+			[OutlinerIdx]()
+			{
+				static const FName OutlinerTabIdentifiers_LevelEditor[] = {"LevelEditorSceneOutliner", "LevelEditorSceneOutliner2", "LevelEditorSceneOutliner3", "LevelEditorSceneOutliner4"};
+
+				const FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
+				const TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
+				const FName TabID = OutlinerTabIdentifiers_LevelEditor[OutlinerIdx];
+
+				LevelEditorTabManager->TryInvokeTab(FTabId(TabID));
+			}
+		);
+
+		OutCommands.Add(OutlinerTab);
+	}
+
 	return OutCommands;
 }
 

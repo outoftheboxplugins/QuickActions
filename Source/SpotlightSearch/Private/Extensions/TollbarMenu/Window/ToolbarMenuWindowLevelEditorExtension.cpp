@@ -214,6 +214,20 @@ TArray<FQuickCommandEntry> UToolbarMenuWindowLevelEditorExtension::GetCommands()
 	);
 	OutCommands.Add(DataLayerOutliner);
 
+	FQuickCommandEntry WorldPartitionEditor;
+	WorldPartitionEditor.Title = NSLOCTEXT("LevelEditorTabs", "WorldPartitionEditor", "World Partition Editor");
+	WorldPartitionEditor.Tooltip = NSLOCTEXT("LevelEditorTabs", "WorldPartitionEditorTooltipText", "Open the World Partition Editor.");
+	WorldPartitionEditor.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Tabs.WorldPartition");
+	WorldPartitionEditor.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			const FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
+			const TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
+			LevelEditorTabManager->TryInvokeTab(FTabId("WorldBrowserPartitionEditor"));
+		}
+	);
+	OutCommands.Add(WorldPartitionEditor);
+
 	return OutCommands;
 }
 

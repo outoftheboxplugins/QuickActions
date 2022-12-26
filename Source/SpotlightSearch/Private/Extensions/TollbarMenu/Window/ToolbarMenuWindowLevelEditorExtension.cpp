@@ -80,6 +80,66 @@ TArray<FQuickCommandEntry> UToolbarMenuWindowLevelEditorExtension::GetCommands()
 		OutCommands.Add(ContentBrowserTab);
 	}
 
+	constexpr int32 NumDetailsTabs = 4;
+	for (int32 DetailsIdx = 0; DetailsIdx < NumDetailsTabs; DetailsIdx++)
+	{
+		FQuickCommandEntry DetailsTab;
+		DetailsTab.Title = FText::Format(LOCTEXT("LevelEditorSelectionDetailsWithIndex", "Details {0}"), FText::AsNumber(DetailsIdx + 1));
+		DetailsTab.Tooltip = NSLOCTEXT("LevelEditorTabs", "LevelEditorSelectionDetailsTooltip", "Open a Details tab. Use this to view and edit properties of the selected object(s).");
+		DetailsTab.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Tabs.Details");
+		DetailsTab.ExecuteCallback = FSimpleDelegate::CreateLambda(
+			[DetailsIdx]()
+			{
+				static const FName DetailsTabIdentifiers_LevelEditor[] = {
+					"LevelEditorSelectionDetails", "LevelEditorSelectionDetails2", "LevelEditorSelectionDetails3", "LevelEditorSelectionDetails4"};
+
+				const FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
+				const TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
+				const FName TabID = DetailsTabIdentifiers_LevelEditor[DetailsIdx];
+
+				LevelEditorTabManager->TryInvokeTab(FTabId(TabID));
+			}
+		);
+
+		OutCommands.Add(DetailsTab);
+	}
+
+	FQuickCommandEntry ProcessEXR;
+	ProcessEXR.Title = LOCTEXT("ImgMediaProcessEXRTabTitle", "Process EXR");
+	ProcessEXR.Tooltip = LOCTEXT("ImgMediaProcessEXRTooltipText", "Open the Process EXR tab.");
+	ProcessEXR.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Tabs.Viewports");
+	ProcessEXR.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("ImgMediaProcessEXR")));
+		}
+	);
+	OutCommands.Add(ProcessEXR);
+
+	FQuickCommandEntry BandwidthMonitor;
+	BandwidthMonitor.Title = LOCTEXT("ImgMediaBandwidthMonitorTabTitle", "Bandwidth Monitor");
+	BandwidthMonitor.Tooltip = LOCTEXT("ImgMediaBandwidthMonitorTooltipText", "Open the bandwidth monitor tab.");
+	BandwidthMonitor.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "SequenceRecorder.TabIcon");
+	BandwidthMonitor.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("ImgMediaBandwidth")));
+		}
+	);
+	OutCommands.Add(BandwidthMonitor);
+
+	FQuickCommandEntry GlobalCache;
+	GlobalCache.Title = LOCTEXT("ImgMediaGlobalCacheTabTitle", "Global Cache");
+	GlobalCache.Tooltip = LOCTEXT("ImgMediaGlobalCacheTooltipText", "Open the global cache tab.");
+	GlobalCache.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "SequenceRecorder.TabIcon");
+	GlobalCache.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("ImgMediaCache")));
+		}
+	);
+	OutCommands.Add(GlobalCache);
+
 	return OutCommands;
 }
 

@@ -38,6 +38,30 @@ TArray<FQuickCommandEntry> UToolbarMenuWindowLevelEditorExtension::GetCommands()
 	);
 	OutCommands.Add(Sequencer);
 
+	FQuickCommandEntry TakeRecorder;
+	TakeRecorder.Title = LOCTEXT("TakeRecorderTab_Label", "Take Recorder");
+	TakeRecorder.Tooltip = LOCTEXT("TakeRecorderTab_Tooltip", "Open the main Take Recorder UI.");
+	TakeRecorder.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "SequenceRecorder.TabIcon");
+	TakeRecorder.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId("TakeRecorder"));
+		}
+	);
+	OutCommands.Add(TakeRecorder);
+
+	FQuickCommandEntry TakeBrowser;
+	TakeBrowser.Title = LOCTEXT("TakesBrowserTab_Label", "Takes Browser");
+	TakeBrowser.Tooltip = LOCTEXT("TakeBrowserTab_Tooltip", "Open the Take Browser UI");
+	TakeBrowser.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "ContentBrowser.TabIcon");
+	TakeBrowser.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId("TakesBrowser"));
+		}
+	);
+	OutCommands.Add(TakeBrowser);
+
 	return OutCommands;
 }
 

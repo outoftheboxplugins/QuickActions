@@ -228,6 +228,21 @@ TArray<FQuickCommandEntry> UToolbarMenuWindowLevelEditorExtension::GetCommands()
 	);
 	OutCommands.Add(WorldPartitionEditor);
 
+	FQuickCommandEntry EnvironmentLighting;
+	EnvironmentLighting.Title = NSLOCTEXT("LevelEditorTabs", "EnvironmentLightingViewer", "Env. Light Mixer");
+	EnvironmentLighting.Tooltip =
+		NSLOCTEXT("LevelEditorTabs", "LevelEditorEnvironmentLightingViewerTooltipText", "Open the Environmment Lighting tab to edit all the entities important for world lighting.");
+	EnvironmentLighting.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "EditorViewport.ReflectionOverrideMode");
+	EnvironmentLighting.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			const FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
+			const TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
+			LevelEditorTabManager->TryInvokeTab(FTabId(TEXT("LevelEditorEnvironmentLightingViewer")));
+		}
+	);
+	OutCommands.Add(EnvironmentLighting);
+
 	return OutCommands;
 }
 

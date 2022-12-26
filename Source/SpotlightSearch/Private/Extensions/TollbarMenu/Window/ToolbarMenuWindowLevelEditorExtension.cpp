@@ -186,6 +186,20 @@ TArray<FQuickCommandEntry> UToolbarMenuWindowLevelEditorExtension::GetCommands()
 		OutCommands.Add(ViewportTab);
 	}
 
+	FQuickCommandEntry ContentBundles;
+	ContentBundles.Title = NSLOCTEXT("LevelEditorTabs", "LevelEditorContentBundleBrowser", "Content Bundles Outliner");
+	ContentBundles.Tooltip = NSLOCTEXT("LevelEditorTabs", "LevelEditorContentBundleBrowserTooltipText", "Open the Content Bundles Outliner.");
+	ContentBundles.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), TEXT("LevelEditor.Tabs.DataLayers"));
+	ContentBundles.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			const FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
+			const TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
+			LevelEditorTabManager->TryInvokeTab(FTabId("ContentBundleBrowser"));
+		}
+	);
+	OutCommands.Add(ContentBundles);
+
 	return OutCommands;
 }
 

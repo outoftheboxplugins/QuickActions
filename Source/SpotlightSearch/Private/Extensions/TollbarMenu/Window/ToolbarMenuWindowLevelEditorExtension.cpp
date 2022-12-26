@@ -243,6 +243,20 @@ TArray<FQuickCommandEntry> UToolbarMenuWindowLevelEditorExtension::GetCommands()
 	);
 	OutCommands.Add(EnvironmentLighting);
 
+	FQuickCommandEntry HierarchicalLODOutliner;
+	HierarchicalLODOutliner.Title = NSLOCTEXT("LevelEditorTabs", "LevelEditorHierarchicalLODOutliner", "Hierarchical LOD Outliner");
+	HierarchicalLODOutliner.Tooltip = NSLOCTEXT("LevelEditorTabs", "LevelEditorHierarchicalLODOutlinerTooltipText", "Open the Hierarchical LOD Outliner.");
+	HierarchicalLODOutliner.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Tabs.HLOD");
+	HierarchicalLODOutliner.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			const FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
+			const TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
+			LevelEditorTabManager->TryInvokeTab(FTabId(TEXT("LevelEditorHierarchicalLODOutliner")));
+		}
+	);
+	OutCommands.Add(HierarchicalLODOutliner);
+
 	return OutCommands;
 }
 

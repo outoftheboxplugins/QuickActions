@@ -257,6 +257,89 @@ TArray<FQuickCommandEntry> UToolbarMenuWindowLevelEditorExtension::GetCommands()
 	);
 	OutCommands.Add(HierarchicalLODOutliner);
 
+	FQuickCommandEntry Layers;
+	Layers.Title = NSLOCTEXT("LevelEditorTabs", "LevelEditorLayerBrowser", "Layers");
+	Layers.Tooltip = NSLOCTEXT("LevelEditorTabs", "LevelEditorLayerBrowserTooltipText", "Open the Layers tab. Use this to manage which actors in the world belong to which layers.");
+	Layers.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Tabs.Layers");
+	Layers.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			const FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
+			const TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
+			LevelEditorTabManager->TryInvokeTab(FTabId(TEXT("LevelEditorLayerBrowser")));
+		}
+	);
+	OutCommands.Add(Layers);
+
+	FQuickCommandEntry Levels;
+	Levels.Title = NSLOCTEXT("LevelEditorTabs", "WorldBrowserHierarchy", "Levels");
+	Levels.Tooltip = NSLOCTEXT("LevelEditorTabs", "WorldBrowserHierarchyTooltipText", "Open the Levels tab. Use this to manage the levels in the current project.");
+	Levels.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Tabs.WorldBrowser");
+	Levels.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			const FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
+			const TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
+			LevelEditorTabManager->TryInvokeTab(FTabId(TEXT("WorldBrowserHierarchy")));
+		}
+	);
+	OutCommands.Add(Levels);
+
+	FQuickCommandEntry LightMixer;
+	LightMixer.Title = LOCTEXT("LightMixerTabLabel", "Light Mixer");
+	LightMixer.Tooltip = LOCTEXT("OpenLightMixerEditorTooltip", "Open Light Mixer");
+	LightMixer.Icon = FSlateIcon(FName(TEXT("LightMixer")), "LightMixer.ToolbarButton", "LightMixer.ToolbarButton.Small");
+	LightMixer.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			const FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
+			const TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
+			LevelEditorTabManager->TryInvokeTab(FTabId(TEXT("LightMixerToolkit")));
+		}
+	);
+	OutCommands.Add(LightMixer);
+
+	FQuickCommandEntry PlaceActor;
+	PlaceActor.Title = NSLOCTEXT("LevelEditorTabs", "PlacementBrowser", "Place Actors");
+	PlaceActor.Tooltip = NSLOCTEXT("LevelEditorTabs", "PlacementBrowserTooltipText", "Actor Placement Browser");
+	PlaceActor.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Tabs.PlacementBrowser");
+	PlaceActor.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			const FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
+			const TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
+			LevelEditorTabManager->TryInvokeTab(FTabId(TEXT("PlacementBrowser")));
+		}
+	);
+	OutCommands.Add(PlaceActor);
+
+	FQuickCommandEntry VariantManager;
+	VariantManager.Title = LOCTEXT("VariantManagerMainTab", "Variant Manager");
+	VariantManager.Icon = FSlateIcon(FName(TEXT("VariantManagerEditorStyle")), "VariantManager.Icon");
+	VariantManager.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			const FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
+			const TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
+			LevelEditorTabManager->TryInvokeTab(FTabId(TEXT("VariantManager_VariantManagerMain")));
+		}
+	);
+	OutCommands.Add(VariantManager);
+
+	FQuickCommandEntry WorldSettings;
+	WorldSettings.Title = NSLOCTEXT("LevelEditorTabs", "WorldSettings", "World Settings");
+	WorldSettings.Tooltip = NSLOCTEXT("LevelEditorTabs", "WorldSettingsTooltipText", "Open the World Settings tab, in which global properties of the level can be viewed and edited.");
+	WorldSettings.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.WorldProperties.Tab");
+	WorldSettings.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			const FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
+			const TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
+			LevelEditorTabManager->TryInvokeTab(FTabId(TEXT("WorldSettingsTab")));
+		}
+	);
+	OutCommands.Add(WorldSettings);
+
 	return OutCommands;
 }
 

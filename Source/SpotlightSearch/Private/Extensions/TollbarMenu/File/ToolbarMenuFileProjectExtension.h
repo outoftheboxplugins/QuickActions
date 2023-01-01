@@ -14,5 +14,5 @@ class UToolbarMenuFileProjectExtension : public UQuickMenuExtension
 {
 	GENERATED_BODY()
 
-	virtual TArray<FQuickCommandEntry> GetCommands() override;
+	virtual TArray<FQuickCommandEntry> GetCommands(const FToolMenuContext& Context) override;
 };

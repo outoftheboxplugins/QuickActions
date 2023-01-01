@@ -4,7 +4,7 @@
 
 #include "Styling/SlateIconFinder.h"
 
-TArray<FQuickCommandEntry> UToolbarMenuWindowLogExtension::GetCommands()
+TArray<FQuickCommandEntry> UToolbarMenuWindowLogExtension::GetCommands(const FToolMenuContext& Context)
 {
 	TArray<FQuickCommandEntry> OutCommands;
 

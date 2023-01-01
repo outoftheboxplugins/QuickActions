@@ -6,7 +6,7 @@
 
 #define LOCTEXT_NAMESPACE "QuickActions"
 
-TArray<FQuickCommandEntry> UToolbarMenuWindowLevelEditorExtension::GetCommands()
+TArray<FQuickCommandEntry> UToolbarMenuWindowLevelEditorExtension::GetCommands(const FToolMenuContext& Context)
 {
 	TArray<FQuickCommandEntry> OutCommands;
 

@@ -2,21 +2,13 @@
 
 #include "ToolbarMenuWindowGetContentExtension.h"
 
-#include <Interfaces/IMainFrameModule.h>
-
-TArray<FQuickCommandEntry> UToolbarMenuWindowGetContentExtension::GetCommands()
+TArray<FQuickCommandEntry> UToolbarMenuWindowGetContentExtension::GetCommands(const FToolMenuContext& Context)
 {
 	TArray<FQuickCommandEntry> OutCommands;
-
-	IMainFrameModule& MainFrameModule = FModuleManager::Get().LoadModuleChecked<IMainFrameModule>("MainFrame");
-	TSharedPtr<FUICommandList> MainFrameCommands = MainFrameModule.GetMainFrameCommandBindings();
 
 	UToolMenus* ToolMenus = UToolMenus::Get();
 	UToolMenu* MainTabFileMenu = ToolMenus->ExtendMenu("MainFrame.MainMenu.Window");
 	FToolMenuSection* ContentSection = MainTabFileMenu->FindSection("GetContent");
-
-	FToolMenuContext Context;
-	Context.AppendCommandList(MainFrameCommands);
 
 	for (FToolMenuEntry& Block : ContentSection->Blocks)
 	{

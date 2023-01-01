@@ -6,7 +6,7 @@
 #include <LevelEditor.h>
 #include <LevelEditorActions.h>
 
-TArray<FQuickCommandEntry> UToolbarMenuFileSaveExtension::GetCommands()
+TArray<FQuickCommandEntry> UToolbarMenuFileSaveExtension::GetCommands(const FToolMenuContext& Context)
 {
 	TArray<FQuickCommandEntry> OutCommands;
 

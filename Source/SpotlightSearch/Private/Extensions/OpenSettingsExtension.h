@@ -14,7 +14,7 @@ class UOpenSettingsExtension : public UQuickMenuExtension
 {
 	GENERATED_BODY()
 
-	virtual TArray<FQuickCommandEntry> GetCommands() override;
+	virtual TArray<FQuickCommandEntry> GetCommands(const FToolMenuContext& Context) override;
 	virtual int32 GetPriority() const override;
 	virtual bool ShouldShow() const override;
 };

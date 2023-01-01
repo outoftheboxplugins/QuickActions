@@ -12,7 +12,7 @@
 
 // TODO: Check if the Container.IsValid and Category.IsValid are really necessary
 
-TArray<FQuickCommandEntry> UOpenSettingsExtension::GetCommands()
+TArray<FQuickCommandEntry> UOpenSettingsExtension::GetCommands(const FToolMenuContext& Context)
 {
 	TArray<FQuickCommandEntry> OutCommands;
 

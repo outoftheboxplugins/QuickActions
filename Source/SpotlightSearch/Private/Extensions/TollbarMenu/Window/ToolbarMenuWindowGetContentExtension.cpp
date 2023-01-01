@@ -13,7 +13,6 @@ TArray<FQuickCommandEntry> UToolbarMenuWindowGetContentExtension::GetCommands(co
 	for (FToolMenuEntry& Block : ContentSection->Blocks)
 	{
 		// TODO: This only works for the open Marketplace button, not for the Quixel bridge
-		// NOTE: the block has no command list assigned, we temporarily assign the MainFrame list to access the FUIAction and revert it afterwards
 		TSharedPtr<const FUICommandList> OutCommandsList;
 		if (const FUIAction* FoundAction = Block.GetActionForCommand(Context, OutCommandsList))
 		{

@@ -2,7 +2,6 @@
 
 #include "ToolbarMenuFileSaveExtension.h"
 
-#include <Interfaces/IMainFrameModule.h>
 #include <LevelEditor.h>
 #include <LevelEditorActions.h>
 
@@ -10,18 +9,14 @@ TArray<FQuickCommandEntry> UToolbarMenuFileSaveExtension::GetCommands(const FToo
 {
 	TArray<FQuickCommandEntry> OutCommands;
 
-	IMainFrameModule& MainFrameModule = FModuleManager::Get().LoadModuleChecked<IMainFrameModule>("MainFrame");
-	TSharedPtr<const FUICommandList> MainFrameCommands = MainFrameModule.GetMainFrameCommandBindings();
-
 	UToolMenus* ToolMenus = UToolMenus::Get();
 	UToolMenu* FileMenu = ToolMenus->FindMenu("MainFrame.MainMenu.File");
 
 	FToolMenuSection* SaveSection = FileMenu->FindSection("FileSave");
 	for (FToolMenuEntry& Block : SaveSection->Blocks)
 	{
-		// NOTE: the block has no command list assigned, we temporarily assign the MainFrame list to access the FUIAction and revert it afterwards
-		Block.SetCommandList(MainFrameCommands);
-		if (const FUIAction* FoundAction = Block.GetActionForCommand(SaveSection->Context, MainFrameCommands))
+		TSharedPtr<const FUICommandList> OutCommandsList;
+		if (const FUIAction* FoundAction = Block.GetActionForCommand(Context, OutCommandsList))
 		{
 			FQuickCommandEntry MenuEntry;
 			MenuEntry.Title = Block.Label;
@@ -32,7 +27,6 @@ TArray<FQuickCommandEntry> UToolbarMenuFileSaveExtension::GetCommands(const FToo
 
 			OutCommands.Emplace(MenuEntry);
 		}
-		Block.SetCommandList({});
 	}
 
 	const FLevelEditorModule& LevelEditorModule = FModuleManager::Get().LoadModuleChecked<FLevelEditorModule>("LevelEditor");

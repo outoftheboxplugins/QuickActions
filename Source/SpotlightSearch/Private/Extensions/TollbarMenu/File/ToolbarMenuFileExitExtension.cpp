@@ -2,14 +2,9 @@
 
 #include "ToolbarMenuFileExitExtension.h"
 
-#include <Interfaces/IMainFrameModule.h>
-
 TArray<FQuickCommandEntry> UToolbarMenuFileExitExtension::GetCommands(const FToolMenuContext& Context)
 {
 	TArray<FQuickCommandEntry> OutCommands;
-
-	IMainFrameModule& MainFrameModule = FModuleManager::Get().LoadModuleChecked<IMainFrameModule>("MainFrame");
-	TSharedPtr<const FUICommandList> MainFrameCommands = MainFrameModule.GetMainFrameCommandBindings();
 
 	UToolMenus* ToolMenus = UToolMenus::Get();
 	UToolMenu* MainTabFileMenu = ToolMenus->ExtendMenu("MainFrame.MainTabMenu.File");
@@ -17,9 +12,8 @@ TArray<FQuickCommandEntry> UToolbarMenuFileExitExtension::GetCommands(const FToo
 
 	for (FToolMenuEntry& Block : ExitSection->Blocks)
 	{
-		// NOTE: the block has no command list assigned, we temporarily assign the MainFrame list to access the FUIAction and revert it afterwards
-		Block.SetCommandList(MainFrameCommands);
-		if (const FUIAction* FoundAction = Block.GetActionForCommand(ExitSection->Context, MainFrameCommands))
+		TSharedPtr<const FUICommandList> OutCommandsList;
+		if (const FUIAction* FoundAction = Block.GetActionForCommand(Context, OutCommandsList))
 		{
 			FQuickCommandEntry MenuEntry;
 			MenuEntry.Title = Block.Label;
@@ -30,7 +24,6 @@ TArray<FQuickCommandEntry> UToolbarMenuFileExitExtension::GetCommands(const FToo
 
 			OutCommands.Emplace(MenuEntry);
 		}
-		Block.SetCommandList({});
 	}
 
 	return OutCommands;

@@ -33,7 +33,7 @@ class SPOTLIGHTSEARCH_API UQuickMenuExtension : public UObject
 
 public:
 	// TODO: Create a blueprint friendly version of this
-	virtual TArray<FQuickCommandEntry> GetCommands() { return {}; }
+	virtual TArray<FQuickCommandEntry> GetCommands(const FToolMenuContext& Context) { return {}; }
 
 	// Bigger priority will be show before. Lower priority will show up after
 	virtual int32 GetPriority() const { return 0; }

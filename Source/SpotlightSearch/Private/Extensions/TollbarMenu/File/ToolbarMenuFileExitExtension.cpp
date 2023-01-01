@@ -4,7 +4,7 @@
 
 #include <Interfaces/IMainFrameModule.h>
 
-TArray<FQuickCommandEntry> UToolbarMenuFileExitExtension::GetCommands()
+TArray<FQuickCommandEntry> UToolbarMenuFileExitExtension::GetCommands(const FToolMenuContext& Context)
 {
 	TArray<FQuickCommandEntry> OutCommands;
 

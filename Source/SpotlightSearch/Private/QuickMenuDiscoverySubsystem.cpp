@@ -2,6 +2,7 @@
 
 #include "QuickMenuDiscoverySubsystem.h"
 
+#include <Interfaces/IMainFrameModule.h>
 
 #define LOCTEXT_NAMESPACE "LevelEditorMenu"
 
@@ -73,9 +74,15 @@ void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<FQuickCommandEn
 		}
 	);
 
+	IMainFrameModule& MainFrameModule = FModuleManager::Get().LoadModuleChecked<IMainFrameModule>("MainFrame");
+	const TSharedPtr<FUICommandList> MainFrameCommands = MainFrameModule.GetMainFrameCommandBindings();
+
+	FToolMenuContext Context;
+	Context.AppendCommandList(MainFrameCommands);
+
 	for (UQuickMenuExtension* Extension : Extensions)
 	{
-		OutCommands.Append(Extension->GetCommands());
+		OutCommands.Append(Extension->GetCommands(Context));
 	}
 	PopulateMenuEntries(OutCommands);
 }

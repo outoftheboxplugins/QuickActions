@@ -2,6 +2,24 @@
 
 #include "ToolbarMenuWindowLayoutExtension.h"
 
+namespace
+{
+	TSharedPtr<FQuickCommandEntry> BlockToCommand(const FToolMenuEntry& Block, const FToolMenuContext& Context)
+	{
+		TSharedPtr<FQuickCommandEntry> MenuEntry = MakeShared<FQuickCommandEntry>();
+		TSharedPtr<const FUICommandList> OutCommandsList;
+		if (const FUIAction* FoundAction = Block.GetActionForCommand(Context, OutCommandsList))
+		{
+			MenuEntry->Title = Block.Label;
+			MenuEntry->Tooltip = Block.ToolTip;
+			MenuEntry->Icon = Block.Icon;
+			MenuEntry->CanExecuteCallback = FoundAction->CanExecuteAction;
+			MenuEntry->ExecuteCallback = FoundAction->ExecuteAction;
+		}
+		return MenuEntry;
+	}
+} // namespace
+
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuWindowLayoutExtension::GetCommands(const FToolMenuContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
@@ -12,41 +30,8 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuWindowLayoutExtension::GetCom
 
 	for (FToolMenuEntry& Block : WindowLayout->Blocks)
 	{
-		if (Block.IsSubMenu())
-		{
-			Block.SubMenuData.ConstructMenu.NewToolMenu
-		}
-		TSharedPtr<const FUICommandList> OutCommandsList;
-		if (const FUIAction* FoundAction = Block.GetActionForCommand(Context, OutCommandsList))
-		{
-			TSharedPtr<FQuickCommandEntry> MenuEntry = MakeShared<FQuickCommandEntry>();
-			MenuEntry->Title = Block.Label;
-			MenuEntry->Tooltip = Block.ToolTip;
-			MenuEntry->Icon = Block.Icon;
-			MenuEntry->CanExecuteCallback = FoundAction->CanExecuteAction;
-			MenuEntry->ExecuteCallback = FoundAction->ExecuteAction;
-
-			OutCommands.Emplace(MenuEntry);
-		}
+		OutCommands.Emplace(BlockToCommand(Block, Context));
 	}
-
-
-	// FToolMenuSection* UserLayout = MainTabFileMenu->FindSection("UserDefaultLayouts");
-	// for (FToolMenuEntry& Block : UserLayout->Blocks)
-	//{
-	//	TSharedPtr<const FUICommandList> OutCommandsList;
-	//	if (const FUIAction* FoundAction = Block.GetActionForCommand(Context, OutCommandsList))
-	//	{
-	//		TSharedPtr<FQuickCommandEntry> MenuEntry = MakeShared<FQuickCommandEntry>();
-	//		MenuEntry->Title = Block.Label;
-	//		MenuEntry->Tooltip = Block.ToolTip;
-	//		MenuEntry->Icon = Block.Icon;
-	//		MenuEntry->CanExecuteCallback = FoundAction->CanExecuteAction;
-	//		MenuEntry->ExecuteCallback = FoundAction->ExecuteAction;
-
-	//		OutCommands.Emplace(MenuEntry);
-	//	}
-	//}
 
 	return OutCommands;
 }

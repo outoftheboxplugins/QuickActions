@@ -12,9 +12,9 @@
 
 // TODO: Check if the Container.IsValid and Category.IsValid are really necessary
 
-TArray<FQuickCommandEntry> UOpenSettingsExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UOpenSettingsExtension::GetCommands(const FToolMenuContext& Context)
 {
-	TArray<FQuickCommandEntry> OutCommands;
+	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	// Courtesy of fpwong#1209 on BenUI's disocrd
 	ISettingsModule& SettingsModule = FModuleManager::LoadModuleChecked<ISettingsModule>("Settings");
@@ -48,12 +48,12 @@ TArray<FQuickCommandEntry> UOpenSettingsExtension::GetCommands(const FToolMenuCo
 				const FName CategoryName = Category->GetName();
 				const FName SectionName = Section->GetName();
 
-				FQuickCommandEntry OpenSettings;
-				OpenSettings.Title = FText::Format(LOCTEXT("OpenSettings", "Open {0}->{1} settings"), Category->GetDisplayName(), Section->GetDisplayName());
-				OpenSettings.Tooltip =
+				TSharedPtr<FQuickCommandEntry> OpenSettings = MakeShared<FQuickCommandEntry>();
+				OpenSettings->Title = FText::Format(LOCTEXT("OpenSettings", "Open {0}->{1} settings"), Category->GetDisplayName(), Section->GetDisplayName());
+				OpenSettings->Tooltip =
 					FText::Format(LOCTEXT("OpenSettingsTip", "Open {0}->{1} settings inside the {2} container"), Category->GetDisplayName(), Section->GetDisplayName(), Container->GetDisplayName());
-				OpenSettings.Icon = FSlateIcon(FAppStyle::Get().GetStyleSetName(), "Icons.Settings");
-				OpenSettings.ExecuteCallback = FSimpleDelegate::CreateLambda(
+				OpenSettings->Icon = FSlateIcon(FAppStyle::Get().GetStyleSetName(), "Icons.Settings");
+				OpenSettings->ExecuteCallback = FSimpleDelegate::CreateLambda(
 					[ContainerName, CategoryName, SectionName]()
 					{
 						FModuleManager::LoadModuleChecked<ISettingsModule>("Settings").ShowViewer(ContainerName, CategoryName, SectionName);

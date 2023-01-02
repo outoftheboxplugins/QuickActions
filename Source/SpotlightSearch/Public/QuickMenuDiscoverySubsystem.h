@@ -17,15 +17,15 @@ class SPOTLIGHTSEARCH_API UQuickMenuDiscoverySubsystem : public UEditorSubsystem
 	GENERATED_BODY()
 
 public:
-	TMulticastDelegate<void(TArray<FQuickCommandEntry>& OutCommands)> OnDiscoverCommands;
+	TMulticastDelegate<void(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands)> OnDiscoverCommands;
 
-	TArray<FQuickCommandEntry> GetAllCommands() const;
+	TArray<TSharedPtr<FQuickCommandEntry>> GetAllCommands() const;
 
 private:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
-	void GatherCommandsInternal(TArray<FQuickCommandEntry>& OutCommands) const;
+	void GatherCommandsInternal(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands) const;
 
-	void PopulateMenuEntries(TArray<FQuickCommandEntry>& OutCommands) const;
+	void PopulateMenuEntries(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands) const;
 };

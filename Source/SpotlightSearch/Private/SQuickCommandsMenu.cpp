@@ -37,10 +37,10 @@ void SQuickCommandsMenu::OnFilterTextChanged(const FText& Text)
 void SQuickCommandsMenu::Construct(const FArguments& InArgs)
 {
 	UQuickMenuDiscoverySubsystem* DiscoverySubsystem = GEditor->GetEditorSubsystem<UQuickMenuDiscoverySubsystem>();
-	TArray<FQuickCommandEntry> AllEntries = DiscoverySubsystem->GetAllCommands();
-	for (FQuickCommandEntry Entry : AllEntries)
+	TArray<TSharedPtr<FQuickCommandEntry>> AllEntries = DiscoverySubsystem->GetAllCommands();
+	for (const TSharedPtr<FQuickCommandEntry>& Entry : AllEntries)
 	{
-		Commands.Emplace(MakeShared<FQuickCommandEntry>(Entry));
+		Commands.Emplace(Entry.ToSharedRef());
 	}
 
 	static FEditableTextStyle EditableTextBoxStyle = FCoreStyle::Get().GetWidgetStyle<FEditableTextStyle>("NormalEditableText");

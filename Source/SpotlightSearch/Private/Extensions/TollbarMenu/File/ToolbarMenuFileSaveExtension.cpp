@@ -5,9 +5,9 @@
 #include <LevelEditor.h>
 #include <LevelEditorActions.h>
 
-TArray<FQuickCommandEntry> UToolbarMenuFileSaveExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuFileSaveExtension::GetCommands(const FToolMenuContext& Context)
 {
-	TArray<FQuickCommandEntry> OutCommands;
+	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	UToolMenus* ToolMenus = UToolMenus::Get();
 	UToolMenu* FileMenu = ToolMenus->FindMenu("MainFrame.MainMenu.File");
@@ -18,12 +18,12 @@ TArray<FQuickCommandEntry> UToolbarMenuFileSaveExtension::GetCommands(const FToo
 		TSharedPtr<const FUICommandList> OutCommandsList;
 		if (const FUIAction* FoundAction = Block.GetActionForCommand(Context, OutCommandsList))
 		{
-			FQuickCommandEntry MenuEntry;
-			MenuEntry.Title = Block.Label;
-			MenuEntry.Tooltip = Block.ToolTip;
-			MenuEntry.Icon = Block.Icon;
-			MenuEntry.CanExecuteCallback = FoundAction->CanExecuteAction;
-			MenuEntry.ExecuteCallback = FoundAction->ExecuteAction;
+			const TSharedPtr<FQuickCommandEntry> MenuEntry = MakeShared<FQuickCommandEntry>();
+			MenuEntry->Title = Block.Label;
+			MenuEntry->Tooltip = Block.ToolTip;
+			MenuEntry->Icon = Block.Icon;
+			MenuEntry->CanExecuteCallback = FoundAction->CanExecuteAction;
+			MenuEntry->ExecuteCallback = FoundAction->ExecuteAction;
 
 			OutCommands.Emplace(MenuEntry);
 		}
@@ -32,10 +32,10 @@ TArray<FQuickCommandEntry> UToolbarMenuFileSaveExtension::GetCommands(const FToo
 	const FLevelEditorModule& LevelEditorModule = FModuleManager::Get().LoadModuleChecked<FLevelEditorModule>("LevelEditor");
 	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
 
-	FQuickCommandEntry SaveCurrentLevel = FQuickCommandEntry(FLevelEditorCommands::Get().Save.ToSharedRef(), LevelEditorCommands);
+	TSharedPtr<FQuickCommandEntry> SaveCurrentLevel = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().Save.ToSharedRef(), LevelEditorCommands);
 	OutCommands.Emplace(SaveCurrentLevel);
 
-	FQuickCommandEntry SaveCurrentLevelAs = FQuickCommandEntry(FLevelEditorCommands::Get().SaveAs.ToSharedRef(), LevelEditorCommands);
+	TSharedPtr<FQuickCommandEntry> SaveCurrentLevelAs = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().SaveAs.ToSharedRef(), LevelEditorCommands);
 	OutCommands.Emplace(SaveCurrentLevelAs);
 
 	return OutCommands;

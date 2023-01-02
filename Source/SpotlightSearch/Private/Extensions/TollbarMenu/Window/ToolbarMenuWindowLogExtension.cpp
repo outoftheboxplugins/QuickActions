@@ -4,15 +4,15 @@
 
 #include "Styling/SlateIconFinder.h"
 
-TArray<FQuickCommandEntry> UToolbarMenuWindowLogExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuWindowLogExtension::GetCommands(const FToolMenuContext& Context)
 {
-	TArray<FQuickCommandEntry> OutCommands;
+	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
-	FQuickCommandEntry DeviceOutputLog;
-	DeviceOutputLog.Title = NSLOCTEXT("OutputLog", "DeviceOutputLogTab", "Device Output Log");
-	DeviceOutputLog.Tooltip = NSLOCTEXT("OutputLog", "DeviceOutputLogTooltipText", "Open the Device Output Log tab.");
-	DeviceOutputLog.Icon = FSlateIcon(FName("OutputLogStyle"), "Log.TabIcon");
-	DeviceOutputLog.ExecuteCallback = FSimpleDelegate::CreateLambda(
+	const TSharedPtr<FQuickCommandEntry> DeviceOutputLog = MakeShared<FQuickCommandEntry>();
+	DeviceOutputLog->Title = NSLOCTEXT("OutputLog", "DeviceOutputLogTab", "Device Output Log");
+	DeviceOutputLog->Tooltip = NSLOCTEXT("OutputLog", "DeviceOutputLogTooltipText", "Open the Device Output Log tab.");
+	DeviceOutputLog->Icon = FSlateIcon(FName("OutputLogStyle"), "Log.TabIcon");
+	DeviceOutputLog->ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()
 		{
 			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("DeviceOutputLog")));
@@ -20,11 +20,11 @@ TArray<FQuickCommandEntry> UToolbarMenuWindowLogExtension::GetCommands(const FTo
 	);
 	OutCommands.Add(DeviceOutputLog);
 
-	FQuickCommandEntry InterchangeResultsBrowser;
-	InterchangeResultsBrowser.Title = NSLOCTEXT("InterchangeResultsBrowser", "InterchangeResultsBrowser", "Interchange Results Browser");
-	InterchangeResultsBrowser.Tooltip = NSLOCTEXT("InterchangeResultsBrowser", "InterchangeResultsBrowserTooltipText", "Open the Interchange Results Browser tab.");
-	InterchangeResultsBrowser.Icon = FSlateIconFinder::FindIcon("InterchangeResultsBrowser.TabIcon");
-	InterchangeResultsBrowser.ExecuteCallback = FSimpleDelegate::CreateLambda(
+	const TSharedPtr<FQuickCommandEntry> InterchangeResultsBrowser = MakeShared<FQuickCommandEntry>();
+	InterchangeResultsBrowser->Title = NSLOCTEXT("InterchangeResultsBrowser", "InterchangeResultsBrowser", "Interchange Results Browser");
+	InterchangeResultsBrowser->Tooltip = NSLOCTEXT("InterchangeResultsBrowser", "InterchangeResultsBrowserTooltipText", "Open the Interchange Results Browser tab.");
+	InterchangeResultsBrowser->Icon = FSlateIconFinder::FindIcon("InterchangeResultsBrowser.TabIcon");
+	InterchangeResultsBrowser->ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()
 		{
 			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("InterchangeResults")));
@@ -32,11 +32,11 @@ TArray<FQuickCommandEntry> UToolbarMenuWindowLogExtension::GetCommands(const FTo
 	);
 	OutCommands.Add(InterchangeResultsBrowser);
 
-	FQuickCommandEntry MessageLog;
-	MessageLog.Title = NSLOCTEXT("UnrealEditor", "MessageLogTab", "Message Log");
-	MessageLog.Tooltip = NSLOCTEXT("UnrealEditor", "MessageLogTooltipText", "Open the Message Log tab.");
-	MessageLog.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "MessageLog.TabIcon");
-	MessageLog.ExecuteCallback = FSimpleDelegate::CreateLambda(
+	const TSharedPtr<FQuickCommandEntry> MessageLog = MakeShared<FQuickCommandEntry>();
+	MessageLog->Title = NSLOCTEXT("UnrealEditor", "MessageLogTab", "Message Log");
+	MessageLog->Tooltip = NSLOCTEXT("UnrealEditor", "MessageLogTooltipText", "Open the Message Log tab.");
+	MessageLog->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "MessageLog.TabIcon");
+	MessageLog->ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()
 		{
 			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("MessageLog")));
@@ -44,11 +44,11 @@ TArray<FQuickCommandEntry> UToolbarMenuWindowLogExtension::GetCommands(const FTo
 	);
 	OutCommands.Add(MessageLog);
 
-	FQuickCommandEntry OutputLog;
-	OutputLog.Title = NSLOCTEXT("OutputLog", "OutputLogTab", "Output Log");
-	OutputLog.Tooltip = NSLOCTEXT("OutputLog", "OutputLogTooltipText", "Open the Output Log tab.");
-	OutputLog.Icon = FSlateIcon(FName("OutputLogStyle"), "Log.TabIcon");
-	OutputLog.ExecuteCallback = FSimpleDelegate::CreateLambda(
+	const TSharedPtr<FQuickCommandEntry> OutputLog = MakeShared<FQuickCommandEntry>();
+	OutputLog->Title = NSLOCTEXT("OutputLog", "OutputLogTab", "Output Log");
+	OutputLog->Tooltip = NSLOCTEXT("OutputLog", "OutputLogTooltipText", "Open the Output Log tab.");
+	OutputLog->Icon = FSlateIcon(FName("OutputLogStyle"), "Log.TabIcon");
+	OutputLog->ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()
 		{
 			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("OutputLog")));

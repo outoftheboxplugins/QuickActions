@@ -11,7 +11,8 @@ struct FQuickCommandEntry
 	// TODO: Check if we need to default the move constructor as well
 	FQuickCommandEntry() = default;
 	FQuickCommandEntry(const TSharedRef<FUICommandInfo>& Command, const TSharedRef<FUICommandList> CommandList);
-
+	FQuickCommandEntry(const FToolMenuEntry& Block, const FToolMenuContext& Context);
+	
 	TAttribute<FText> Title;
 	TAttribute<FText> Tooltip;
 	TAttribute<FSlateIcon> Icon;

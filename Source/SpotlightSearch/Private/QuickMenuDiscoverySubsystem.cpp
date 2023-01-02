@@ -8,16 +8,31 @@
 
 FQuickCommandEntry::FQuickCommandEntry(const TSharedRef<FUICommandInfo>& Command, const TSharedRef<FUICommandList> CommandList)
 {
-	Icon = Command->GetIcon();
-
 	Title = Command->GetLabel();
 	Tooltip = Command->GetDescription();
+	Icon = Command->GetIcon();
 
 	const FUIAction* UIAction = CommandList->GetActionForCommand(Command);
 	if (ensure(UIAction))
 	{
 		ExecuteCallback = UIAction->ExecuteAction;
 		CanExecuteCallback = UIAction->CanExecuteAction;
+	}
+}
+
+FQuickCommandEntry::FQuickCommandEntry(const FToolMenuEntry& Block, const FToolMenuContext& Context)
+{
+	Title = Block.Label;
+	Tooltip = Block.ToolTip;
+	Icon = Block.Icon;
+
+	TSharedPtr<const FUICommandList> OutCommandsList;
+	// TODO: Consider if we should ensure FoundAction similar to the constructor above
+	const FUIAction* FoundAction = Block.GetActionForCommand(Context, OutCommandsList);
+	if (ensure(FoundAction))
+	{
+		CanExecuteCallback = FoundAction->CanExecuteAction;
+		ExecuteCallback = FoundAction->ExecuteAction;
 	}
 }
 bool FQuickCommandEntry::IsAllowedToExecute() const

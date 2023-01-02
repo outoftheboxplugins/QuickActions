@@ -23,5 +23,17 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsToolsExtension::GetComma
 		OutCommands.Add(FindInBlueprintsTab);
 	}
 
+	const TSharedPtr<FQuickCommandEntry> CppHeaderPreview = MakeShared<FQuickCommandEntry>();
+	CppHeaderPreview->Title = NSLOCTEXT("BlueprintHeaderViewApp", "TabTitle", "C++ Header Preview");
+	CppHeaderPreview->Tooltip = NSLOCTEXT("BlueprintHeaderViewApp", "TooltipText", "Displays a Blueprint Class in C++ Header format.");
+	CppHeaderPreview->Icon = FSlateIcon(FName(TEXT("HeaderViewStyle")), "Icons.HeaderView");
+	CppHeaderPreview->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("BlueprintHeaderViewApp")));
+		}
+	);
+	OutCommands.Add(CppHeaderPreview);
+
 	return OutCommands;
 }

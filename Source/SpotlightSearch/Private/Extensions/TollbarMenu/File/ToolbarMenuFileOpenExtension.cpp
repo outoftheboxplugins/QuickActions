@@ -10,9 +10,9 @@
 
 #define LOCTEXT_NAMESPACE "QuickActions"
 
-TArray<FQuickCommandEntry> UToolbarMenuFileOpenExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuFileOpenExtension::GetCommands(const FToolMenuContext& Context)
 {
-	TArray<FQuickCommandEntry> OutCommands;
+	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	const FLevelEditorModule& LevelEditorModule = FModuleManager::Get().LoadModuleChecked<FLevelEditorModule>("LevelEditor");
 	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
@@ -20,10 +20,10 @@ TArray<FQuickCommandEntry> UToolbarMenuFileOpenExtension::GetCommands(const FToo
 	IMainFrameModule& MainFrameModule = FModuleManager::Get().LoadModuleChecked<IMainFrameModule>("MainFrame");
 	const TSharedRef<FUICommandList> MainFrameCommands = MainFrameModule.GetMainFrameCommandBindings();
 
-	FQuickCommandEntry NewLevel = FQuickCommandEntry(FLevelEditorCommands::Get().NewLevel.ToSharedRef(), LevelEditorCommands);
+	const TSharedPtr<FQuickCommandEntry> NewLevel = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().NewLevel.ToSharedRef(), LevelEditorCommands);
 	OutCommands.Emplace(NewLevel);
 
-	FQuickCommandEntry OpenLevel = FQuickCommandEntry(FLevelEditorCommands::Get().OpenLevel.ToSharedRef(), LevelEditorCommands);
+	const TSharedPtr<FQuickCommandEntry> OpenLevel = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().OpenLevel.ToSharedRef(), LevelEditorCommands);
 	OutCommands.Emplace(OpenLevel);
 
 	const FMainMRUFavoritesList& MRUFavorites = *MainFrameModule.GetMRUFavoritesList();
@@ -43,10 +43,10 @@ TArray<FQuickCommandEntry> UToolbarMenuFileOpenExtension::GetCommands(const FToo
 		const FText Title = FText::Format(LOCTEXT("RecentMapTitle", "Open recent level: {0}"), RecentMapName);
 		const FText Tooltip = FText::Format(LOCTEXT("RecentMapTooltip", "Path: {0}"), RecentMapPath);
 
-		FQuickCommandEntry RecentEntry = FQuickCommandEntry(OpenRecentFile.ToSharedRef(), LevelEditorCommands);
-		RecentEntry.Title = Title;
-		RecentEntry.Tooltip = Tooltip;
-		RecentEntry.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "MainFrame.RecentLevels");
+		const TSharedPtr<FQuickCommandEntry> RecentEntry = MakeShared<FQuickCommandEntry>(OpenRecentFile.ToSharedRef(), LevelEditorCommands);
+		RecentEntry->Title = Title;
+		RecentEntry->Tooltip = Tooltip;
+		RecentEntry->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "MainFrame.RecentLevels");
 
 		OutCommands.Emplace(RecentEntry);
 	}
@@ -64,10 +64,10 @@ TArray<FQuickCommandEntry> UToolbarMenuFileOpenExtension::GetCommands(const FToo
 				return FText::Format(LOCTEXT("ToggleFavorite_Remove", "Remove from Favorites: {0}"), LevelName);
 			}
 		);
-		FQuickCommandEntry AddOrRemoveLevel = FQuickCommandEntry(FLevelEditorCommands::Get().ToggleFavorite.ToSharedRef(), LevelEditorCommands);
-		AddOrRemoveLevel.Title = ToggleFavoriteLabel;
-		AddOrRemoveLevel.Tooltip = ToggleFavoriteLabel;
-		AddOrRemoveLevel.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "MainFrame.FavoriteLevels");
+		const TSharedPtr<FQuickCommandEntry> AddOrRemoveLevel = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().ToggleFavorite.ToSharedRef(), LevelEditorCommands);
+		AddOrRemoveLevel->Title = ToggleFavoriteLabel;
+		AddOrRemoveLevel->Tooltip = ToggleFavoriteLabel;
+		AddOrRemoveLevel->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "MainFrame.FavoriteLevels");
 
 		OutCommands.Emplace(AddOrRemoveLevel);
 	}
@@ -83,15 +83,15 @@ TArray<FQuickCommandEntry> UToolbarMenuFileOpenExtension::GetCommands(const FToo
 		const FText Title = FText::Format(LOCTEXT("FavoriteMapTitle", "Open favorite level: {0}"), FavoriteMapName);
 		const FText Tooltip = FText::Format(LOCTEXT("FavoriteMapTooltip", "Path: {0}"), FavoriteMapPath);
 
-		FQuickCommandEntry FavoriteEntry = FQuickCommandEntry(OpenFavoriteFile.ToSharedRef(), LevelEditorCommands);
-		FavoriteEntry.Title = Title;
-		FavoriteEntry.Tooltip = Tooltip;
-		FavoriteEntry.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "MainFrame.FavoriteLevels");
+		const TSharedPtr<FQuickCommandEntry> FavoriteEntry = MakeShared<FQuickCommandEntry>(OpenFavoriteFile.ToSharedRef(), LevelEditorCommands);
+		FavoriteEntry->Title = Title;
+		FavoriteEntry->Tooltip = Tooltip;
+		FavoriteEntry->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "MainFrame.FavoriteLevels");
 
 		OutCommands.Emplace(FavoriteEntry);
 	}
 
-	FQuickCommandEntry OpenAsset = FQuickCommandEntry(FGlobalEditorCommonCommands::Get().SummonOpenAssetDialog.ToSharedRef(), MainFrameCommands);
+	const TSharedPtr<FQuickCommandEntry> OpenAsset = MakeShared<FQuickCommandEntry>(FGlobalEditorCommonCommands::Get().SummonOpenAssetDialog.ToSharedRef(), MainFrameCommands);
 	OutCommands.Emplace(OpenAsset);
 
 

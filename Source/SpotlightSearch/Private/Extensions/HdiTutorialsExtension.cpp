@@ -6,17 +6,17 @@
 
 #define LOCTEXT_NAMESPACE "QuickActions"
 
-TArray<FQuickCommandEntry> UHdiTutorialsExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UHdiTutorialsExtension::GetCommands(const FToolMenuContext& Context)
 {
-	TArray<FQuickCommandEntry> OutCommands;
+	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	for (const FTutorialInfo& Tutorial : Tutorials)
 	{
-		FQuickCommandEntry TutorialEntry;
-		TutorialEntry.Title = FText::FromString(Tutorial.Title);
-		TutorialEntry.Tooltip = FText::FromString(Tutorial.Description);
-		TutorialEntry.Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "Icons.Documentation");
-		TutorialEntry.ExecuteCallback = FSimpleDelegate::CreateLambda(
+		const TSharedPtr<FQuickCommandEntry> TutorialEntry = MakeShared<FQuickCommandEntry>();
+		TutorialEntry->Title = FText::FromString(Tutorial.Title);
+		TutorialEntry->Tooltip = FText::FromString(Tutorial.Description);
+		TutorialEntry->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "Icons.Documentation");
+		TutorialEntry->ExecuteCallback = FSimpleDelegate::CreateLambda(
 			[Tutorial]()
 			{
 				FPlatformProcess::LaunchURL(*Tutorial.Url, nullptr, nullptr);

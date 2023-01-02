@@ -2,9 +2,9 @@
 
 #include "ToolbarMenuFileProjectExtension.h"
 
-TArray<FQuickCommandEntry> UToolbarMenuFileProjectExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuFileProjectExtension::GetCommands(const FToolMenuContext& Context)
 {
-	TArray<FQuickCommandEntry> OutCommands;
+	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	UToolMenus* ToolMenus = UToolMenus::Get();
 	UToolMenu* MainTabFileMenu = ToolMenus->ExtendMenu("MainFrame.MainTabMenu.File");
@@ -15,12 +15,12 @@ TArray<FQuickCommandEntry> UToolbarMenuFileProjectExtension::GetCommands(const F
 		TSharedPtr<const FUICommandList> OutCommandsList;
 		if (const FUIAction* FoundAction = Block.GetActionForCommand(Context, OutCommandsList))
 		{
-			FQuickCommandEntry MenuEntry;
-			MenuEntry.Title = Block.Label;
-			MenuEntry.Tooltip = Block.ToolTip;
-			MenuEntry.Icon = Block.Icon;
-			MenuEntry.CanExecuteCallback = FoundAction->CanExecuteAction;
-			MenuEntry.ExecuteCallback = FoundAction->ExecuteAction;
+			TSharedPtr<FQuickCommandEntry> MenuEntry = MakeShared<FQuickCommandEntry>();
+			MenuEntry->Title = Block.Label;
+			MenuEntry->Tooltip = Block.ToolTip;
+			MenuEntry->Icon = Block.Icon;
+			MenuEntry->CanExecuteCallback = FoundAction->CanExecuteAction;
+			MenuEntry->ExecuteCallback = FoundAction->ExecuteAction;
 
 			OutCommands.Emplace(MenuEntry);
 		}

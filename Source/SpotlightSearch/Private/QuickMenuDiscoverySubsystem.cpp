@@ -30,9 +30,9 @@ bool FQuickCommandEntry::IsAllowedToExecute() const
 	return CanExecuteCallback.Execute();
 }
 
-TArray<FQuickCommandEntry> UQuickMenuDiscoverySubsystem::GetAllCommands() const
+TArray<TSharedPtr<FQuickCommandEntry>> UQuickMenuDiscoverySubsystem::GetAllCommands() const
 {
-	TArray<FQuickCommandEntry> Result;
+	TArray<TSharedPtr<FQuickCommandEntry>> Result;
 
 	GatherCommandsInternal(Result);
 	OnDiscoverCommands.Broadcast(Result);
@@ -50,7 +50,7 @@ void UQuickMenuDiscoverySubsystem::Deinitialize()
 	Super::Deinitialize();
 }
 
-void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<FQuickCommandEntry>& OutCommands) const
+void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands) const
 {
 	TArray<UQuickMenuExtension*> Extensions;
 	for (TObjectIterator<UClass> It; It; ++It)
@@ -87,7 +87,7 @@ void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<FQuickCommandEn
 	PopulateMenuEntries(OutCommands);
 }
 
-void UQuickMenuDiscoverySubsystem::PopulateMenuEntries(TArray<FQuickCommandEntry>& OutCommands) const
+void UQuickMenuDiscoverySubsystem::PopulateMenuEntries(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands) const
 {
 }
 

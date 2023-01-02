@@ -12,6 +12,11 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsProgrammingExtension::Ge
 
 	for (FToolMenuEntry& Block : ProgrammingLayout->Blocks)
 	{
+		if (Block.Label.Get().IsEmpty() || Block.IsSubMenu())
+		{
+			continue;
+		}
+
 		const TSharedPtr<FQuickCommandEntry> BlockCommand = MakeShared<FQuickCommandEntry>(Block, Context);
 		OutCommands.Emplace(BlockCommand);
 	}

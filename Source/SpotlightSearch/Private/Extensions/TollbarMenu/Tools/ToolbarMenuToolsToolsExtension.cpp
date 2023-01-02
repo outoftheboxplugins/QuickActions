@@ -35,5 +35,126 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsToolsExtension::GetComma
 	);
 	OutCommands.Add(CppHeaderPreview);
 
+	const TSharedPtr<FQuickCommandEntry> CacheStatistics = MakeShared<FQuickCommandEntry>();
+	CacheStatistics->Title = NSLOCTEXT("DerivedDataEditor", "DerivedDataCacheStatisticsTabTitle", "Cache Statistics");
+	CacheStatistics->Tooltip = NSLOCTEXT("DerivedDataEditor", "DerivedDataCacheStatisticsTabToolTipText", "Derived Data Cache Statistics");
+	CacheStatistics->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "DerivedData.Cache.Statistics");
+	CacheStatistics->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("DerivedDataCacheStatistics")));
+		}
+	);
+	OutCommands.Add(CacheStatistics);
+
+	const TSharedPtr<FQuickCommandEntry> ClassViewer = MakeShared<FQuickCommandEntry>();
+	ClassViewer->Title = NSLOCTEXT("ClassViewerApp", "TabTitle", "Class Viewer");
+	ClassViewer->Tooltip = NSLOCTEXT("ClassViewerApp", "TooltipText", "Displays all classes that exist within this project.");
+	ClassViewer->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "ClassViewer.TabIcon");
+	ClassViewer->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("ClassViewerApp")));
+		}
+	);
+	OutCommands.Add(ClassViewer);
+
+	const TSharedPtr<FQuickCommandEntry> CsvToSvg = MakeShared<FQuickCommandEntry>();
+	CsvToSvg->Title = NSLOCTEXT("CSVtoSVGApp", "TabTitle", "CSV to SVG");
+	CsvToSvg->Tooltip = NSLOCTEXT("CSVtoSVGApp", "TooltipText", "Tool for generating vector line graphs from comma-separated value files generated from CSV profiles.");
+	CsvToSvg->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "ClassIcon.UserDefinedStruct");
+	CsvToSvg->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("CSVtoSVGApp")));
+		}
+	);
+	OutCommands.Add(CsvToSvg);
+
+	const TSharedPtr<FQuickCommandEntry> LocalizationDashboard = MakeShared<FQuickCommandEntry>();
+	LocalizationDashboard->Title = NSLOCTEXT("LocalizationDashboard", "MainTabTitle", "Localization Dashboard");
+	LocalizationDashboard->Tooltip = NSLOCTEXT("LocalizationDashboard", "LocalizationDashboardToolTip", "Open the Localization Dashboard for this Project.");
+	LocalizationDashboard->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LocalizationDashboard.MenuIcon");
+	LocalizationDashboard->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("LocalizationDashboard")));
+		}
+	);
+	OutCommands.Add(LocalizationDashboard);
+
+	const TSharedPtr<FQuickCommandEntry> MergeActors = MakeShared<FQuickCommandEntry>();
+	MergeActors->Title = NSLOCTEXT("MergeActorsModule", "TabTitle", "Merge Actors");
+	MergeActors->Tooltip = NSLOCTEXT("MergeActorsModule", "TooltipText", "Open the Merge Actors tab.");
+	MergeActors->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "MergeActors.TabIcon");
+	MergeActors->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("MergeActors")));
+		}
+	);
+	OutCommands.Add(MergeActors);
+
+	const TSharedPtr<FQuickCommandEntry> NaniteTools = MakeShared<FQuickCommandEntry>();
+	NaniteTools->Title = NSLOCTEXT("NaniteToolsApp", "TabTitle", "Nanite Tools");
+	NaniteTools->Tooltip = NSLOCTEXT("NaniteToolsApp", "TooltipText", "Tools for auditing and optimizing Nanite assets.");
+	NaniteTools->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "ClassIcon.UserDefinedStruct");
+	NaniteTools->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("NaniteToolsApp")));
+		}
+	);
+	OutCommands.Add(NaniteTools);
+
+	const TSharedPtr<FQuickCommandEntry> ProjectLauncher = MakeShared<FQuickCommandEntry>();
+	ProjectLauncher->Title = NSLOCTEXT("FProjectLauncherModule", "ProjectLauncherTabTitle", "Project Launcher");
+	ProjectLauncher->Tooltip = NSLOCTEXT("FProjectLauncherModule", "ProjectLauncherTooltipText", "Open the Project Launcher tab.");
+	ProjectLauncher->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "Launcher.TabIcon");
+	ProjectLauncher->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("ProjectLauncher")));
+		}
+	);
+	OutCommands.Add(ProjectLauncher);
+
+	const TSharedPtr<FQuickCommandEntry> ResourceUsage = MakeShared<FQuickCommandEntry>();
+	ResourceUsage->Title = NSLOCTEXT("DerivedDataEditor", "DerivedDataResourceUsageTabTitle", "Resource Usage");
+	ResourceUsage->Tooltip = NSLOCTEXT("DerivedDataEditor", "DerivedDataResourceUsageTabToolTipText", "Derived Data Resource Usage");
+	ResourceUsage->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "DerivedData.ResourceUsage");
+	ResourceUsage->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("DerivedDataResourceUsage")));
+		}
+	);
+	OutCommands.Add(ResourceUsage);
+
+	const TSharedPtr<FQuickCommandEntry> SessionFrontend = MakeShared<FQuickCommandEntry>();
+	SessionFrontend->Title = NSLOCTEXT("FSessionFrontendModule", "FrontendTabTitle", "Session Frontend");
+	SessionFrontend->Tooltip = NSLOCTEXT("FSessionFrontendModule", "FrontendTooltipText", "Open the Session Frontend tab.");
+	SessionFrontend->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "SessionFrontEnd.TabIcon");
+	SessionFrontend->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("SessionFrontend")));
+		}
+	);
+	OutCommands.Add(SessionFrontend);
+
+	const TSharedPtr<FQuickCommandEntry> StructViewer = MakeShared<FQuickCommandEntry>();
+	StructViewer->Title = NSLOCTEXT("StructViewerApp", "TabTitle", "Struct Viewer");
+	StructViewer->Tooltip = NSLOCTEXT("StructViewerApp", "TooltipText", "Displays all structs that exist within this project.");
+	StructViewer->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "ClassIcon.UserDefinedStruct");
+	StructViewer->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("StructViewerApp")));
+		}
+	);
+	OutCommands.Add(StructViewer);
+
+
 	return OutCommands;
 }

@@ -114,5 +114,101 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsInstrumentationExtension
 	);
 	OutCommands.Add(WidgetReflector);
 
+	const TSharedPtr<FQuickCommandEntry> ProfileDataVisualizer = MakeShared<FQuickCommandEntry>();
+	ProfileDataVisualizer->Title = NSLOCTEXT("ProfileVisualizerModule", "TabTitle", "Profile Data Visualizer");
+	ProfileDataVisualizer->Tooltip = NSLOCTEXT("ProfileVisualizerModule", "TooltipText", "Open the Profile Data Visualizer tab.");
+	ProfileDataVisualizer->Icon = FSlateIcon(FAppStyle::Get().GetStyleSetName(), "Profiler.Tab");
+	ProfileDataVisualizer->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("VisualizerSpawnPoint")));
+		}
+	);
+	OutCommands.Add(ProfileDataVisualizer);
+
+	const TSharedPtr<FQuickCommandEntry> TraceDataFiltering = MakeShared<FQuickCommandEntry>();
+	TraceDataFiltering->Title = NSLOCTEXT("FTraceInsightsModule", "FilteringTabTitle", "Trace Data Filtering");
+	TraceDataFiltering->Tooltip = NSLOCTEXT("FTraceInsightsModule", "FilteringTabTooltip", "Opens the Trace Data Filtering tab, allows for setting Trace Channel states");
+	TraceDataFiltering->Icon = FSlateIcon(FName(TEXT("EventFilter")), "EventFilter.TabIcon");
+	TraceDataFiltering->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("TraceDataFiltering")));
+		}
+	);
+	OutCommands.Add(TraceDataFiltering);
+
+	const TSharedPtr<FQuickCommandEntry> AssetAudit = MakeShared<FQuickCommandEntry>();
+	AssetAudit->Title = NSLOCTEXT("AssetManagerEditor", "AssetAuditTitle", "Asset Audit");
+	AssetAudit->Tooltip = NSLOCTEXT("AssetManagerEditor", "AssetAuditTooltip", "Open Asset Audit window, allows viewing detailed information about assets.");
+	AssetAudit->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Audit");
+	AssetAudit->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("AssetAudit")));
+		}
+	);
+	OutCommands.Add(AssetAudit);
+
+	const TSharedPtr<FQuickCommandEntry> MaterialAnalyzer = MakeShared<FQuickCommandEntry>();
+	MaterialAnalyzer->Title = NSLOCTEXT("MaterialAnalyzer", "TabTitle", "Material Analyzer");
+	MaterialAnalyzer->Tooltip = NSLOCTEXT("MaterialAnalyzer", "TooltipText", "Opens Material Analyzer tool.");
+	MaterialAnalyzer->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "MaterialEditor.ToggleMaterialStats.Tab");
+	MaterialAnalyzer->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("MaterialAnalyzer")));
+		}
+	);
+	OutCommands.Add(MaterialAnalyzer);
+
+	const TSharedPtr<FQuickCommandEntry> Statistics = MakeShared<FQuickCommandEntry>();
+	Statistics->Title = NSLOCTEXT("LevelEditorTabs", "LevelEditorStatsViewer", "Statistics");
+	Statistics->Tooltip = NSLOCTEXT("LevelEditorTabs", "LevelEditorStatsViewerTooltipText", "Open the Statistics tab, in order to see data pertaining to lighting, textures and primitives.");
+	Statistics->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Tabs.StatsViewer");
+	Statistics->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("LevelEditorStatsViewer")));
+		}
+	);
+	OutCommands.Add(Statistics);
+
+	const TSharedPtr<FQuickCommandEntry> VirtualAssets = MakeShared<FQuickCommandEntry>();
+	VirtualAssets->Title = NSLOCTEXT("VirtualizationEditor", "VirtualAssetsStatisticsTabTitle", "Virtual Assets");
+	VirtualAssets->Tooltip = NSLOCTEXT("VirtualizationEditor", "VirtualAssetsStatisticsTabToolTipText", "Virtual Assets  Statistics");
+	VirtualAssets->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "DerivedData.Cache.Statistics");
+	VirtualAssets->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("VirtualAssetsStatistics")));
+		}
+	);
+	OutCommands.Add(VirtualAssets);
+
+	const TSharedPtr<FQuickCommandEntry> DeviceManager = MakeShared<FQuickCommandEntry>();
+	DeviceManager->Title = NSLOCTEXT("FDeviceManagerModule", "DeviceManagerTabTitle", "Device Manager");
+	DeviceManager->Tooltip = NSLOCTEXT("FDeviceManagerModule", "DeviceManagerTooltipText", "View and manage connected devices.");
+	DeviceManager->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "DeviceDetails.TabIcon");
+	DeviceManager->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("DeviceManager")));
+		}
+	);
+	OutCommands.Add(DeviceManager);
+
+	const TSharedPtr<FQuickCommandEntry> DeviceProfiles = MakeShared<FQuickCommandEntry>();
+	DeviceProfiles->Title = NSLOCTEXT("DeviceProfileEditor", "DeviceProfileEditorTitle", "Device Profiles");
+	DeviceProfiles->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "DeviceDetails.Tabs.ProfileEditor");
+	DeviceProfiles->ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[]()
+		{
+			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("DeviceProfileEditor")));
+		}
+	);
+	OutCommands.Add(DeviceProfiles);
+
+
 	return OutCommands;
 }

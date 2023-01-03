@@ -2,6 +2,8 @@
 
 #include "ToolbarMenuToolsInstrumentationExtension.h"
 
+#include <LevelEditor.h>
+
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsInstrumentationExtension::GetCommands(const FToolMenuContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
@@ -169,7 +171,9 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsInstrumentationExtension
 	Statistics->ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()
 		{
-			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("LevelEditorStatsViewer")));
+			const FLevelEditorModule& LevelEditorModule = FModuleManager::GetModuleChecked<FLevelEditorModule>("LevelEditor");
+			const TSharedPtr<FTabManager> LevelEditorTabManager = LevelEditorModule.GetLevelEditorTabManager();
+			LevelEditorTabManager->TryInvokeTab(FTabId(TEXT("LevelEditorStatsViewer")));
 		}
 	);
 	OutCommands.Add(Statistics);
@@ -208,7 +212,6 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsInstrumentationExtension
 		}
 	);
 	OutCommands.Add(DeviceProfiles);
-
 
 	return OutCommands;
 }

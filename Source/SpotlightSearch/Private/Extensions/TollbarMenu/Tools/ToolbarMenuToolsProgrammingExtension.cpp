@@ -8,9 +8,9 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsProgrammingExtension::Ge
 
 	UToolMenus* ToolMenus = UToolMenus::Get();
 	UToolMenu* MainTabFileMenu = ToolMenus->ExtendMenu("MainFrame.MainMenu.Tools");
-	FToolMenuSection* ProgrammingLayout = MainTabFileMenu->FindSection("Programming");
+	FToolMenuSection* ProgrammingSection = MainTabFileMenu->FindSection("Programming");
 
-	for (FToolMenuEntry& Block : ProgrammingLayout->Blocks)
+	for (FToolMenuEntry& Block : ProgrammingSection->Blocks)
 	{
 		if (Block.Label.Get().IsEmpty() || Block.IsSubMenu())
 		{

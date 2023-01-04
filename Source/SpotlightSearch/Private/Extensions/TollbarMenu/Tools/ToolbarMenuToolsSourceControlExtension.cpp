@@ -6,17 +6,21 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsSourceControlExtension::
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
-	const TSharedPtr<FQuickCommandEntry> ViewChangelists = MakeShared<FQuickCommandEntry>();
-	ViewChangelists->Title = NSLOCTEXT("SourceControlWindows", "ChangelistsTabTitle", "View Changelists");
-	ViewChangelists->Tooltip = NSLOCTEXT("SourceControlWindows", "ChangelistsTabTooltip", "Opens a dialog displaying current changelists.");
-	ViewChangelists->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "SourceControl.ChangelistsTab");
-	ViewChangelists->ExecuteCallback = FSimpleDelegate::CreateLambda(
-		[]()
+	UToolMenus* ToolMenus = UToolMenus::Get();
+	UToolMenu* MainTabFileMenu = ToolMenus->ExtendMenu("MainFrame.MainMenu.Tools");
+	FToolMenuSection* SourceControlSection = MainTabFileMenu->FindSection("Source Control");
+
+	// TODO: This is missing the entries from the dynamic section (Connect to source control + Change source control settings)
+	for (FToolMenuEntry& Block : SourceControlSection->Blocks)
+	{
+		if (Block.Label.Get().IsEmpty() || Block.IsSubMenu())
 		{
-			FGlobalTabmanager::Get()->TryInvokeTab(FTabId(TEXT("SourceControlChangelists")));
+			continue;
 		}
-	);
-	OutCommands.Add(ViewChangelists);
+
+		const TSharedPtr<FQuickCommandEntry> BlockCommand = MakeShared<FQuickCommandEntry>(Block, Context);
+		OutCommands.Emplace(BlockCommand);
+	}
 
 	return OutCommands;
 }

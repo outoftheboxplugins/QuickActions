@@ -12,6 +12,7 @@ FQuickCommandEntry::FQuickCommandEntry(const TSharedRef<FUICommandInfo>& Command
 	Tooltip = Command->GetDescription();
 	Icon = Command->GetIcon();
 
+	// TODO: Refactor this to take in a context and use InContext.GetActionForCommand(Command, OutCommandList);
 	const FUIAction* UIAction = CommandList->GetActionForCommand(Command);
 	if (ensure(UIAction))
 	{

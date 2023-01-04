@@ -8,9 +8,9 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuWindowLayoutExtension::GetCom
 
 	UToolMenus* ToolMenus = UToolMenus::Get();
 	UToolMenu* MainTabFileMenu = ToolMenus->ExtendMenu("MainFrame.MainMenu.Window");
-	FToolMenuSection* WindowLayout = MainTabFileMenu->FindSection("WindowLayout");
+	FToolMenuSection* WindowLayoutSection = MainTabFileMenu->FindSection("WindowLayout");
 
-	for (FToolMenuEntry& Block : WindowLayout->Blocks)
+	for (FToolMenuEntry& Block : WindowLayoutSection->Blocks)
 	{
 		if (Block.Label.Get().IsEmpty() || Block.IsSubMenu())
 		{

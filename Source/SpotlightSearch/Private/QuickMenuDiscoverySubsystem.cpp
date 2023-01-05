@@ -93,6 +93,7 @@ void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<TSharedPtr<FQui
 	IMainFrameModule& MainFrameModule = FModuleManager::Get().LoadModuleChecked<IMainFrameModule>("MainFrame");
 	const TSharedPtr<FUICommandList> MainFrameCommands = MainFrameModule.GetMainFrameCommandBindings();
 
+	// TODO: Research how UUICommandsScriptingSubsystem::Initialize stays up to date with all command list available
 	FToolMenuContext Context;
 	Context.AppendCommandList(MainFrameCommands);
 

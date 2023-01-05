@@ -21,6 +21,7 @@ public class SpotlightSearch : ModuleRules
 				"MainFrame", 
 				"Slate",
 				"SlateCore",
+				"SlateScriptingCommands", 
 				"ToolMenus",
 				"ToolWidgets", 
 				"UndoHistoryEditor",

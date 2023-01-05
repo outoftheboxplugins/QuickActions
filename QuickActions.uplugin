@@ -22,5 +22,11 @@
       "Type": "Editor",
       "LoadingPhase": "Default"
     }
+  ],
+  "Plugins": [
+    {
+		"Name": "SlateScripting",
+		"Enabled": true
+	}
   ]
 }

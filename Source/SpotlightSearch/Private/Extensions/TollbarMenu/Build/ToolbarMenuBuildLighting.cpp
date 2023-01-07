@@ -13,6 +13,12 @@ namespace
 	{
 		QualityText = FText::Format(LOCTEXT("LightingQuality", "Set lighting quality to: {0}"), QualityText.Get());
 	}
+
+	void ConvertLightingSelection(TAttribute<FText>& SelectionText)
+	{
+		SelectionText = FText::Format(LOCTEXT("LightingSelection", "Set LightMap resolution selection to: {0}"), SelectionText.Get());
+	}
+
 } // namespace
 
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLighting::GetCommands(const FToolMenuContext& Context)
@@ -40,19 +46,32 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLighting::GetCommands(co
 		OutCommands.Emplace(LightQualityCommand);
 	}
 
-	TSharedPtr<FQuickCommandEntry> LightMapDensityGreyscale = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().LightingDensity_RenderGrayscale.ToSharedRef(), LevelEditorCommands);
-	LightMapDensityGreyscale->Title = GEngine->bRenderLightMapDensityGrayscale ? NSLOCTEXT("LevelEditorActions", "RenderGrayScaleOn", "Enable Grayscale rendering")
-																			   : NSLOCTEXT("LevelEditorActions", "RenderGrayScaleOff", "Disable Grayscale rendering");
-	OutCommands.Emplace(LightMapDensityGreyscale);
+	const TSharedPtr<FQuickCommandEntry> LightDensityRenderGreyscale = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().LightingDensity_RenderGrayscale.ToSharedRef(), LevelEditorCommands);
+	LightDensityRenderGreyscale->Title = GEngine->bRenderLightMapDensityGrayscale ? NSLOCTEXT("LevelEditorActions", "RenderGrayScaleOn", "Enable Grayscale rendering")
+																				  : NSLOCTEXT("LevelEditorActions", "RenderGrayScaleOff", "Disable Grayscale rendering");
+	OutCommands.Emplace(LightDensityRenderGreyscale);
 
-	// TODO: Add LightingInfo submenu
-	// - LightMap Resolution adjustaments
-	// - Lighting static mesh info
-	// TODO: Add Use Error coloring button
+	TArray<TSharedPtr<FUICommandInfo>> LightResolutionSelections;
+	LightResolutionSelections.Add(FLevelEditorCommands::Get().LightingResolution_CurrentLevel);
+	LightResolutionSelections.Add(FLevelEditorCommands::Get().LightingResolution_SelectedLevels);
+	LightResolutionSelections.Add(FLevelEditorCommands::Get().LightingResolution_AllLoadedLevels);
 
-	TSharedPtr<FQuickCommandEntry> LightningStaticMeshInfo = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().LightingStaticMeshInfo.ToSharedRef(), LevelEditorCommands);
+	for (const TSharedPtr<FUICommandInfo>& LightResolutionSelection : LightResolutionSelections)
+	{
+		const TSharedPtr<FQuickCommandEntry> LightResolutionSelectionCommand = MakeShared<FQuickCommandEntry>(LightResolutionSelection.ToSharedRef(), LevelEditorCommands);
+		ConvertLightingSelection(LightResolutionSelectionCommand->Title);
+		OutCommands.Emplace(LightResolutionSelectionCommand);
+	}
+
+	const TSharedPtr<FQuickCommandEntry> LightResolutionSelectedOnly =
+		MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().LightingResolution_SelectedObjectsOnly.ToSharedRef(), LevelEditorCommands);
+	// LightResolutionSelectedOnly->Title =
+	OutCommands.Emplace(LightResolutionSelectedOnly);
+
+	const TSharedPtr<FQuickCommandEntry> LightningStaticMeshInfo = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().LightingStaticMeshInfo.ToSharedRef(), LevelEditorCommands);
 	OutCommands.Emplace(LightningStaticMeshInfo);
 
+	// TODO: Add Use Error coloring button
 	return OutCommands;
 }
 

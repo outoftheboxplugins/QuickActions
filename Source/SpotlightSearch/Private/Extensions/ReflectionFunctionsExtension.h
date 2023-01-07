@@ -7,7 +7,13 @@
 #include "ReflectionFunctionsExtension.generated.h"
 
 /**
- * TODO:
+ * Creates a quick menu entry for each UFUNCTION with the meta tag QuickActionEntry
+ *
+ * Example usage:
+ *
+ *		// Example tooltip
+ *		UFUNCTION(meta = (QuickActionEntry))
+ *		void ExampleFunction();
  */
 UCLASS()
 class UReflectionFunctionsExtension : public UQuickMenuExtension

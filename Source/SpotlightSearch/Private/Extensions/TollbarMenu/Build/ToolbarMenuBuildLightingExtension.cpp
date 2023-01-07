@@ -1,9 +1,9 @@
 ﻿// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
 
+#include "ToolbarMenuBuildLightingExtension.h"
+
 #include <LevelEditor.h>
 #include <LevelEditorActions.h>
-
-#include "ToolbarMenuBuildLightingExtension.h"
 
 #define LOCTEXT_NAMESPACE "QuickActions"
 

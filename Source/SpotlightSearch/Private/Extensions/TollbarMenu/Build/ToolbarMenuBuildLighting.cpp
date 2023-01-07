@@ -47,8 +47,8 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLighting::GetCommands(co
 	}
 
 	const TSharedPtr<FQuickCommandEntry> LightDensityRenderGreyscale = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().LightingDensity_RenderGrayscale.ToSharedRef(), LevelEditorCommands);
-	LightDensityRenderGreyscale->Title = GEngine->bRenderLightMapDensityGrayscale ? NSLOCTEXT("LevelEditorActions", "RenderGrayScaleOn", "Enable Grayscale rendering")
-																				  : NSLOCTEXT("LevelEditorActions", "RenderGrayScaleOff", "Disable Grayscale rendering");
+	const FText RenderGreyscaleAction = FLevelEditorActionCallbacks::IsLightingDensityRenderGrayscaleChecked() ? LOCTEXT("Enable", "Enable:") : LOCTEXT("Disable", "Disable:");
+	LightDensityRenderGreyscale->Title = FText::Format(INVTEXT("{0} {1}"), RenderGreyscaleAction, LightDensityRenderGreyscale->Title.Get());
 	OutCommands.Emplace(LightDensityRenderGreyscale);
 
 	TArray<TSharedPtr<FUICommandInfo>> LightResolutionSelections;
@@ -63,10 +63,10 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLighting::GetCommands(co
 		OutCommands.Emplace(LightResolutionSelectionCommand);
 	}
 
-	const TSharedPtr<FQuickCommandEntry> LightResolutionSelectedOnly =
-		MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().LightingResolution_SelectedObjectsOnly.ToSharedRef(), LevelEditorCommands);
-	// LightResolutionSelectedOnly->Title =
-	OutCommands.Emplace(LightResolutionSelectedOnly);
+	const TSharedPtr<FQuickCommandEntry> LightResSelectOnly = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().LightingResolution_SelectedObjectsOnly.ToSharedRef(), LevelEditorCommands);
+	const FText SelectedOnlyAction = FLevelEditorActionCallbacks::IsLightingResolutionSelectedObjectsOnlyChecked() ? LOCTEXT("Enable", "Enable:") : LOCTEXT("Disable", "Disable:");
+	LightResSelectOnly->Title = FText::Format(INVTEXT("{0} {1}"), SelectedOnlyAction, LightResSelectOnly->Title.Get());
+	OutCommands.Emplace(LightResSelectOnly);
 
 	const TSharedPtr<FQuickCommandEntry> LightningStaticMeshInfo = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().LightingStaticMeshInfo.ToSharedRef(), LevelEditorCommands);
 	OutCommands.Emplace(LightningStaticMeshInfo);

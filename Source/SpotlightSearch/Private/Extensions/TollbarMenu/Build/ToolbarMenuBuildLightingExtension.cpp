@@ -1,9 +1,9 @@
 ﻿// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
 
-#include "ToolbarMenuBuildLighting.h"
-
 #include <LevelEditor.h>
 #include <LevelEditorActions.h>
+
+#include "ToolbarMenuBuildLightingExtension.h"
 
 #define LOCTEXT_NAMESPACE "QuickActions"
 
@@ -21,7 +21,7 @@ namespace
 
 } // namespace
 
-TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLighting::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLightingExtension::GetCommands(const FToolMenuContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 

@@ -4,13 +4,13 @@
 
 #include "QuickMenuExtension.h"
 
-#include "ToolbarMenuBuildLighting.generated.h"
+#include "ToolbarMenuBuildLightingExtension.generated.h"
 
 /**
  * Add entries from the main frame toolbar -> Build menu -> Lighting section
  */
 UCLASS()
-class UToolbarMenuBuildLighting : public UQuickMenuExtension
+class UToolbarMenuBuildLightingExtension : public UQuickMenuExtension
 {
 	GENERATED_BODY()
 

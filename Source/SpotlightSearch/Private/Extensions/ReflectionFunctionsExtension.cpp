@@ -32,6 +32,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UReflectionFunctionsExtension::GetCommand
 
 	return OutCommands;
 }
+
 void UReflectionFunctionsExtension::ExampleFunction()
 {
 	UE_LOG(LogTemp, Log, TEXT("Example function executed"));

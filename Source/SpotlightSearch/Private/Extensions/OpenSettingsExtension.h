@@ -7,7 +7,7 @@
 #include "OpenSettingsExtension.generated.h"
 
 /**
- * Add entries from the main frame toolbar -> Edit menu -> Configuration section
+ * Creates a quick menu entry for each Settings section to open it directly.
  */
 UCLASS()
 class UOpenSettingsExtension : public UQuickMenuExtension

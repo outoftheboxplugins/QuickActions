@@ -39,7 +39,12 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLighting::GetCommands(co
 		OutCommands.Emplace(LightQualityCommand);
 	}
 
-	// TODO: There are a lot of lighting actions which can be added here, but need minor tweaks similar to the one above.
+	// TODO: Add LightingInfo submenu
+	// - LightMap Density Rendering options
+	// - LightMap Resolution adjustaments
+	// - Lighting static mesh info
+	// TODO: Add Use Error coloring button
+	// TODO: Add Show lightning stats button
 
 	return OutCommands;
 }

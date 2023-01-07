@@ -24,6 +24,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLighting::GetCommands(co
 
 	// TODO: For commands with no icon we should have a default one.
 	const TSharedPtr<FQuickCommandEntry> BuildLightingOnly = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().BuildLightingOnly.ToSharedRef(), LevelEditorCommands);
+	// TODO: Decide if we should use add or emplace for every OutCommands.
 	OutCommands.Emplace(BuildLightingOnly);
 
 	TArray<TSharedPtr<FUICommandInfo>> LightQualities;
@@ -39,12 +40,18 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLighting::GetCommands(co
 		OutCommands.Emplace(LightQualityCommand);
 	}
 
+	TSharedPtr<FQuickCommandEntry> LightMapDensityGreyscale = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().LightingDensity_RenderGrayscale.ToSharedRef(), LevelEditorCommands);
+	LightMapDensityGreyscale->Title = GEngine->bRenderLightMapDensityGrayscale ? NSLOCTEXT("LevelEditorActions", "RenderGrayScaleOn", "Enable Grayscale rendering")
+																			   : NSLOCTEXT("LevelEditorActions", "RenderGrayScaleOff", "Disable Grayscale rendering");
+	OutCommands.Emplace(LightMapDensityGreyscale);
+
 	// TODO: Add LightingInfo submenu
-	// - LightMap Density Rendering options
 	// - LightMap Resolution adjustaments
 	// - Lighting static mesh info
 	// TODO: Add Use Error coloring button
-	// TODO: Add Show lightning stats button
+
+	TSharedPtr<FQuickCommandEntry> LightningStaticMeshInfo = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().LightingStaticMeshInfo.ToSharedRef(), LevelEditorCommands);
+	OutCommands.Emplace(LightningStaticMeshInfo);
 
 	return OutCommands;
 }

@@ -17,6 +17,7 @@ public class SpotlightSearch : ModuleRules
 				"EditorSubsystem", 
 				"Engine",
 				"InputCore",
+				"Landscape",
 				"LevelEditor",
 				"MainFrame", 
 				"Slate",

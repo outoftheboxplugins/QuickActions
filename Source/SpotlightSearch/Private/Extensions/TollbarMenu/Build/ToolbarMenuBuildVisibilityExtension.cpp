@@ -13,6 +13,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildVisibilityExtension::Get
 	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
 
 	const TSharedPtr<FQuickCommandEntry> PrecomputeVisibility = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().BuildLightingOnly_VisibilityOnly.ToSharedRef(), LevelEditorCommands);
+	PrecomputeVisibility->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "ClassIcon.Light");
 	OutCommands.Emplace(PrecomputeVisibility);
 
 	return OutCommands;

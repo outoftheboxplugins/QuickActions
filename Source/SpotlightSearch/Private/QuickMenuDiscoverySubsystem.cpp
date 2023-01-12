@@ -1,50 +1,12 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
 
 #include "QuickMenuDiscoverySubsystem.h"
 
 #include <Interfaces/IMainFrameModule.h>
 
-#define LOCTEXT_NAMESPACE "LevelEditorMenu"
+#define LOCTEXT_NAMESPACE "QuickActions"
 
-FQuickCommandEntry::FQuickCommandEntry(const TSharedRef<FUICommandInfo>& Command, const TSharedRef<FUICommandList> CommandList)
-{
-	Title = Command->GetLabel();
-	Tooltip = Command->GetDescription();
-	Icon = Command->GetIcon();
-
-	// TODO: Refactor this to take in a context and use InContext.GetActionForCommand(Command, OutCommandList);
-	const FUIAction* UIAction = CommandList->GetActionForCommand(Command);
-	if (ensure(UIAction))
-	{
-		ExecuteCallback = UIAction->ExecuteAction;
-		CanExecuteCallback = UIAction->CanExecuteAction;
-	}
-}
-
-FQuickCommandEntry::FQuickCommandEntry(const FToolMenuEntry& Block, const FToolMenuContext& Context)
-{
-	Title = Block.Label;
-	Tooltip = Block.ToolTip;
-	Icon = Block.Icon;
-
-	TSharedPtr<const FUICommandList> OutCommandsList;
-	// TODO: Consider if we should ensure FoundAction similar to the constructor above
-	const FUIAction* FoundAction = Block.GetActionForCommand(Context, OutCommandsList);
-	if (ensure(FoundAction))
-	{
-		CanExecuteCallback = FoundAction->CanExecuteAction;
-		ExecuteCallback = FoundAction->ExecuteAction;
-	}
-}
-bool FQuickCommandEntry::IsAllowedToExecute() const
-{
-	if (!CanExecuteCallback.IsBound())
-	{
-		return true;
-	}
-
-	return CanExecuteCallback.Execute();
-}
+TAutoConsoleVariable<FString> CVarQuickActionFilter(TEXT("QuickActions.FilterExtensions"), TEXT(""), TEXT("If set, only extensions with this string in their name will be displayed."));
 
 TArray<TSharedPtr<FQuickCommandEntry>> UQuickMenuDiscoverySubsystem::GetAllCommands() const
 {
@@ -68,12 +30,15 @@ void UQuickMenuDiscoverySubsystem::Deinitialize()
 
 void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands) const
 {
+	const FString NameFilterValue = CVarQuickActionFilter.GetValueOnAnyThread();
+
 	TArray<UQuickMenuExtension*> Extensions;
 	for (TObjectIterator<UClass> It; It; ++It)
 	{
-		UClass* CurrentClass = (*It);
+		const UClass* CurrentClass = (*It);
+		const bool bPassesNameFilter = NameFilterValue.IsEmpty() || CurrentClass->GetName().Contains(NameFilterValue);
 
-		if (CurrentClass->IsChildOf(UQuickMenuExtension::StaticClass()) && !(CurrentClass->HasAnyClassFlags(CLASS_Abstract)))
+		if (bPassesNameFilter && CurrentClass->IsChildOf(UQuickMenuExtension::StaticClass()) && !(CurrentClass->HasAnyClassFlags(CLASS_Abstract)))
 		{
 			UQuickMenuExtension* QuickMenuExtension = Cast<UQuickMenuExtension>(CurrentClass->GetDefaultObject());
 			if (QuickMenuExtension->ShouldShow())

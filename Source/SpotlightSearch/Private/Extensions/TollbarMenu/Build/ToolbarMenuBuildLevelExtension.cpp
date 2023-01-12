@@ -12,8 +12,8 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLevelExtension::GetComma
 	const FLevelEditorModule& LevelEditorModule = FModuleManager::Get().LoadModuleChecked<FLevelEditorModule>("LevelEditor");
 	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
 
-	// TODO: For commands with no icon we should have a default one.
 	const TSharedPtr<FQuickCommandEntry> Build = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().Build.ToSharedRef(), LevelEditorCommands);
+	Build->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlacementBrowser.Icons.Lights");
 	OutCommands.Emplace(Build);
 
 	return OutCommands;

@@ -13,6 +13,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildAutomationExtension::Get
 	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
 
 	const TSharedPtr<FQuickCommandEntry> BuildAndSubmit = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().BuildAndSubmitToSourceControl.ToSharedRef(), LevelEditorCommands);
+	BuildAndSubmit->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "SourceControl.Actions.Submit");
 	OutCommands.Emplace(BuildAndSubmit);
 
 	return OutCommands;

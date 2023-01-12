@@ -13,6 +13,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildHLODsExtension::GetComma
 	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
 
 	const TSharedPtr<FQuickCommandEntry> BuildHLODs = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().BuildHLODs.ToSharedRef(), LevelEditorCommands);
+	BuildHLODs->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Tabs.HLOD");
 	OutCommands.Emplace(BuildHLODs);
 
 	return OutCommands;

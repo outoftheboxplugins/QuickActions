@@ -13,9 +13,11 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildGeometryExtension::GetCo
 	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
 
 	const TSharedPtr<FQuickCommandEntry> BuildGeometry = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().BuildGeometryOnly.ToSharedRef(), LevelEditorCommands);
+	BuildGeometry->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "Icons.box-perspective");
 	OutCommands.Emplace(BuildGeometry);
 
 	const TSharedPtr<FQuickCommandEntry> BuildGeometryCurrent = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().BuildGeometryOnly_OnlyCurrentLevel.ToSharedRef(), LevelEditorCommands);
+	BuildGeometryCurrent->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "Icons.box-perspective");
 	OutCommands.Emplace(BuildGeometryCurrent);
 
 	return OutCommands;

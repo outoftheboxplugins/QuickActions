@@ -1,4 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
 
 #pragma once
 
@@ -12,7 +12,7 @@ struct FQuickCommandEntry
 	FQuickCommandEntry() = default;
 	FQuickCommandEntry(const TSharedRef<FUICommandInfo>& Command, const TSharedRef<FUICommandList> CommandList);
 	FQuickCommandEntry(const FToolMenuEntry& Block, const FToolMenuContext& Context);
-	
+
 	TAttribute<FText> Title;
 	TAttribute<FText> Tooltip;
 	TAttribute<FSlateIcon> Icon;
@@ -22,6 +22,11 @@ struct FQuickCommandEntry
 	TDelegate<bool()> CanExecuteCallback;
 
 	bool IsAllowedToExecute() const;
+};
+
+struct FQuickSwitchCommandEntry : FQuickCommandEntry
+{
+	FQuickSwitchCommandEntry(const TSharedRef<FUICommandInfo>& Command, const TSharedRef<FUICommandList> CommandList, bool bIsEnabled);
 };
 
 /**

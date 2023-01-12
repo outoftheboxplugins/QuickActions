@@ -14,11 +14,13 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLandscapeExtension::GetC
 	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
 
 	const TSharedPtr<FQuickCommandEntry> BuildAllLandscape = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().BuildAllLandscape.ToSharedRef(), LevelEditorCommands);
+	BuildAllLandscape->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.LandscapeMode", "LevelEditor.LandscapeMode.Small");
 	OutCommands.Emplace(BuildAllLandscape);
 
 	const TSharedPtr<FQuickCommandEntry> BuildGITextures = MakeShared<FQuickCommandEntry>();
 	BuildGITextures->Title = NSLOCTEXT("LandscapeEditor", "BuildGITexturesOnly", "Build GI Textures Only");
 	BuildGITextures->Tooltip = NSLOCTEXT("LandscapeEditor", "BuildGIBakedTextures ", "Build GI baked base color textures");
+	BuildGITextures->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlacementBrowser.Icons.Lights");
 	BuildGITextures->ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()
 		{
@@ -36,6 +38,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLandscapeExtension::GetC
 	const TSharedPtr<FQuickCommandEntry> BuildGrassMaps = MakeShared<FQuickCommandEntry>();
 	BuildGrassMaps->Title = NSLOCTEXT("LandscapeEditor", "BuildGrassMapsOnly", "Build Grass Maps Only");
 	BuildGrassMaps->Tooltip = NSLOCTEXT("LandscapeEditor", "BuildLandscapeGrassMaps", "Build landscape grass maps");
+	BuildGrassMaps->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlacementBrowser.Icons.Lights");
 	BuildGrassMaps->ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()
 		{
@@ -53,6 +56,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLandscapeExtension::GetC
 	const TSharedPtr<FQuickCommandEntry> BuildPhysicalMaterial = MakeShared<FQuickCommandEntry>();
 	BuildPhysicalMaterial->Title = NSLOCTEXT("LandscapeEditor", "BuildPhysicalMaterialOnly", "Build Physical Material Only");
 	BuildPhysicalMaterial->Tooltip = NSLOCTEXT("LandscapeEditor", "BuildLandscapePhysicalMaterial", "Build landscape physical material");
+	BuildPhysicalMaterial->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlacementBrowser.Icons.Lights");
 	BuildPhysicalMaterial->ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()
 		{
@@ -70,6 +74,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLandscapeExtension::GetC
 	const TSharedPtr<FQuickCommandEntry> BuildNanite = MakeShared<FQuickCommandEntry>();
 	BuildNanite->Title = NSLOCTEXT("LandscapeEditor", "BuildNaniteOnly", "Build Nanite Only");
 	BuildNanite->Tooltip = NSLOCTEXT("LandscapeEditor", "BuildLandscapeNanite", "Build Nanite representation");
+	BuildNanite->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlacementBrowser.Icons.Lights");
 	BuildNanite->ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()
 		{

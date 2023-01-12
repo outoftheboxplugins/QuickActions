@@ -28,9 +28,9 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLightingExtension::GetCo
 	const FLevelEditorModule& LevelEditorModule = FModuleManager::Get().LoadModuleChecked<FLevelEditorModule>("LevelEditor");
 	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
 
-	// TODO: For commands with no icon we should have a default one.
-	const TSharedPtr<FQuickCommandEntry> BuildLightingOnly = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().BuildLightingOnly.ToSharedRef(), LevelEditorCommands);
 	// TODO: Decide if we should use add or emplace for every OutCommands.
+	const TSharedPtr<FQuickCommandEntry> BuildLightingOnly = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().BuildLightingOnly.ToSharedRef(), LevelEditorCommands);
+	BuildLightingOnly->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlacementBrowser.Icons.Lights");
 	OutCommands.Emplace(BuildLightingOnly);
 
 	TArray<TSharedPtr<FUICommandInfo>> LightQualities;
@@ -43,13 +43,14 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLightingExtension::GetCo
 	{
 		const TSharedPtr<FQuickCommandEntry> LightQualityCommand = MakeShared<FQuickCommandEntry>(LightQuality.ToSharedRef(), LevelEditorCommands);
 		ConvertLightingQuality(LightQualityCommand->Title);
+		LightQualityCommand->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlacementBrowser.Icons.Lights");
 		OutCommands.Emplace(LightQualityCommand);
 	}
 
-	const TSharedPtr<FQuickCommandEntry> LightDensityRenderGreyscale = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().LightingDensity_RenderGrayscale.ToSharedRef(), LevelEditorCommands);
-	const FText RenderGreyscaleAction = FLevelEditorActionCallbacks::IsLightingDensityRenderGrayscaleChecked() ? LOCTEXT("Disable", "Disable:") : LOCTEXT("Enable", "Enable:");
-	LightDensityRenderGreyscale->Title = FText::Format(INVTEXT("{0} {1}"), RenderGreyscaleAction, LightDensityRenderGreyscale->Title.Get());
-	OutCommands.Emplace(LightDensityRenderGreyscale);
+	const bool bRenderGrayscale = FLevelEditorActionCallbacks::IsLightingDensityRenderGrayscaleChecked();
+	const TSharedPtr<FQuickSwitchCommandEntry> RenderGrayscale =
+		MakeShared<FQuickSwitchCommandEntry>(FLevelEditorCommands::Get().LightingDensity_RenderGrayscale.ToSharedRef(), LevelEditorCommands, bRenderGrayscale);
+	OutCommands.Emplace(RenderGrayscale);
 
 	TArray<TSharedPtr<FUICommandInfo>> LightResolutionSelections;
 	LightResolutionSelections.Add(FLevelEditorCommands::Get().LightingResolution_CurrentLevel);
@@ -60,28 +61,29 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLightingExtension::GetCo
 	{
 		const TSharedPtr<FQuickCommandEntry> LightResolutionSelectionCommand = MakeShared<FQuickCommandEntry>(LightResolutionSelection.ToSharedRef(), LevelEditorCommands);
 		ConvertLightingSelection(LightResolutionSelectionCommand->Title);
+		LightResolutionSelectionCommand->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlacementBrowser.Icons.Lights");
 		OutCommands.Emplace(LightResolutionSelectionCommand);
 	}
 
-	const TSharedPtr<FQuickCommandEntry> LightResSelectOnly = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().LightingResolution_SelectedObjectsOnly.ToSharedRef(), LevelEditorCommands);
-	const FText SelectedOnlyAction = !FLevelEditorActionCallbacks::IsLightingResolutionSelectedObjectsOnlyChecked() ? LOCTEXT("Disable", "Disable:") : LOCTEXT("Enable", "Enable:");
-	LightResSelectOnly->Title = FText::Format(INVTEXT("{0} {1}"), SelectedOnlyAction, LightResSelectOnly->Title.Get());
-	OutCommands.Emplace(LightResSelectOnly);
+	const bool bSelectedObjectsOnly = FLevelEditorActionCallbacks::IsLightingResolutionSelectedObjectsOnlyChecked();
+	const TSharedPtr<FQuickSwitchCommandEntry> SelectedObjectsOnly =
+		MakeShared<FQuickSwitchCommandEntry>(FLevelEditorCommands::Get().LightingResolution_SelectedObjectsOnly.ToSharedRef(), LevelEditorCommands, bSelectedObjectsOnly);
+	OutCommands.Emplace(SelectedObjectsOnly);
 
 	const TSharedPtr<FQuickCommandEntry> LightningStaticMeshInfo = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().LightingStaticMeshInfo.ToSharedRef(), LevelEditorCommands);
+	LightningStaticMeshInfo->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlacementBrowser.Icons.Lights");
 	OutCommands.Emplace(LightningStaticMeshInfo);
 
-	const TSharedPtr<FQuickCommandEntry> LightBuildErrorColoring = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().LightingBuildOptions_UseErrorColoring.ToSharedRef(), LevelEditorCommands);
-	const FText ErrorColoringAction = FLevelEditorActionCallbacks::LightingBuildOptions_UseErrorColoring_IsChecked() ? LOCTEXT("Disable", "Disable:") : LOCTEXT("Enable", "Enable:");
-	LightBuildErrorColoring->Title = FText::Format(INVTEXT("{0} {1}"), ErrorColoringAction, LightBuildErrorColoring->Title.Get());
+	const bool bErrorColoring = FLevelEditorActionCallbacks::LightingBuildOptions_UseErrorColoring_IsChecked();
+	const TSharedPtr<FQuickSwitchCommandEntry> LightBuildErrorColoring =
+		MakeShared<FQuickSwitchCommandEntry>(FLevelEditorCommands::Get().LightingBuildOptions_UseErrorColoring.ToSharedRef(), LevelEditorCommands, bErrorColoring);
 	OutCommands.Emplace(LightBuildErrorColoring);
 
-	const TSharedPtr<FQuickCommandEntry> LightBuildShowStats = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().LightingBuildOptions_ShowLightingStats.ToSharedRef(), LevelEditorCommands);
-	const FText ShowStatsAction = FLevelEditorActionCallbacks::LightingBuildOptions_ShowLightingStats_IsChecked() ? LOCTEXT("Disable", "Disable:") : LOCTEXT("Enable", "Enable:");
-	LightBuildShowStats->Title = FText::Format(INVTEXT("{0} {1}"), ShowStatsAction, LightBuildShowStats->Title.Get());
-	OutCommands.Emplace(LightBuildShowStats);
+	const bool bShowStats = FLevelEditorActionCallbacks::LightingBuildOptions_ShowLightingStats_IsChecked();
+	const TSharedPtr<FQuickSwitchCommandEntry> ShowStats =
+		MakeShared<FQuickSwitchCommandEntry>(FLevelEditorCommands::Get().LightingBuildOptions_ShowLightingStats.ToSharedRef(), LevelEditorCommands, bShowStats);
+	OutCommands.Emplace(ShowStats);
 
-	TSharedPtr<FUICommandInfo> LightingBuildOptions_ShowLightingStats;
 	return OutCommands;
 }
 

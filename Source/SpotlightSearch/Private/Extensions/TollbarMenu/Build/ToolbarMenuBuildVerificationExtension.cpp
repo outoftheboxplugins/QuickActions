@@ -13,6 +13,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildVerificationExtension::G
 	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
 
 	const TSharedPtr<FQuickCommandEntry> MapCheck = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().MapCheck.ToSharedRef(), LevelEditorCommands);
+	MapCheck->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "Icons.Validate");
 	OutCommands.Emplace(MapCheck);
 
 	return OutCommands;

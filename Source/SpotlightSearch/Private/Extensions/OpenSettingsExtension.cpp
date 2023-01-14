@@ -14,6 +14,8 @@
 
 TArray<TSharedPtr<FQuickCommandEntry>> UOpenSettingsExtension::GetCommands(const FToolMenuContext& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UOpenSettingsExtension::GetCommands);
+
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	// Courtesy of fpwong#1209 on BenUI's disocrd

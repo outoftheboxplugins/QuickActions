@@ -8,6 +8,8 @@
 
 TArray<TSharedPtr<FQuickCommandEntry>> UHdiTutorialsExtension::GetCommands(const FToolMenuContext& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UHdiTutorialsExtension::GetCommands);
+
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	for (const FTutorialInfo& Tutorial : Tutorials)

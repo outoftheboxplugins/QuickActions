@@ -10,6 +10,8 @@ TAutoConsoleVariable<FString> CVarQuickActionFilter(TEXT("QuickActions.FilterExt
 
 TArray<TSharedPtr<FQuickCommandEntry>> UQuickMenuDiscoverySubsystem::GetAllCommands() const
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UQuickMenuDiscoverySubsystem::GetAllCommands);
+	
 	TArray<TSharedPtr<FQuickCommandEntry>> Result;
 
 	GatherCommandsInternal(Result);
@@ -30,6 +32,8 @@ void UQuickMenuDiscoverySubsystem::Deinitialize()
 
 void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands) const
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UQuickMenuDiscoverySubsystem::GatherCommandsInternal);
+	
 	const FString NameFilterValue = CVarQuickActionFilter.GetValueOnAnyThread();
 
 	TArray<UQuickMenuExtension*> Extensions;

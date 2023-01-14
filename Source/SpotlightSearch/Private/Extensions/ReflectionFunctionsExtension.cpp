@@ -4,6 +4,8 @@
 
 TArray<TSharedPtr<FQuickCommandEntry>> UReflectionFunctionsExtension::GetCommands(const FToolMenuContext& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UReflectionFunctionsExtension::GetCommands);
+
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	for (TObjectIterator<UClass> ClassIt; ClassIt; ++ClassIt)

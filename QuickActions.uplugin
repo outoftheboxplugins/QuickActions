@@ -22,5 +22,8 @@
       "Type": "Editor",
       "LoadingPhase": "Default"
     }
+  ],
+  "Plugins": [
+    "GeometryCollectionPlugin"
   ]
 }

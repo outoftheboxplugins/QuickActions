@@ -13,7 +13,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLevelExtension::GetComma
 	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
 
 	const TSharedPtr<FQuickCommandEntry> Build = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().Build.ToSharedRef(), LevelEditorCommands);
-	Build->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlacementBrowser.Icons.Lights");
+	Build->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlayWorld.Simulate");
 	OutCommands.Emplace(Build);
 
 	return OutCommands;

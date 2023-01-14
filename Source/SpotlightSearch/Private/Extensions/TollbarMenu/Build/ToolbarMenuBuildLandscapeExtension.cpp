@@ -38,7 +38,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLandscapeExtension::GetC
 	const TSharedPtr<FQuickCommandEntry> BuildGrassMaps = MakeShared<FQuickCommandEntry>();
 	BuildGrassMaps->Title = NSLOCTEXT("LandscapeEditor", "BuildGrassMapsOnly", "Build Grass Maps Only");
 	BuildGrassMaps->Tooltip = NSLOCTEXT("LandscapeEditor", "BuildLandscapeGrassMaps", "Build landscape grass maps");
-	BuildGrassMaps->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlacementBrowser.Icons.Lights");
+	BuildGrassMaps->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.FoliageMode");
 	BuildGrassMaps->ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()
 		{
@@ -56,7 +56,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLandscapeExtension::GetC
 	const TSharedPtr<FQuickCommandEntry> BuildPhysicalMaterial = MakeShared<FQuickCommandEntry>();
 	BuildPhysicalMaterial->Title = NSLOCTEXT("LandscapeEditor", "BuildPhysicalMaterialOnly", "Build Physical Material Only");
 	BuildPhysicalMaterial->Tooltip = NSLOCTEXT("LandscapeEditor", "BuildLandscapePhysicalMaterial", "Build landscape physical material");
-	BuildPhysicalMaterial->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlacementBrowser.Icons.Lights");
+	BuildPhysicalMaterial->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "CollisionAnalyzer.TabIcon");
 	BuildPhysicalMaterial->ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()
 		{
@@ -74,7 +74,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLandscapeExtension::GetC
 	const TSharedPtr<FQuickCommandEntry> BuildNanite = MakeShared<FQuickCommandEntry>();
 	BuildNanite->Title = NSLOCTEXT("LandscapeEditor", "BuildNaniteOnly", "Build Nanite Only");
 	BuildNanite->Tooltip = NSLOCTEXT("LandscapeEditor", "BuildLandscapeNanite", "Build Nanite representation");
-	BuildNanite->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlacementBrowser.Icons.Lights");
+	BuildNanite->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "EditorViewport.VisualizeNaniteMode");
 	BuildNanite->ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()
 		{

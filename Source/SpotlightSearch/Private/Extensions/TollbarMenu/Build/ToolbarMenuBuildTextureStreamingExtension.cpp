@@ -13,11 +13,11 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildTextureStreamingExtensio
 	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
 
 	const TSharedPtr<FQuickCommandEntry> BuildTextureStreaming = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().BuildTextureStreamingOnly.ToSharedRef(), LevelEditorCommands);
-	BuildTextureStreaming->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Build");
+	BuildTextureStreaming->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "ClassIcon.Texture2D");
 	OutCommands.Emplace(BuildTextureStreaming);
 
 	const TSharedPtr<FQuickCommandEntry> BuildTextureVirtual = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().BuildVirtualTextureOnly.ToSharedRef(), LevelEditorCommands);
-	BuildTextureVirtual->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Build");
+	BuildTextureVirtual->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "ClassIcon.Texture2D");
 	OutCommands.Emplace(BuildTextureVirtual);
 
 	return OutCommands;

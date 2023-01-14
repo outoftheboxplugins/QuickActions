@@ -13,7 +13,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildReflectionsExtension::Ge
 	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
 
 	const TSharedPtr<FQuickCommandEntry> BuildReflectionCaptures = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().BuildReflectionCapturesOnly.ToSharedRef(), LevelEditorCommands);
-	BuildReflectionCaptures->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Build");
+	BuildReflectionCaptures->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "ClassIcon.SceneCaptureComponent");
 	OutCommands.Emplace(BuildReflectionCaptures);
 
 	return OutCommands;

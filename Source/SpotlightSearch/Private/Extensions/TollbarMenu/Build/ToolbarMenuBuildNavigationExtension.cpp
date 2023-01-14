@@ -13,7 +13,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildNavigationExtension::Get
 	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
 
 	const TSharedPtr<FQuickCommandEntry> BuildPaths = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().BuildPathsOnly.ToSharedRef(), LevelEditorCommands);
-	BuildPaths->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Build");
+	BuildPaths->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "ShowFlagsMenu.Navigation");
 	OutCommands.Emplace(BuildPaths);
 
 	return OutCommands;

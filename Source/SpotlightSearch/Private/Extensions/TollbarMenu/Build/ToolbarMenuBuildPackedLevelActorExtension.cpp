@@ -18,7 +18,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildPackedLevelActorExtensio
 	const TSharedPtr<FQuickCommandEntry> PackActors = MakeShared<FQuickCommandEntry>();
 	PackActors->Title = NSLOCTEXT("LevelInstanceEditor", "PackLevelActorsTitle", "Pack Level Actors");
 	PackActors->Tooltip = NSLOCTEXT("LevelInstanceEditor", "PackLevelActorsTooltip", "Update packed level actor blueprints");
-	PackActors->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.Build");
+	PackActors->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "ClassIcon.PackedLevelActor");
 	PackActors->ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()
 		{

@@ -9,26 +9,8 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuFileSaveExtension::GetCommand
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
-	UToolMenus* ToolMenus = UToolMenus::Get();
-	UToolMenu* FileMenu = ToolMenus->FindMenu("MainFrame.MainMenu.File");
-
-	FToolMenuSection* SaveSection = FileMenu->FindSection("FileSave");
-	for (FToolMenuEntry& Block : SaveSection->Blocks)
-	{
-		TSharedPtr<const FUICommandList> OutCommandsList;
-		if (const FUIAction* FoundAction = Block.GetActionForCommand(Context, OutCommandsList))
-		{
-			const TSharedPtr<FQuickCommandEntry> MenuEntry = MakeShared<FQuickCommandEntry>();
-			MenuEntry->Title = Block.Label;
-			MenuEntry->Tooltip = Block.ToolTip;
-			MenuEntry->Icon = Block.Icon;
-			MenuEntry->CanExecuteCallback = FoundAction->CanExecuteAction;
-			MenuEntry->ExecuteCallback = FoundAction->ExecuteAction;
-
-			OutCommands.Emplace(MenuEntry);
-		}
-	}
-
+	CollectActionsFromMenuSection(OutCommands, Context, "MainFrame.MainMenu.File", "FileSave");	
+	
 	const FLevelEditorModule& LevelEditorModule = FModuleManager::Get().LoadModuleChecked<FLevelEditorModule>("LevelEditor");
 	const TSharedRef<FUICommandList> LevelEditorCommands = LevelEditorModule.GetGlobalLevelEditorActions();
 

@@ -45,4 +45,7 @@ public:
 	virtual int32 GetPriority() const { return 0; }
 
 	virtual bool ShouldShow() const { return true; }
+
+protected:
+	void CollectActionsFromMenuSection(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands, const FToolMenuContext& Context, FName MenuName, FName SectionName) const;
 };

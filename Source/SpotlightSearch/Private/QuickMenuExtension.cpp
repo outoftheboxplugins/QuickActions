@@ -51,4 +51,26 @@ FQuickSwitchCommandEntry::FQuickSwitchCommandEntry(const TSharedRef<FUICommandIn
 	Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), bIsEnabled ? "FBXIcon.ReimportCompareRemoved" : "FBXIcon.ReimportCompareAdd");
 }
 
+void UQuickMenuExtension::CollectActionsFromMenuSection(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands, const FToolMenuContext& Context, FName MenuName, FName SectionName) const
+{
+	UToolMenus* ToolMenus = UToolMenus::Get();
+	UToolMenu* FileMenu = ToolMenus->FindMenu(MenuName);
+
+	FToolMenuSection* Section = FileMenu->FindSection(SectionName);
+	for (FToolMenuEntry& Block : Section->Blocks)
+	{
+		TSharedPtr<const FUICommandList> OutCommandsList;
+		if (const FUIAction* FoundAction = Block.GetActionForCommand(Context, OutCommandsList))
+		{
+			const TSharedPtr<FQuickCommandEntry> MenuEntry = MakeShared<FQuickCommandEntry>();
+			MenuEntry->Title = Block.Label;
+			MenuEntry->Tooltip = Block.ToolTip;
+			MenuEntry->Icon = Block.Icon;
+			MenuEntry->CanExecuteCallback = FoundAction->CanExecuteAction;
+			MenuEntry->ExecuteCallback = FoundAction->ExecuteAction;
+
+			OutCommands.Emplace(MenuEntry);
+		}
+	}
+}
 #undef LOCTEXT_NAMESPACE

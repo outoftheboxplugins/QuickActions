@@ -215,6 +215,12 @@ FReply SQuickCommandsMenu::OnSearchKeyDown(const FGeometry& MyGeometry, const FK
 		return FReply::Handled();
 	}
 
+	if (InKeyEvent.GetKey() == EKeys::Tab)
+	{
+		const TSharedRef<FQuickCommandEntry>& CurrentCommand = FilteredCommands[SelectionIndex];
+		// CurrentCommand->GetSplitViewWidget()->focus
+	}
+
 	return FReply::Unhandled();
 }
 

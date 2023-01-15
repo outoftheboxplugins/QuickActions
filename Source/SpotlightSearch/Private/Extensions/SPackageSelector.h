@@ -19,6 +19,12 @@ public:
 
 	TSharedRef<ITableRow> GenerateRow(TSharedPtr<FString> Selection, const TSharedRef<STableViewBase>& OwnerTable);
 
-	TSharedPtr<SListView<TSharedPtr<FString>>> SuggestionListView;
-	TArray<TSharedPtr<FString>> SuggestionsList;
+	TSharedPtr<SListView<TSharedPtr<FString>>> PlatformListView;
+	TArray<TSharedPtr<FString>> PlatformSuggestions;
+
+	TSharedPtr<SListView<TSharedPtr<FString>>> BinaryListView;
+	TArray<TSharedPtr<FString>> BinarySuggestions;
+
+	TSharedPtr<SListView<TSharedPtr<FString>>> TargetListView;
+	TArray<TSharedPtr<FString>> TargetSuggestions;
 };

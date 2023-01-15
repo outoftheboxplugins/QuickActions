@@ -10,6 +10,8 @@
 #include <Interfaces/ITurnkeySupportModule.h>
 #include <Settings/ProjectPackagingSettings.h>
 
+#include "SPackageSelector.h"
+
 namespace
 {
 	FSlateIcon GetPlatformIcon(FName IniPlatformName)
@@ -60,7 +62,7 @@ FQuickPackageCommandEntry::FQuickPackageCommandEntry() : FQuickCommandEntry()
 }
 TSharedPtr<SWidget> FQuickPackageCommandEntry::GetSplitViewWidget()
 {
-	return SNew(STextBlock).Text(INVTEXT("dadadanu"));
+	return SNew(SPackageSelector);
 }
 
 TArray<TSharedPtr<FQuickCommandEntry>> UPackageExtension::GetCommands(const FToolMenuContext& Context)

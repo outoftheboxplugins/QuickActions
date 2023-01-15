@@ -12,20 +12,26 @@ public class SpotlightSearch : ModuleRules
 
 		PrivateDependencyModuleNames.AddRange(new string[] {
 				"CoreUObject",
+				"DesktopPlatform",
 				"DeveloperSettings",
 				"EditorStyle",
 				"EditorSubsystem", 
 				"Engine",
+				"GameProjectGeneration", 
 				"InputCore",
 				"Landscape",
 				"LevelEditor",
 				"MainFrame", 
+				"Projects",
 				"Slate",
 				"SlateCore",
+				"TargetDeviceServices", 
 				"ToolMenus",
 				"ToolWidgets", 
+				"TurnkeySupport",
 				"UndoHistoryEditor",
 				"UnrealEd", 
+				"DeveloperToolSettings",
 		});
 	}
 }

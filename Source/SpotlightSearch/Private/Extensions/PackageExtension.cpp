@@ -2,12 +2,13 @@
 
 #include "PackageExtension.h"
 
+#include <DesktopPlatformModule.h>
+#include <GameProjectGenerationModule.h>
+#include <IDesktopPlatform.h>
 #include <InstalledPlatformInfo.h>
 #include <Interfaces/IProjectManager.h>
 #include <Interfaces/ITurnkeySupportModule.h>
 #include <Settings/ProjectPackagingSettings.h>
-
-#include "GameProjectGenerationModule.h"
 
 namespace
 {
@@ -74,11 +75,34 @@ TArray<TSharedPtr<FQuickCommandEntry>> UPackageExtension::GetCommands(const FToo
 
 			if (FInstalledPlatformInfo::Get().IsValid(TOptional<EBuildTargetType>(), TOptional<FString>(), ConfigurationInfo.Configuration, ProjectType, EInstalledPlatformState::Downloaded))
 			{
-				const TSharedPtr<FQuickCommandEntry> PlatformEntry = MakeShared<FQuickCommandEntry>();
-				PlatformEntry->Title = FText::Format(INVTEXT("{0} - {1}"), FText::FromString(PlatformName.ToString()), ConfigurationInfo.Name);
-				PlatformEntry->Icon = GetPlatformIcon(PlatformName);
+				FProjectStatus ProjectStatus;
+				bool bHasCode = IProjectManager::Get().QueryStatusForCurrentProject(ProjectStatus) && ProjectStatus.bCodeBasedProject;
 
-				OutCommands.Emplace(PlatformEntry);
+				IDesktopPlatform* DesktopPlatform = FDesktopPlatformModule::Get();
+				TArray<FTargetInfo> Targets = bHasCode ? DesktopPlatform->GetTargetsForCurrentProject() : DesktopPlatform->GetTargetsForProject(FString());
+
+				Targets.Sort(
+					[](const FTargetInfo& A, const FTargetInfo& B)
+					{
+						return A.Name < B.Name;
+					}
+				);
+
+				const TArray<FTargetInfo> ValidTargets = Targets.FilterByPredicate(
+					[](const FTargetInfo& Target)
+					{
+						return Target.Type == EBuildTargetType::Game || Target.Type == EBuildTargetType::Client || Target.Type == EBuildTargetType::Server;
+					}
+				);
+
+				for (const FTargetInfo& Target : ValidTargets)
+				{
+					const TSharedPtr<FQuickCommandEntry> PlatformEntry = MakeShared<FQuickCommandEntry>();
+					PlatformEntry->Title = FText::Format(INVTEXT("{0} - {1} - {2}"), FText::FromString(PlatformName.ToString()), ConfigurationInfo.Name, FText::FromString(Target.Name));
+					PlatformEntry->Icon = GetPlatformIcon(PlatformName);
+
+					OutCommands.Emplace(PlatformEntry);
+				}
 			}
 		}
 	}

@@ -54,12 +54,9 @@ namespace
 	}
 } // namespace
 
-FReply SPackageOptionListView::OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
+TOptional<bool> SPackageOptionListView::OnQueryShowFocus(const EFocusCause InFocusCause) const
 {
-	if (InKeyEvent.GetKey() == EKeys::Down)
-	{
-	}
-	return SListView<TSharedPtr<FString, ESPMode::ThreadSafe>>::OnKeyDown(MyGeometry, InKeyEvent);
+	return {false};
 }
 
 void SPackageSelector::Construct(const FArguments& InArgs)
@@ -119,24 +116,24 @@ void SPackageSelector::Construct(const FArguments& InArgs)
 		SNew(SVerticalBox)
 		+ SVerticalBox::Slot()
 		[
-			SAssignNew(PlatformListView, SListView<TSharedPtr<FString>>)
+			SAssignNew(PlatformListView, SPackageOptionListView)
 			.ListItemsSource(&PlatformSuggestions)
 			.SelectionMode(ESelectionMode::Single)
 			.OnGenerateRow(this, &SPackageSelector::GenerateRow)
 		]
 		+ SVerticalBox::Slot()
 		[
-			SAssignNew(BinaryListView, SListView<TSharedPtr<FString>>)
+			SAssignNew(BinaryListView, SPackageOptionListView)
 			.ListItemsSource(&BinarySuggestions)
 			.SelectionMode(ESelectionMode::Single)
 			.OnGenerateRow(this, &SPackageSelector::GenerateRow)	
 		]
 		+ SVerticalBox::Slot()
 		[
-			SAssignNew(TargetListView, SListView<TSharedPtr<FString>>)
+			SAssignNew(TargetListView, SPackageOptionListView)
 			.ListItemsSource(&TargetSuggestions)
 			.SelectionMode(ESelectionMode::Single)
-			.OnGenerateRow(this, &SPackageSelector::GenerateRow)	
+			.OnGenerateRow(this, &SPackageSelector::GenerateRow)
 		]
 	];
 	// clang-format on

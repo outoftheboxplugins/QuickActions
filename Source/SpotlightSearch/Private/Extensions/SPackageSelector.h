@@ -5,6 +5,11 @@
 #include "CoreMinimal.h"
 #include "Widgets/SCompoundWidget.h"
 
+class SPackageOptionListView : public SListView<TSharedPtr<FString>>
+{
+protected:
+	virtual TOptional<bool> OnQueryShowFocus(const EFocusCause InFocusCause) const override;
+};
 /**
  *
  */

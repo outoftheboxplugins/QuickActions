@@ -23,21 +23,21 @@ void SPackageSelector::Construct(const FArguments& InArgs)
 		SNew(SVerticalBox)
 		+ SVerticalBox::Slot()
 		[
-			SAssignNew(PlatformListView, SListView< TSharedPtr<FString> >)
+			SAssignNew(PlatformListView, SListView<TSharedPtr<FString>>)
 			.ListItemsSource(&PlatformSuggestions)
 			.SelectionMode(ESelectionMode::Single)
-			.OnGenerateRow(this, &SPackageSelector::GenerateRow)	
+			.OnGenerateRow(this, &SPackageSelector::GenerateRow)
 		]
 		+ SVerticalBox::Slot()
 		[
-			SAssignNew(BinaryListView, SListView< TSharedPtr<FString> >)
+			SAssignNew(BinaryListView, SListView<TSharedPtr<FString>>)
 			.ListItemsSource(&BinarySuggestions)
 			.SelectionMode(ESelectionMode::Single)
 			.OnGenerateRow(this, &SPackageSelector::GenerateRow)	
 		]
 		+ SVerticalBox::Slot()
 		[
-			SAssignNew(TargetListView, SListView< TSharedPtr<FString> >)
+			SAssignNew(TargetListView, SListView<TSharedPtr<FString>>)
 			.ListItemsSource(&TargetSuggestions)
 			.SelectionMode(ESelectionMode::Single)
 			.OnGenerateRow(this, &SPackageSelector::GenerateRow)	

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "QuickMenuExtension.h"
+#include "SPackageSelector.h"
 
 #include "PackageExtension.generated.h"
 
@@ -11,7 +12,8 @@ struct FQuickPackageCommandEntry : FQuickCommandEntry
 	FQuickPackageCommandEntry();
 
 	virtual TSharedPtr<SWidget> GetSplitViewWidget() override;
-	;
+
+	TSharedPtr<SPackageSelector> SplitViewWidget;
 };
 
 

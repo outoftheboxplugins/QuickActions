@@ -27,4 +27,5 @@ public:
 
 	TSharedPtr<SListView<TSharedPtr<FString>>> TargetListView;
 	TArray<TSharedPtr<FString>> TargetSuggestions;
+
 };

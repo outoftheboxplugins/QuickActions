@@ -122,6 +122,7 @@ void SQuickCommandsMenu::Construct(const FArguments& InArgs)
 					.ListItemsSource(&FilteredCommands)
 					.OnGenerateRow(this, &SQuickCommandsMenu::MakeShowWidget)
 					.ScrollbarVisibility(EVisibility::Collapsed)
+					.IsFocusable(false)
 				]
 			]
 		]

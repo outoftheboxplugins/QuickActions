@@ -54,9 +54,22 @@ namespace
 	}
 } // namespace
 
+FQuickPackageCommandEntry::FQuickPackageCommandEntry() : FQuickCommandEntry()
+{
+	Title = INVTEXT("Package");
+}
+TSharedPtr<SWidget> FQuickPackageCommandEntry::GetSplitViewWidget()
+{
+	return SNew(STextBlock).Text(INVTEXT("dadadanu"));
+}
+
 TArray<TSharedPtr<FQuickCommandEntry>> UPackageExtension::GetCommands(const FToolMenuContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
+
+	OutCommands.Emplace(MakeShared<FQuickPackageCommandEntry>());
+
+	return OutCommands;
 
 	for (const TTuple<FName, FDataDrivenPlatformInfo>& Pair : FDataDrivenPlatformInfoRegistry::GetAllPlatformInfos())
 	{

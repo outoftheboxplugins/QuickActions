@@ -6,6 +6,15 @@
 
 #include "PackageExtension.generated.h"
 
+struct FQuickPackageCommandEntry : FQuickCommandEntry
+{
+	FQuickPackageCommandEntry();
+
+	virtual TSharedPtr<SWidget> GetSplitViewWidget() override;
+	;
+};
+
+
 /**
  * Creates a quick menu complex entry to quickly package your game on a selected platform & configuration.
  */

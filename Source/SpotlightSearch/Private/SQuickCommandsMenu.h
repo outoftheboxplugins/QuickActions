@@ -33,6 +33,7 @@ private:
 	virtual bool OnIsActiveChanged(const FWindowActivateEvent& ActivateEvent) override;
 
 	int32 SelectionIndex = 0;
+	TSharedPtr<SHorizontalBox> HorizontalBox;
 	TSharedPtr<SQuickCommandsListView> ListView;
 	TArray<TSharedRef<FQuickCommandEntry>> Commands;
 	TArray<TSharedRef<FQuickCommandEntry>> FilteredCommands;

@@ -12,6 +12,7 @@ struct FQuickCommandEntry
 	FQuickCommandEntry() = default;
 	FQuickCommandEntry(const TSharedRef<FUICommandInfo>& Command, const TSharedRef<FUICommandList> CommandList);
 	FQuickCommandEntry(const FToolMenuEntry& Block, const FToolMenuContext& Context);
+	virtual ~FQuickCommandEntry() = default;
 
 	TAttribute<FText> Title;
 	TAttribute<FText> Tooltip;
@@ -22,6 +23,7 @@ struct FQuickCommandEntry
 	TDelegate<bool()> CanExecuteCallback;
 
 	bool IsAllowedToExecute() const;
+	virtual TSharedPtr<SWidget> GetSplitViewWidget() { return {}; };
 };
 
 struct FQuickSwitchCommandEntry : FQuickCommandEntry

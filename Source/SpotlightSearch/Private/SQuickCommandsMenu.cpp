@@ -115,10 +115,14 @@ void SQuickCommandsMenu::Construct(const FArguments& InArgs)
 			.BorderImage(FAppStyle::GetBrush("Docking.Tab.ContentAreaBrush"))
 			.Padding(1.0)
 			[
-				SAssignNew(ListView, SQuickCommandsListView)
-				.ListItemsSource(&FilteredCommands)
-				.OnGenerateRow(this, &SQuickCommandsMenu::MakeShowWidget)
-				.ScrollbarVisibility(EVisibility::Collapsed)
+				SAssignNew(HorizontalBox, SHorizontalBox)
+				+ SHorizontalBox::Slot()
+				[
+					SAssignNew(ListView, SQuickCommandsListView)
+					.ListItemsSource(&FilteredCommands)
+					.OnGenerateRow(this, &SQuickCommandsMenu::MakeShowWidget)
+					.ScrollbarVisibility(EVisibility::Collapsed)
+				]
 			]
 		]
 	]);
@@ -257,6 +261,17 @@ void SQuickCommandsMenu::UpdateSelection(int32 Change)
 	const TSharedRef<FQuickCommandEntry>& CurrentCommand = FilteredCommands[SelectionIndex];
 	ListView->RequestNavigateToItem(CurrentCommand);
 	ListView->SetSelection(CurrentCommand);
+
+	const TSharedPtr<SWidget> SplitViewWidget = CurrentCommand->GetSplitViewWidget();
+
+	if (HorizontalBox->NumSlots() > 1)
+	{
+		HorizontalBox->RemoveSlot(HorizontalBox->GetSlot(1).GetWidget());
+	}
+	if (SplitViewWidget.IsValid())
+	{
+		HorizontalBox->InsertSlot(1)[SplitViewWidget.ToSharedRef()];
+	}
 }
 
 bool SQuickCommandsMenu::OnIsActiveChanged(const FWindowActivateEvent& ActivateEvent)

@@ -192,37 +192,33 @@ TSharedRef<ITableRow> SQuickCommandsMenu::MakeShowWidget(TSharedRef<FQuickComman
 
 FReply SQuickCommandsMenu::OnSearchKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
 {
-	if (InKeyEvent.GetKey() == EKeys::Escape)
-	{
-		CloseWindow();
-		return FReply::Handled();
-	}
-
 	if (InKeyEvent.GetKey() == EKeys::Down)
 	{
 		UpdateSelection(1);
 		return FReply::Handled();
 	}
-
 	if (InKeyEvent.GetKey() == EKeys::Up)
 	{
 		UpdateSelection(-1);
 		return FReply::Handled();
 	}
 
+	return FReply::Unhandled();
+}
+FReply SQuickCommandsMenu::OnPreviewKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
+{
 	if (InKeyEvent.GetKey() == EKeys::Enter)
 	{
 		ConfirmSelection();
 		return FReply::Handled();
 	}
-
-	if (InKeyEvent.GetKey() == EKeys::Tab)
+	if (InKeyEvent.GetKey() == EKeys::Escape)
 	{
-		const TSharedRef<FQuickCommandEntry>& CurrentCommand = FilteredCommands[SelectionIndex];
-		// CurrentCommand->GetSplitViewWidget()->focus
+		CloseWindow();
+		return FReply::Handled();
 	}
 
-	return FReply::Unhandled();
+	return SWindow::OnPreviewKeyDown(MyGeometry, InKeyEvent);
 }
 
 void SQuickCommandsMenu::CloseWindow()

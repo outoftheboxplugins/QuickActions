@@ -26,6 +26,7 @@ private:
 
 private:
 	FReply OnSearchKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent);
+	virtual FReply OnPreviewKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent) override;
 	void CloseWindow();
 	void ConfirmSelection();
 	void UpdateSelection(int32 Change);

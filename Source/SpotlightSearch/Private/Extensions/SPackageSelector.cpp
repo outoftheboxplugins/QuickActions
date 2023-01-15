@@ -2,20 +2,116 @@
 
 #include "SPackageSelector.h"
 
+#include <DesktopPlatformModule.h>
+#include <GameProjectGenerationModule.h>
+#include <IDesktopPlatform.h>
+#include <InstalledPlatformInfo.h>
+#include <Interfaces/IProjectManager.h>
+#include <Interfaces/ITurnkeySupportModule.h>
+#include <Settings/ProjectPackagingSettings.h>
+
+namespace
+{
+	FSlateIcon GetPlatformIcon(FName IniPlatformName)
+	{
+		return FSlateIcon(FAppStyle::Get().GetStyleSetName(), FDataDrivenPlatformInfoRegistry::GetPlatformInfo(IniPlatformName).GetIconStyleName(EPlatformIconSize::Large));
+	}
+
+	bool CanPackageForPlatform(const TTuple<FName, FDataDrivenPlatformInfo>& PlatformInfo)
+	{
+		const FName& PlatformName = PlatformInfo.Key;
+		const FDataDrivenPlatformInfo& PlatformData = PlatformInfo.Value;
+
+		FProjectStatus ProjectStatus;
+		const bool bProjectStatusIsValid = IProjectManager::Get().QueryStatusForCurrentProject(ProjectStatus);
+
+		if (PlatformData.bIsFakePlatform || PlatformData.bEnabledForUse == false)
+		{
+			return false;
+		}
+
+		if (FDataDrivenPlatformInfoRegistry::IsPlatformHiddenFromUI(PlatformName))
+		{
+			return false;
+		}
+
+		if (!FDataDrivenPlatformInfoRegistry::HasCompiledSupportForPlatform(PlatformName, FDataDrivenPlatformInfoRegistry::EPlatformNameType::Ini))
+		{
+			return false;
+		}
+
+		if (bProjectStatusIsValid && !ProjectStatus.IsTargetPlatformSupported(PlatformName))
+		{
+			return false;
+		}
+
+		if (ITurnkeySupportModule::Get().GetSdkInfo(PlatformName, false).Status != ETurnkeyPlatformSdkStatus::Valid)
+		{
+			return false;
+		}
+
+		return true;
+	}
+} // namespace
+
+FReply SPackageOptionListView::OnKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
+{
+	if (InKeyEvent.GetKey() == EKeys::Down)
+	{
+	}
+	return SListView<TSharedPtr<FString, ESPMode::ThreadSafe>>::OnKeyDown(MyGeometry, InKeyEvent);
+}
+
 void SPackageSelector::Construct(const FArguments& InArgs)
 {
-	PlatformSuggestions.Emplace(MakeShared<FString>(TEXT("Windows")));
-	PlatformSuggestions.Emplace(MakeShared<FString>(TEXT("Linux")));
-	PlatformSuggestions.Emplace(MakeShared<FString>(TEXT("Potato")));
+	for (const TTuple<FName, FDataDrivenPlatformInfo>& Pair : FDataDrivenPlatformInfoRegistry::GetAllPlatformInfos())
+	{
+		if (!CanPackageForPlatform(Pair))
+		{
+			continue;
+		}
 
-	BinarySuggestions.Emplace(MakeShared<FString>(TEXT("Shipping")));
-	BinarySuggestions.Emplace(MakeShared<FString>(TEXT("Testing")));
-	BinarySuggestions.Emplace(MakeShared<FString>(TEXT("Development")));
-	BinarySuggestions.Emplace(MakeShared<FString>(TEXT("DebugGame")));
-	BinarySuggestions.Emplace(MakeShared<FString>(TEXT("Debug")));
+		const FName PlatformName = Pair.Key;
+		PlatformSuggestions.Emplace(MakeShared<FString>(PlatformName.ToString()));
+	}
 
-	TargetSuggestions.Emplace(MakeShared<FString>(TEXT("Client")));
-	TargetSuggestions.Emplace(MakeShared<FString>(TEXT("Server")));
+	FGameProjectGenerationModule& GameProjectModule = FModuleManager::LoadModuleChecked<FGameProjectGenerationModule>(TEXT("GameProjectGeneration"));
+	const EProjectType ProjectType = GameProjectModule.Get().ProjectHasCodeFiles() ? EProjectType::Code : EProjectType::Content;
+	TArray<EProjectPackagingBuildConfigurations> PackagingConfigurations = UProjectPackagingSettings::GetValidPackageConfigurations();
+	for (EProjectPackagingBuildConfigurations PackagingConfiguration : PackagingConfigurations)
+	{
+		const UProjectPackagingSettings::FConfigurationInfo& ConfigurationInfo = UProjectPackagingSettings::ConfigurationInfo[static_cast<int>(PackagingConfiguration)];
+
+		if (FInstalledPlatformInfo::Get().IsValid(TOptional<EBuildTargetType>(), TOptional<FString>(), ConfigurationInfo.Configuration, ProjectType, EInstalledPlatformState::Downloaded))
+		{
+			BinarySuggestions.Emplace(MakeShared<FString>(ConfigurationInfo.Name.ToString()));
+		}
+	}
+
+	FProjectStatus ProjectStatus;
+	const bool bHasCode = IProjectManager::Get().QueryStatusForCurrentProject(ProjectStatus) && ProjectStatus.bCodeBasedProject;
+
+	const IDesktopPlatform* DesktopPlatform = FDesktopPlatformModule::Get();
+	TArray<FTargetInfo> Targets = bHasCode ? DesktopPlatform->GetTargetsForCurrentProject() : DesktopPlatform->GetTargetsForProject(FString());
+
+	Targets.Sort(
+		[](const FTargetInfo& A, const FTargetInfo& B)
+		{
+			return A.Name < B.Name;
+		}
+	);
+
+	const TArray<FTargetInfo> ValidTargets = Targets.FilterByPredicate(
+		[](const FTargetInfo& Target)
+		{
+			return Target.Type == EBuildTargetType::Game || Target.Type == EBuildTargetType::Client || Target.Type == EBuildTargetType::Server;
+		}
+	);
+
+	for (const FTargetInfo& Target : ValidTargets)
+	{
+		TargetSuggestions.Emplace(MakeShared<FString>(Target.Name));
+	}
 
 	// clang-format off
 	ChildSlot
@@ -45,10 +141,12 @@ void SPackageSelector::Construct(const FArguments& InArgs)
 	];
 	// clang-format on
 
-	PlatformListView->SetSelection(PlatformSuggestions[2]);
+	// TODO: This should come from either a config or a recent configuration selection.
+	PlatformListView->SetSelection(PlatformSuggestions[0]);
 	BinaryListView->SetSelection(BinarySuggestions[0]);
-	TargetListView->SetSelection(TargetSuggestions[1]);
+	TargetListView->SetSelection(TargetSuggestions[0]);
 }
+
 TSharedRef<ITableRow> SPackageSelector::GenerateRow(TSharedPtr<FString> Selection, const TSharedRef<STableViewBase>& OwnerTable)
 {
 	// clang-format off

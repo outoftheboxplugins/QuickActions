@@ -64,7 +64,6 @@ TSharedPtr<SWidget> FQuickPackageCommandEntry::GetSplitViewWidget()
 {
 	return SplitViewWidget;
 }
-}
 
 TArray<TSharedPtr<FQuickCommandEntry>> UPackageExtension::GetCommands(const FToolMenuContext& Context)
 {

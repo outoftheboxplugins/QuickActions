@@ -2,8 +2,6 @@
 
 #include "ToolbarMenuSelectGeneralExtension.h"
 
-#include <LevelEditorActions.h>
-
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuSelectGeneralExtension::GetCommands(const FToolMenuContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;

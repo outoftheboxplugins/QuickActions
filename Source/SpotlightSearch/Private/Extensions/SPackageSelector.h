@@ -5,11 +5,6 @@
 #include "CoreMinimal.h"
 #include "Widgets/SCompoundWidget.h"
 
-class SPackageOptionListView : public SListView<TSharedPtr<FString>>
-{
-protected:
-	virtual TOptional<bool> OnQueryShowFocus(const EFocusCause InFocusCause) const override;
-};
 /**
  *
  */
@@ -22,14 +17,14 @@ public:
 	/** Constructs this widget with InArgs */
 	void Construct(const FArguments& InArgs);
 
-	TSharedRef<ITableRow> GenerateRow(TSharedPtr<FString> Selection, const TSharedRef<STableViewBase>& OwnerTable);
+	TArray<FString> PlatformSuggestions;
+	int32 PlatformIndex = 0;
+	
+	TArray<FString> BinarySuggestions;
+	int32 BinaryIndex = 0;
+	
+	TArray<FString> TargetSuggestions;
+	int32 TargetIndex = 0;
 
-	TSharedPtr<SListView<TSharedPtr<FString>>> PlatformListView;
-	TArray<TSharedPtr<FString>> PlatformSuggestions;
-
-	TSharedPtr<SListView<TSharedPtr<FString>>> BinaryListView;
-	TArray<TSharedPtr<FString>> BinarySuggestions;
-
-	TSharedPtr<SListView<TSharedPtr<FString>>> TargetListView;
-	TArray<TSharedPtr<FString>> TargetSuggestions;
+	TSharedRef<SWidget> GenerateOptions(const FText& Category, const TArray<FString>& Options, int32& CategoryIndex);
 };

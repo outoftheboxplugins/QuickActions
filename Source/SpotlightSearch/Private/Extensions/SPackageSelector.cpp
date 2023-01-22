@@ -54,11 +54,6 @@ namespace
 	}
 } // namespace
 
-TOptional<bool> SPackageOptionListView::OnQueryShowFocus(const EFocusCause InFocusCause) const
-{
-	return {false};
-}
-
 void SPackageSelector::Construct(const FArguments& InArgs)
 {
 	for (const TTuple<FName, FDataDrivenPlatformInfo>& Pair : FDataDrivenPlatformInfoRegistry::GetAllPlatformInfos())
@@ -69,7 +64,7 @@ void SPackageSelector::Construct(const FArguments& InArgs)
 		}
 
 		const FName PlatformName = Pair.Key;
-		PlatformSuggestions.Emplace(MakeShared<FString>(PlatformName.ToString()));
+		PlatformSuggestions.Emplace(PlatformName.ToString());
 	}
 
 	FGameProjectGenerationModule& GameProjectModule = FModuleManager::LoadModuleChecked<FGameProjectGenerationModule>(TEXT("GameProjectGeneration"));
@@ -81,7 +76,7 @@ void SPackageSelector::Construct(const FArguments& InArgs)
 
 		if (FInstalledPlatformInfo::Get().IsValid(TOptional<EBuildTargetType>(), TOptional<FString>(), ConfigurationInfo.Configuration, ProjectType, EInstalledPlatformState::Downloaded))
 		{
-			BinarySuggestions.Emplace(MakeShared<FString>(ConfigurationInfo.Name.ToString()));
+			BinarySuggestions.Emplace(ConfigurationInfo.Name.ToString());
 		}
 	}
 
@@ -107,7 +102,7 @@ void SPackageSelector::Construct(const FArguments& InArgs)
 
 	for (const FTargetInfo& Target : ValidTargets)
 	{
-		TargetSuggestions.Emplace(MakeShared<FString>(Target.Name));
+		TargetSuggestions.Emplace(Target.Name);
 	}
 
 	// clang-format off
@@ -116,42 +111,62 @@ void SPackageSelector::Construct(const FArguments& InArgs)
 		SNew(SVerticalBox)
 		+ SVerticalBox::Slot()
 		[
-			SAssignNew(PlatformListView, SPackageOptionListView)
-			.ListItemsSource(&PlatformSuggestions)
-			.SelectionMode(ESelectionMode::Single)
-			.OnGenerateRow(this, &SPackageSelector::GenerateRow)
+			GenerateOptions(INVTEXT("Platforms"), PlatformSuggestions, PlatformIndex)	
 		]
+
 		+ SVerticalBox::Slot()
 		[
-			SAssignNew(BinaryListView, SPackageOptionListView)
-			.ListItemsSource(&BinarySuggestions)
-			.SelectionMode(ESelectionMode::Single)
-			.OnGenerateRow(this, &SPackageSelector::GenerateRow)	
+			GenerateOptions(INVTEXT("Binary"), BinarySuggestions, BinaryIndex)
 		]
+
 		+ SVerticalBox::Slot()
 		[
-			SAssignNew(TargetListView, SPackageOptionListView)
-			.ListItemsSource(&TargetSuggestions)
-			.SelectionMode(ESelectionMode::Single)
-			.OnGenerateRow(this, &SPackageSelector::GenerateRow)
+			GenerateOptions(INVTEXT("Target"), TargetSuggestions, TargetIndex)
 		]
 	];
 	// clang-format on
 
 	// TODO: This should come from either a config or a recent configuration selection.
-	PlatformListView->SetSelection(PlatformSuggestions[0]);
-	BinaryListView->SetSelection(BinarySuggestions[0]);
-	TargetListView->SetSelection(TargetSuggestions[0]);
+	// PlatformListView->SetSelection(PlatformSuggestions[0]);
+	// BinaryListView->SetSelection(BinarySuggestions[0]);
+	// TargetListView->SetSelection(TargetSuggestions[0]);
 }
 
-TSharedRef<ITableRow> SPackageSelector::GenerateRow(TSharedPtr<FString> Selection, const TSharedRef<STableViewBase>& OwnerTable)
+TSharedRef<SWidget> SPackageSelector::GenerateOptions(const FText& Category, const TArray<FString>& Options, int32& CategoryIndex)
 {
 	// clang-format off
-	return SNew(STableRow<TSharedPtr<FString>>, OwnerTable)
+	TSharedRef<SVerticalBox> PlatformList = SNew(SVerticalBox);
+	PlatformList->AddSlot()
+	.AutoHeight()
 	[
 		SNew(STextBlock)
-		.Text(FText::FromString(*Selection.Get()))
-		.Font(FAppStyle::GetFontStyle("BlueprintEditor.ActionMenu.ContextDescriptionFont"))
+		.Text(Category)
 	];
+
+	for(const FString& Suggestion : Options)
+	{
+		const int32 CurrentIndex = Options.IndexOfByKey(Suggestion);
+		
+		PlatformList->AddSlot()
+		.AutoHeight()
+		[
+			SNew(SCheckBox)
+			.Style(FAppStyle::Get(), "RadioButton")
+			.OnCheckStateChanged_Lambda([&CategoryIndex, CurrentIndex](ECheckBoxState InNewState)
+			{
+				CategoryIndex = CurrentIndex;
+			})
+			.IsChecked_Lambda([&CategoryIndex, CurrentIndex]()
+			{
+				return CategoryIndex == CurrentIndex ? ECheckBoxState::Checked : ECheckBoxState::Unchecked;
+			})
+			[
+				SNew(STextBlock)
+				.Text(FText::FromString(Suggestion))
+			]
+		];
+	}
 	// clang-format on
+
+	return PlatformList;
 }

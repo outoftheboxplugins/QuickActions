@@ -18,15 +18,16 @@ public:
 	SLATE_BEGIN_ARGS(SPackageSelector) {}
 	SLATE_END_ARGS()
 	/**
+	 * @brief Constructs this widget with InArgs
+	 */
+	void Construct(const FArguments& InArgs);
+
+	/**
 	 * @brief Start the packaging process with the currently selected configuration
 	 */
 	void StartPackage();
 
 private:
-	/**
-	 * @brief Constructs this widget with InArgs
-	 */
-	void Construct(const FArguments& InArgs);
 	/**
 	 * @brief Gather the data of the available platforms, binaries and target configurations for the packaging command.
 	 */

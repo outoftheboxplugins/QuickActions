@@ -466,7 +466,7 @@ void SPackageSelector::Construct(const FArguments& InArgs)
 
 		+ SVerticalBox::Slot()
 		[
-			GenerateOptionsWidget(INVTEXT("Target"), TargetSuggestions, TargetIndex)
+			GenerateOptionsWidget(INVTEXT("Target"), TargetOptions, TargetIndex)
 		]
 	];
 	// clang-format on

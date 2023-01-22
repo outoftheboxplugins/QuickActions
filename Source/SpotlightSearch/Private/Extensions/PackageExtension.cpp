@@ -8,6 +8,13 @@ FQuickPackageCommandEntry::FQuickPackageCommandEntry() : FQuickCommandEntry()
 	Icon = FSlateIcon(FAppStyle::Get().GetStyleSetName(), "PlayWorld.RepeatLastLaunch");
 
 	SplitViewWidget = SNew(SPackageSelector);
+
+	ExecuteCallback = FSimpleDelegate::CreateLambda(
+		[=]()
+		{
+			SplitViewWidget->StartPackage();
+		}
+	);
 }
 TSharedPtr<SWidget> FQuickPackageCommandEntry::GetSplitViewWidget()
 {

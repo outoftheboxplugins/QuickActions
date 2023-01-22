@@ -27,4 +27,6 @@ public:
 	int32 TargetIndex = 0;
 
 	TSharedRef<SWidget> GenerateOptions(const FText& Category, const TArray<FString>& Options, int32& CategoryIndex);
+
+	void StartPackage();
 };

@@ -31,7 +31,8 @@ public class SpotlightSearch : ModuleRules
 				"TurnkeySupport",
 				"UndoHistoryEditor",
 				"UnrealEd", 
-				"DeveloperToolSettings",
+				"DeveloperToolSettings", "UATHelper", "TurnkeyIO",
+				"LauncherServices", "Zen"
 		});
 	}
 }

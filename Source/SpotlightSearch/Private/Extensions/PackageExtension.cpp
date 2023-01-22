@@ -5,6 +5,7 @@
 FQuickPackageCommandEntry::FQuickPackageCommandEntry() : FQuickCommandEntry()
 {
 	Title = INVTEXT("Package");
+	Icon = FSlateIcon(FAppStyle::Get().GetStyleSetName(), "PlayWorld.RepeatLastLaunch");
 
 	SplitViewWidget = SNew(SPackageSelector);
 }

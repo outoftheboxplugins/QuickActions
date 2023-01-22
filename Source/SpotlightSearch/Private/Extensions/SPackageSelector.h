@@ -13,20 +13,50 @@ class SPOTLIGHTSEARCH_API SPackageSelector : public SCompoundWidget
 public:
 	SLATE_BEGIN_ARGS(SPackageSelector) {}
 	SLATE_END_ARGS()
-
-	/** Constructs this widget with InArgs */
-	void Construct(const FArguments& InArgs);
-
-	TArray<FString> PlatformSuggestions;
-	int32 PlatformIndex = 0;
-	
-	TArray<FString> BinarySuggestions;
-	int32 BinaryIndex = 0;
-	
-	TArray<FString> TargetSuggestions;
-	int32 TargetIndex = 0;
-
-	TSharedRef<SWidget> GenerateOptions(const FText& Category, const TArray<FString>& Options, int32& CategoryIndex);
-
+	/**
+	 * @brief Start the packaging process with the currently selected configuration
+	 */
 	void StartPackage();
+
+private:
+	/**
+	 * @brief Constructs this widget with InArgs
+	 */
+	void Construct(const FArguments& InArgs);
+	/**
+	 * @brief Gather the data of the available platforms, binaries and target configurations for the packaging command.
+	 */
+	void InitPackagingData();
+	/**
+	 * @brief Generate a radio button list with the options provided
+	 * @param Category Name displayed before the radio buttons
+	 * @param Options Entries for radio buttons
+	 * @param CategoryIndex Variable which keeps track of the currently selected index for the category
+	 * @return Widget containing the title and generated radio buttons.
+	 */
+	TSharedRef<SWidget> GenerateOptionsWidget(const FText& Category, const TArray<FString>& Options, int32& CategoryIndex) const;
+	/**
+	 * @brief All the possible platforms we can package for
+	 */
+	TArray<FString> PlatformSuggestions;
+	/**
+	 * @brief Index of the currently selected platform
+	 */
+	int32 PlatformIndex = 0;
+	/**
+	 * @brief All the possible binary configurations we can package for
+	 */
+	TArray<FString> BinarySuggestions;
+	/**
+	 * @brief Index of the currently selected binary configuration
+	 */
+	int32 BinaryIndex = 0;
+	/**
+	 * @brief All the possible target configurations (Client/Server/Custom) we can package for
+	 */
+	TArray<FString> TargetSuggestions;
+	/**
+	 * @brief Index of the currently selected target configuration
+	 */
+	int32 TargetIndex = 0;
 };

@@ -457,52 +457,61 @@ void SPackageSelector::InitPackagingData()
 {
 	// TODO: The default values should come from either a config or a recent configuration selection.
 
-	for (const TTuple<FName, FDataDrivenPlatformInfo>& Pair : FDataDrivenPlatformInfoRegistry::GetAllPlatformInfos())
+	// Platforms
 	{
-		if (!CanPackageForPlatform(Pair))
+		for (const TTuple<FName, FDataDrivenPlatformInfo>& Pair : FDataDrivenPlatformInfoRegistry::GetAllPlatformInfos())
 		{
-			continue;
-		}
+			if (!CanPackageForPlatform(Pair))
+			{
+				continue;
+			}
 
-		const FName PlatformName = Pair.Key;
-		PlatformSuggestions.Emplace(PlatformName.ToString());
-	}
-
-	const EProjectType ProjectType = DoesProjectHaveCode() ? EProjectType::Code : EProjectType::Content;
-	TArray<EProjectPackagingBuildConfigurations> PackagingConfigurations = UProjectPackagingSettings::GetValidPackageConfigurations();
-	for (EProjectPackagingBuildConfigurations PackagingConfiguration : PackagingConfigurations)
-	{
-		const UProjectPackagingSettings::FConfigurationInfo& ConfigurationInfo = UProjectPackagingSettings::ConfigurationInfo[static_cast<int>(PackagingConfiguration)];
-
-		if (FInstalledPlatformInfo::Get().IsValid(TOptional<EBuildTargetType>(), TOptional<FString>(), ConfigurationInfo.Configuration, ProjectType, EInstalledPlatformState::Downloaded))
-		{
-			BinarySuggestions.Emplace(ConfigurationInfo.Name.ToString());
+			const FName PlatformName = Pair.Key;
+			PlatformSuggestions.Emplace(PlatformName.ToString());
 		}
 	}
 
-	FProjectStatus ProjectStatus;
-	const bool bHasCode = IProjectManager::Get().QueryStatusForCurrentProject(ProjectStatus) && ProjectStatus.bCodeBasedProject;
 
-	const IDesktopPlatform* DesktopPlatform = FDesktopPlatformModule::Get();
-	TArray<FTargetInfo> Targets = bHasCode ? DesktopPlatform->GetTargetsForCurrentProject() : DesktopPlatform->GetTargetsForProject(FString());
-
-	Targets.Sort(
-		[](const FTargetInfo& A, const FTargetInfo& B)
-		{
-			return A.Name < B.Name;
-		}
-	);
-
-	const TArray<FTargetInfo> ValidTargets = Targets.FilterByPredicate(
-		[](const FTargetInfo& Target)
-		{
-			return Target.Type == EBuildTargetType::Game || Target.Type == EBuildTargetType::Client || Target.Type == EBuildTargetType::Server;
-		}
-	);
-
-	for (const FTargetInfo& Target : ValidTargets)
+	// Binaries
 	{
-		TargetSuggestions.Emplace(Target.Name);
+		const EProjectType ProjectType = DoesProjectHaveCode() ? EProjectType::Code : EProjectType::Content;
+		for (EProjectPackagingBuildConfigurations PackagingConfiguration : UProjectPackagingSettings::GetValidPackageConfigurations())
+		{
+			const UProjectPackagingSettings::FConfigurationInfo& ConfigurationInfo = UProjectPackagingSettings::ConfigurationInfo[static_cast<int>(PackagingConfiguration)];
+
+			if (FInstalledPlatformInfo::Get().IsValid(TOptional<EBuildTargetType>(), TOptional<FString>(), ConfigurationInfo.Configuration, ProjectType, EInstalledPlatformState::Downloaded))
+			{
+				BinarySuggestions.Emplace(ConfigurationInfo.Name.ToString());
+			}
+		}
+	}
+
+	// Targets
+	{
+		FProjectStatus ProjectStatus;
+		const bool bHasCode = IProjectManager::Get().QueryStatusForCurrentProject(ProjectStatus) && ProjectStatus.bCodeBasedProject;
+
+		const IDesktopPlatform* DesktopPlatform = FDesktopPlatformModule::Get();
+		TArray<FTargetInfo> Targets = bHasCode ? DesktopPlatform->GetTargetsForCurrentProject() : DesktopPlatform->GetTargetsForProject({});
+
+		Targets.Sort(
+			[](const FTargetInfo& A, const FTargetInfo& B)
+			{
+				return A.Name < B.Name;
+			}
+		);
+
+		const TArray<FTargetInfo> ValidTargets = Targets.FilterByPredicate(
+			[](const FTargetInfo& Target)
+			{
+				return Target.Type == EBuildTargetType::Game || Target.Type == EBuildTargetType::Client || Target.Type == EBuildTargetType::Server;
+			}
+		);
+
+		for (const FTargetInfo& Target : ValidTargets)
+		{
+			TargetSuggestions.Emplace(Target.Name);
+		}
 	}
 }
 

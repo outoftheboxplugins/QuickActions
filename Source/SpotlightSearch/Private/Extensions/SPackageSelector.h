@@ -5,6 +5,10 @@
 #include "CoreMinimal.h"
 #include "Widgets/SCompoundWidget.h"
 
+
+struct FTargetInfo;
+enum class EProjectPackagingBuildConfigurations : uint8;
+
 /**
  *
  */
@@ -38,7 +42,7 @@ private:
 	/**
 	 * @brief All the possible platforms we can package for
 	 */
-	TArray<FString> PlatformSuggestions;
+	TArray<FName> PlatformSuggestions;
 	/**
 	 * @brief Index of the currently selected platform
 	 */
@@ -46,7 +50,7 @@ private:
 	/**
 	 * @brief All the possible binary configurations we can package for
 	 */
-	TArray<FString> BinarySuggestions;
+	TArray<EProjectPackagingBuildConfigurations> BinarySuggestions;
 	/**
 	 * @brief Index of the currently selected binary configuration
 	 */
@@ -54,7 +58,7 @@ private:
 	/**
 	 * @brief All the possible target configurations (Client/Server/Custom) we can package for
 	 */
-	TArray<FString> TargetSuggestions;
+	TArray<FTargetInfo> TargetSuggestions;
 	/**
 	 * @brief Index of the currently selected target configuration
 	 */

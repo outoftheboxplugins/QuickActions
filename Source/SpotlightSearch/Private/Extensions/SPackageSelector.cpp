@@ -431,18 +431,37 @@ void SPackageSelector::Construct(const FArguments& InArgs)
 {
 	InitPackagingData();
 
+	TArray<FString> PlatformOptions;
+	for (const auto& Platform : PlatformSuggestions)
+	{
+		PlatformOptions.Emplace(Platform.ToString());
+	}
+
+	TArray<FString> BinaryOptions;
+	for (const auto& Binary : BinarySuggestions)
+	{
+		const UProjectPackagingSettings::FConfigurationInfo& ConfigurationInfo = UProjectPackagingSettings::ConfigurationInfo[static_cast<int>(Binary)];
+		BinaryOptions.Emplace(ConfigurationInfo.Name.ToString());
+	}
+
+	TArray<FString> TargetOptions;
+	for (const auto& Target : TargetSuggestions)
+	{
+		TargetOptions.Emplace(Target.Name);
+	}
+
 	// clang-format off
 	ChildSlot
 	[
 		SNew(SVerticalBox)
 		+ SVerticalBox::Slot()
 		[
-			GenerateOptionsWidget(INVTEXT("Platforms"), PlatformSuggestions, PlatformIndex)	
+			GenerateOptionsWidget(INVTEXT("Platforms"), PlatformOptions, PlatformIndex)	
 		]
 
 		+ SVerticalBox::Slot()
 		[
-			GenerateOptionsWidget(INVTEXT("Binary"), BinarySuggestions, BinaryIndex)
+			GenerateOptionsWidget(INVTEXT("Binary"), BinaryOptions, BinaryIndex)
 		]
 
 		+ SVerticalBox::Slot()
@@ -481,7 +500,7 @@ void SPackageSelector::InitPackagingData()
 
 			if (FInstalledPlatformInfo::Get().IsValid(TOptional<EBuildTargetType>(), TOptional<FString>(), ConfigurationInfo.Configuration, ProjectType, EInstalledPlatformState::Downloaded))
 			{
-				BinarySuggestions.Emplace(ConfigurationInfo.Name.ToString());
+				BinarySuggestions.Emplace(PackagingConfiguration);
 			}
 		}
 	}
@@ -510,7 +529,7 @@ void SPackageSelector::InitPackagingData()
 
 		for (const FTargetInfo& Target : ValidTargets)
 		{
-			TargetSuggestions.Emplace(Target.Name);
+			TargetSuggestions.Emplace(Target);
 		}
 	}
 }

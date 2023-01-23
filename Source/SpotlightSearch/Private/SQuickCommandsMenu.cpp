@@ -117,6 +117,7 @@ void SQuickCommandsMenu::Construct(const FArguments& InArgs)
 			[
 				SAssignNew(HorizontalBox, SHorizontalBox)
 				+ SHorizontalBox::Slot()
+				.Padding(4.0f, 0.0f)
 				[
 					SAssignNew(ListView, SQuickCommandsListView)
 					.ListItemsSource(&FilteredCommands)

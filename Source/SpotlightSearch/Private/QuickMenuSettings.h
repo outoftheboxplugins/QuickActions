@@ -15,6 +15,8 @@ class QUICKMENU_API UQuickMenuSettings : public UDeveloperSettings
 	GENERATED_BODY()
 
 public:
+	// TODO: Spawn widget in the middle of the UE window, not middle of user screen.
+	// TODO: make use of this variable or remove it
 	/**
 	 * @brief Maximum number of entries we will display under the search bar
 	 */

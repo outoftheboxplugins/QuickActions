@@ -128,6 +128,7 @@ TSharedRef<ITableRow> SQuickCommandsMenu::MakeShowWidget(TSharedRef<FQuickComman
 	return SNew(STableRow<TSharedRef<FQuickCommandEntry>>, OwnerTable)
 			.Style(&FQuickMenuStyle::Get().GetWidgetStyle<FTableRowStyle>("ActionMenuRow"))
 			.IsEnabled_Lambda([bCanExecute](){return bCanExecute;})
+			.ToolTipText(Selection->Tooltip)
 			[
 				SNew(SHorizontalBox)
 
@@ -150,14 +151,21 @@ TSharedRef<ITableRow> SQuickCommandsMenu::MakeShowWidget(TSharedRef<FQuickComman
 				.VAlign(VAlign_Fill)
 				.Padding(0)
 				[
-					SNew(SHorizontalBox)
-					+SHorizontalBox::Slot()
-					.Padding(9, 0, 0, 1)
+					SNew(SVerticalBox)
+					+SVerticalBox::Slot()
+					.FillHeight(1.0f)
 					.VAlign(VAlign_Center)
 					[
 						SNew(STextBlock)
 						.TextStyle(FAppStyle::Get(), "PlacementBrowser.Asset.Name")
 						.Text(Selection->Title)
+					]
+					+SVerticalBox::Slot()
+					[
+						SNew(STextBlock)
+						.TextStyle(FAppStyle::Get(), "ContentBrowser.ClassFont")
+						.Visibility_Lambda([this]{ return ShouldShowDescription() ? EVisibility::Visible : EVisibility::Collapsed; })
+						.Text(Selection->Tooltip)
 					]
 				]
 
@@ -261,6 +269,13 @@ void SQuickCommandsMenu::UpdateSelection(int32 Change)
 		// TODO: make this padding nicer or find a better solution.
 		HorizontalBox->InsertSlot(1).Padding(5.0f, 0.0f)[SplitViewWidget.ToSharedRef()];
 	}
+
+}
+bool SQuickCommandsMenu::ShouldShowDescription() const
+{
+	// TODO: Also create a setting for this.
+	const bool bIsAltPressed = FSlateApplication::Get().GetModifierKeys().IsAltDown();
+	return bIsAltPressed;
 }
 
 bool SQuickCommandsMenu::OnIsActiveChanged(const FWindowActivateEvent& ActivateEvent)

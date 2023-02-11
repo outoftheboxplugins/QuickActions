@@ -30,6 +30,7 @@ private:
 	void CloseWindow();
 	void ConfirmSelection();
 	void UpdateSelection(int32 Change);
+	bool ShouldShowDescription() const;
 
 	virtual bool OnIsActiveChanged(const FWindowActivateEvent& ActivateEvent) override;
 

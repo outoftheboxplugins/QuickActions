@@ -6,7 +6,7 @@
 
 #include "QuickMenuExtension.generated.h"
 
-struct FQuickCommandEntry
+struct SPOTLIGHTSEARCH_API FQuickCommandEntry
 {
 	// TODO: Check if we need to default the move constructor as well
 	FQuickCommandEntry() = default;
@@ -26,7 +26,7 @@ struct FQuickCommandEntry
 	virtual TSharedPtr<SWidget> GetSplitViewWidget() { return {}; };
 };
 
-struct FQuickSwitchCommandEntry : FQuickCommandEntry
+struct SPOTLIGHTSEARCH_API FQuickSwitchCommandEntry : FQuickCommandEntry
 {
 	FQuickSwitchCommandEntry(const TSharedRef<FUICommandInfo>& Command, const TSharedRef<FUICommandList> CommandList, bool bIsEnabled);
 };

@@ -21,6 +21,11 @@
       "Name": "SpotlightSearch",
       "Type": "Editor",
       "LoadingPhase": "Default"
+    },
+    {
+      "Name": "PackagingCommand",
+      "Type": "Editor",
+      "LoadingPhase": "Default"
     }
   ],
   "Plugins": [

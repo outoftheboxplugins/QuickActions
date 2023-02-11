@@ -12,7 +12,7 @@ enum class EProjectPackagingBuildConfigurations : uint8;
 /**
  *
  */
-class SPOTLIGHTSEARCH_API SPackageSelector : public SCompoundWidget
+class SPackageSelector : public SCompoundWidget
 {
 public:
 	SLATE_BEGIN_ARGS(SPackageSelector) {}

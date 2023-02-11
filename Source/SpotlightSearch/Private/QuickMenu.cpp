@@ -4,6 +4,7 @@
 #include <Interfaces/IMainFrameModule.h>
 
 #include "QuickMenuCommands.h"
+#include "QuickMenuStyle.h"
 #include "SQuickCommandsMenu.h"
 
 #define LOCTEXT_NAMESPACE "FQuickMenuModule"
@@ -25,6 +26,8 @@ void FQuickMenuModule::StartupModule()
 void FQuickMenuModule::ShutdownModule()
 {
 	UnregisterQuickCommands();
+
+	FQuickMenuStyle::Shutdown();
 }
 
 void FQuickMenuModule::RegisterQuickCommands()

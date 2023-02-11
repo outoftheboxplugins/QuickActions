@@ -117,7 +117,7 @@ void SQuickCommandsMenu::Construct(const FArguments& InArgs)
 			[
 				SAssignNew(HorizontalBox, SHorizontalBox)
 				+ SHorizontalBox::Slot()
-				.Padding(10.0f, 0.0f)
+				.Padding(5.0f, 0.0f)
 				[
 					SAssignNew(ListView, SQuickCommandsListView)
 					.ListItemsSource(&FilteredCommands)
@@ -274,7 +274,7 @@ void SQuickCommandsMenu::UpdateSelection(int32 Change)
 	}
 	if (SplitViewWidget.IsValid())
 	{
-		HorizontalBox->InsertSlot(1)[SplitViewWidget.ToSharedRef()];
+		HorizontalBox->InsertSlot(1).Padding(5.0f, 0.0f)[SplitViewWidget.ToSharedRef()];
 	}
 }
 

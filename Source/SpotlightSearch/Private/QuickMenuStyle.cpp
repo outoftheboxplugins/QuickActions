@@ -35,18 +35,17 @@ FQuickMenuStyle::FQuickMenuStyle() : FSlateStyleSet(StyleName)
 
 	{
 		const FTableRowStyle TableViewRow = FCoreStyle::Get().GetWidgetStyle<FTableRowStyle>("TableView.Row");
-
 		const FTableRowStyle ActionMenuRow = FTableRowStyle(TableViewRow)
 												 .SetEvenRowBackgroundHoveredBrush(FSlateRoundedBoxBrush(FStyleColors::Panel, 4.0f))
 												 .SetOddRowBackgroundHoveredBrush(FSlateRoundedBoxBrush(FStyleColors::Panel, 4.0f))
-												 // TODO: Test the ones below if they have any impact.
-												 .SetActiveHoveredBrush(FSlateRoundedBoxBrush(FStyleColors::Select, 4.0f, FStyleColors::Select, 1.0f))
-												 .SetActiveHighlightedBrush(FSlateRoundedBoxBrush(FStyleColors::Select, 4.0f, FStyleColors::Select, 1.0f))
 												 .SetInactiveBrush(FSlateRoundedBoxBrush(FStyleColors::Select, 4.0f, FStyleColors::SelectInactive, 1.0f))
 												 .SetInactiveHoveredBrush(FSlateRoundedBoxBrush(FStyleColors::Select, 4.0f, FStyleColors::SelectInactive, 1.0f))
 												 .SetSelectorFocusedBrush(FSlateRoundedBoxBrush(FStyleColors::Select, 4.0f, FStyleColors::Select, 1.0f));
-
 		Set("ActionMenuRow", ActionMenuRow);
+
+		const FEditableTextStyle EditableTextStyle = FCoreStyle::Get().GetWidgetStyle<FEditableTextStyle>("NormalEditableText");
+		const FEditableTextStyle ActionMenuSearchTextStyle = FEditableTextStyle(EditableTextStyle).SetFont(FCoreStyle::GetDefaultFontStyle("Bold", 18));
+		Set("ActionMenuSearchTextStyle", ActionMenuSearchTextStyle);
 	}
 
 	FSlateStyleRegistry::RegisterSlateStyle(*this);

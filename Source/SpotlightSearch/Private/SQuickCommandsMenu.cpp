@@ -4,7 +4,6 @@
 
 #include <Widgets/Layout/SSeparator.h>
 
-#include "Brushes/SlateRoundedBoxBrush.h"
 #include "QuickMenuStyle.h"
 #include "Styling/StyleColors.h"
 
@@ -44,32 +43,27 @@ void SQuickCommandsMenu::Construct(const FArguments& InArgs)
 		Commands.Emplace(Entry.ToSharedRef());
 	}
 
-	static FEditableTextStyle EditableTextBoxStyle = FCoreStyle::Get().GetWidgetStyle<FEditableTextStyle>("NormalEditableText");
-	EditableTextBoxStyle.SetFont(FCoreStyle::GetDefaultFontStyle("Bold", 18));
-
-	static FWindowStyle WindowStyle = FAppStyle::Get().GetWidgetStyle<FWindowStyle>("NotificationWindow");
-
 	// clang-format off
 	SWindow::Construct(SWindow::FArguments()
-	                   .Style(&WindowStyle)
-	                   .CreateTitleBar(false)
-	                   .SizingRule(ESizingRule::FixedSize)
-	                   .ClientSize(FVector2D(680.f, 430.f))
-	                   .SupportsMaximize(false)
-	                   .SupportsMinimize(false)
-	                   .IsPopupWindow(true)
+	.Style(&FAppStyle::Get().GetWidgetStyle<FWindowStyle>("NotificationWindow"))
+	.CreateTitleBar(false)
+	.SizingRule(ESizingRule::FixedSize)
+	.ClientSize(FVector2D(680.f, 430.f))
+	.SupportsMaximize(false)
+	.SupportsMinimize(false)
+	.IsPopupWindow(true)
 	[
 		SNew(SVerticalBox)
 
-		+ SVerticalBox::Slot()
-		  .AutoHeight()
-		  .HAlign(HAlign_Fill)
-		  .Padding(15)
+		+SVerticalBox::Slot()
+		.AutoHeight()
+		.HAlign(HAlign_Fill)
+		.Padding(15)
 		[
 			SNew(SHorizontalBox)
 			+ SHorizontalBox::Slot()
-			  .AutoWidth()
-			  .Padding(2.0f, 2.0f, 6.0f, 2.0f)
+			.AutoWidth()
+			.Padding(2.0f, 2.0f, 6.0f, 2.0f)
 			[
 				SNew(SBox)
 				.WidthOverride(30)
@@ -80,18 +74,18 @@ void SQuickCommandsMenu::Construct(const FArguments& InArgs)
 				]
 			]
 
-			+ SHorizontalBox::Slot()
-			  .FillWidth(1.0)
-			  .VAlign(VAlign_Center)
+			+SHorizontalBox::Slot()
+			.FillWidth(1.0)
+			.VAlign(VAlign_Center)
 			[
 				SAssignNew(EditableText, SEditableText)
 				.OnTextChanged(this, &SQuickCommandsMenu::OnFilterTextChanged)
 				.OnKeyDownHandler(this, &SQuickCommandsMenu::OnSearchKeyDown)
-				.Style(&EditableTextBoxStyle)
+				.Style(&FQuickMenuStyle::Get().GetWidgetStyle<FEditableTextStyle>("ActionMenuSearchTextStyle"))
 			]
 		]
 
-		+ SVerticalBox::Slot()
+		+SVerticalBox::Slot()
 		.AutoHeight()
 		[
 			SNew(SSeparator)
@@ -99,10 +93,10 @@ void SQuickCommandsMenu::Construct(const FArguments& InArgs)
 			.SeparatorImage(FAppStyle::Get().GetBrush("Menu.Separator"))
 		]
 
-		+ SVerticalBox::Slot()
-		  .FillHeight(1)
-		  .Padding(15)
-		  .HAlign(HAlign_Fill)
+		+SVerticalBox::Slot()
+		.FillHeight(1)
+		.Padding(15)
+		.HAlign(HAlign_Fill)
 		[
 			SNew(SBorder)
 			.BorderImage(FAppStyle::GetBrush("Docking.Tab.ContentAreaBrush"))
@@ -134,40 +128,40 @@ TSharedRef<ITableRow> SQuickCommandsMenu::MakeShowWidget(TSharedRef<FQuickComman
 	return SNew(STableRow<TSharedRef<FQuickCommandEntry>>, OwnerTable)
 			.Style(&FQuickMenuStyle::Get().GetWidgetStyle<FTableRowStyle>("ActionMenuRow"))
 			.IsEnabled_Lambda([bCanExecute](){return bCanExecute;})
-	       [
-		       SNew(SHorizontalBox)
+			[
+				SNew(SHorizontalBox)
 
-		       + SHorizontalBox::Slot()
-		       .Padding(8.0f, 4.f)
-		       .AutoWidth()
-		       .HAlign(HAlign_Center)
-		       .VAlign(VAlign_Center)
-		       [
-			       SNew(SBox)
+				+SHorizontalBox::Slot()
+				.Padding(8.0f, 4.f)
+				.AutoWidth()
+				.HAlign(HAlign_Center)
+				.VAlign(VAlign_Center)
+				[
+					SNew(SBox)
 					.WidthOverride(30)
 					.HeightOverride(30)
-			       [
-				       SNew(SImage)
-				       .Image(Selection->Icon.Get().GetIcon()) 
-			       ]
-		       ]
+					[
+						SNew(SImage)
+						.Image(Selection->Icon.Get().GetIcon())
+					]
+				]
 
-		       + SHorizontalBox::Slot()
-		       .VAlign(VAlign_Fill)
-		       .Padding(0)
-		       [
-			       SNew(SHorizontalBox)
-			       + SHorizontalBox::Slot()
-			       .Padding(9, 0, 0, 1)
-			       .VAlign(VAlign_Center)
-			       [
+				+SHorizontalBox::Slot()
+				.VAlign(VAlign_Fill)
+				.Padding(0)
+				[
+					SNew(SHorizontalBox)
+					+SHorizontalBox::Slot()
+					.Padding(9, 0, 0, 1)
+					.VAlign(VAlign_Center)
+					[
 						SNew(STextBlock)
 						.TextStyle(FAppStyle::Get(), "PlacementBrowser.Asset.Name")
 						.Text(Selection->Title)
-			       ]
-		       ]
+					]
+				]
 
-				+ SHorizontalBox::Slot()
+				+SHorizontalBox::Slot()
 				.Padding(8.0f, 4.f)
 				.AutoWidth()
 				.HAlign(HAlign_Center)
@@ -177,7 +171,7 @@ TSharedRef<ITableRow> SQuickCommandsMenu::MakeShowWidget(TSharedRef<FQuickComman
 					.TextStyle(FAppStyle::Get(), "Menu.Keybinding")
 					.Text(Selection->InputText)
 				]
-		   ];
+			];
 	// clang-format on
 }
 

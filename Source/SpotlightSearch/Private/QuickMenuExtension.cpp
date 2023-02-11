@@ -8,6 +8,7 @@ FQuickCommandEntry::FQuickCommandEntry(const TSharedRef<FUICommandInfo>& Command
 {
 	Title = Command->GetLabel();
 	Tooltip = Command->GetDescription();
+	InputText = Command->GetInputText();
 	Icon = Command->GetIcon();
 
 	// TODO: Refactor this to take in a context and use InContext.GetActionForCommand(Command, OutCommandList);

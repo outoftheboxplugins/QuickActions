@@ -16,6 +16,7 @@ struct SPOTLIGHTSEARCH_API FQuickCommandEntry
 
 	TAttribute<FText> Title;
 	TAttribute<FText> Tooltip;
+	TAttribute<FText> InputText;
 	TAttribute<FSlateIcon> Icon;
 
 	FSimpleDelegate ExecuteCallback;

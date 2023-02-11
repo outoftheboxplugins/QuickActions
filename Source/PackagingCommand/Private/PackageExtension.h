@@ -13,7 +13,7 @@ struct FQuickPackageCommandEntry : FQuickCommandEntry
 
 	virtual TSharedPtr<SWidget> GetSplitViewWidget() override;
 
-	TSharedRef<SPackageSelector> SplitViewWidget;
+	TSharedPtr<SPackageSelector> SplitViewWidget;
 };
 
 

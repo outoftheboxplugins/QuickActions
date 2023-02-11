@@ -187,7 +187,17 @@ TSharedRef<ITableRow> SQuickCommandsMenu::MakeShowWidget(TSharedRef<FQuickComman
 						.Text(Selection->Title)
 			       ]
 		       ]
-	       ];
+
+				+ SHorizontalBox::Slot()
+				.Padding(8.0f, 4.f)
+				.AutoWidth()
+				.HAlign(HAlign_Center)
+				.VAlign(VAlign_Bottom)
+				[
+					SNew(STextBlock)
+					.Text(Selection->InputText)
+				]
+		   ];
 	// clang-format on
 }
 

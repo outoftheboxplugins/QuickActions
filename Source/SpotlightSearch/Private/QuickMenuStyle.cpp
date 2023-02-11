@@ -39,7 +39,7 @@ FQuickMenuStyle::FQuickMenuStyle() : FSlateStyleSet(StyleName)
 		const FTableRowStyle ActionMenuRow = FTableRowStyle(TableViewRow)
 												 .SetEvenRowBackgroundHoveredBrush(FSlateRoundedBoxBrush(FStyleColors::Panel, 4.0f))
 												 .SetOddRowBackgroundHoveredBrush(FSlateRoundedBoxBrush(FStyleColors::Panel, 4.0f))
-												 .SetActiveBrush(FSlateRoundedBoxBrush(FStyleColors::Select, 4.0f, FStyleColors::Select, 1.0f))
+												 // TODO: Test the ones below if they have any impact.
 												 .SetActiveHoveredBrush(FSlateRoundedBoxBrush(FStyleColors::Select, 4.0f, FStyleColors::Select, 1.0f))
 												 .SetActiveHighlightedBrush(FSlateRoundedBoxBrush(FStyleColors::Select, 4.0f, FStyleColors::Select, 1.0f))
 												 .SetInactiveBrush(FSlateRoundedBoxBrush(FStyleColors::Select, 4.0f, FStyleColors::SelectInactive, 1.0f))

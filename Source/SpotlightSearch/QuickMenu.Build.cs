@@ -16,6 +16,7 @@ public class QuickMenu : ModuleRules
 				"EditorStyle",
 				"EditorSubsystem", 
 				"Engine",
+				"GeometryCollectionEditor", 
 				"InputCore",
 				"Landscape",
 				"LevelEditor",

@@ -20,6 +20,7 @@ public class QuickMenu : ModuleRules
 				"Landscape",
 				"LevelEditor",
 				"MainFrame", 
+				"Projects",
 				"Slate",
 				"SlateCore",
 				"ToolMenus",

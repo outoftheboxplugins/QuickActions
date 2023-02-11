@@ -5,6 +5,7 @@
 #include <Widgets/Layout/SSeparator.h>
 
 #include "Brushes/SlateRoundedBoxBrush.h"
+#include "QuickMenuStyle.h"
 #include "Styling/StyleColors.h"
 
 #define LOCTEXT_NAMESPACE "FQuickMenuModule"
@@ -45,14 +46,6 @@ void SQuickCommandsMenu::Construct(const FArguments& InArgs)
 
 	static FEditableTextStyle EditableTextBoxStyle = FCoreStyle::Get().GetWidgetStyle<FEditableTextStyle>("NormalEditableText");
 	EditableTextBoxStyle.SetFont(FCoreStyle::GetDefaultFontStyle("Bold", 18));
-
-	// static FWindowStyle WindowStyle = FCoreStyle::Get().GetWidgetStyle<FWindowStyle>("Window");
-	// WindowStyle.SetBackgroundBrush(FSlateColorBrush(FStyleColors::Recessed))
-	// 	.SetBorderBrush(FSlateRoundedBoxBrush(FStyleColors::Recessed, 2.0f, FStyleColors::WindowBorder, 2.0f))
-	// 	.SetOutlineBrush(FSlateRoundedBoxBrush(FStyleColors::Recessed, 2.0f, FStyleColors::InputOutline, 1.0f))
-	// 	.SetChildBackgroundBrush(FSlateColorBrush(FStyleColors::Recessed))
-	// 	.SetCornerRadius(36)
-	// 	.SetBorderPadding(FMargin(3.0f, 3.0f, 3.0f, 3.0f));
 
 	static FWindowStyle WindowStyle = FAppStyle::Get().GetWidgetStyle<FWindowStyle>("NotificationWindow");
 
@@ -135,25 +128,11 @@ void SQuickCommandsMenu::Construct(const FArguments& InArgs)
 
 TSharedRef<ITableRow> SQuickCommandsMenu::MakeShowWidget(TSharedRef<FQuickCommandEntry> Selection, const TSharedRef<STableViewBase>& OwnerTable)
 {
-	static FTableRowStyle TableRowStyle = FCoreStyle::Get().GetWidgetStyle<FTableRowStyle>("TableView.Row");
-	TableRowStyle.SetEvenRowBackgroundBrush(FSlateNoResource())
-		.SetEvenRowBackgroundHoveredBrush(FSlateRoundedBoxBrush(FStyleColors::Panel, 4.0f))
-		.SetOddRowBackgroundBrush(FSlateNoResource())
-		.SetOddRowBackgroundHoveredBrush(FSlateRoundedBoxBrush(FStyleColors::Panel, 4.0f))
-		.SetSelectorFocusedBrush(FSlateRoundedBoxBrush(FStyleColors::Select, 4.0f, FStyleColors::Select, 1.0f))
-		.SetActiveBrush(FSlateRoundedBoxBrush(FStyleColors::Select, 4.0f, FStyleColors::Select, 1.0f))
-		.SetActiveHoveredBrush(FSlateRoundedBoxBrush(FStyleColors::Select, 4.0f, FStyleColors::Select, 1.0f))
-		.SetInactiveBrush(FSlateRoundedBoxBrush(FStyleColors::Select, 4.0f, FStyleColors::SelectInactive, 1.0f))
-		.SetInactiveHoveredBrush(FSlateRoundedBoxBrush(FStyleColors::Select, 4.0f, FStyleColors::SelectInactive, 1.0f))
-		.SetTextColor(FStyleColors::Foreground)
-		.SetActiveHighlightedBrush(FSlateRoundedBoxBrush(FStyleColors::Select, 4.0f, FStyleColors::Select, 1.0f))
-		.SetSelectedTextColor(FStyleColors::Foreground);
-
 	const bool bCanExecute = Selection->IsAllowedToExecute();
 
 	// clang-format off
 	return SNew(STableRow<TSharedRef<FQuickCommandEntry>>, OwnerTable)
-			.Style(&TableRowStyle)
+			.Style(&FQuickMenuStyle::Get().GetWidgetStyle<FTableRowStyle>("ActionMenuRow"))
 			.IsEnabled_Lambda([bCanExecute](){return bCanExecute;})
 	       [
 		       SNew(SHorizontalBox)
@@ -217,6 +196,7 @@ FReply SQuickCommandsMenu::OnSearchKeyDown(const FGeometry& MyGeometry, const FK
 
 	return FReply::Unhandled();
 }
+
 FReply SQuickCommandsMenu::OnPreviewKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
 {
 	if (InKeyEvent.GetKey() == EKeys::Enter)
@@ -267,7 +247,6 @@ void SQuickCommandsMenu::UpdateSelection(int32 Change)
 {
 	if (FilteredCommands.IsEmpty())
 	{
-		// No entries to go through
 		return;
 	}
 
@@ -285,6 +264,7 @@ void SQuickCommandsMenu::UpdateSelection(int32 Change)
 	}
 	if (SplitViewWidget.IsValid())
 	{
+		// TODO: make this padding nicer or find a better solution.
 		HorizontalBox->InsertSlot(1).Padding(5.0f, 0.0f)[SplitViewWidget.ToSharedRef()];
 	}
 }
@@ -301,6 +281,7 @@ bool SQuickCommandsMenu::OnIsActiveChanged(const FWindowActivateEvent& ActivateE
 
 EActiveTimerReturnType SQuickCommandsMenu::SetFocusPostConstruct(double InCurrentTime, float InDeltaTime)
 {
+	// TODO: Is this function even needed?
 	if (EditableText.IsValid())
 	{
 		FWidgetPath WidgetToFocusPath;

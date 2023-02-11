@@ -195,6 +195,7 @@ TSharedRef<ITableRow> SQuickCommandsMenu::MakeShowWidget(TSharedRef<FQuickComman
 				.VAlign(VAlign_Bottom)
 				[
 					SNew(STextBlock)
+					.TextStyle(FAppStyle::Get(), "Menu.Keybinding")
 					.Text(Selection->InputText)
 				]
 		   ];

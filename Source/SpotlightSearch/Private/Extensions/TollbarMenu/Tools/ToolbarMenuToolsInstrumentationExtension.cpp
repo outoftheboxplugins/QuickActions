@@ -108,6 +108,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsInstrumentationExtension
 	WidgetReflector->Title = NSLOCTEXT("FSlateReflectorModuleImpl", "WidgetReflectorTitle", "Widget Reflector");
 	WidgetReflector->Tooltip = NSLOCTEXT("FSlateReflectorModuleImpl", "WidgetReflectorTooltipText", "Open the Widget Reflector tab.");
 	WidgetReflector->Icon = FSlateIcon(FName(TEXT("WidgetReflectorStyleStyle")), "WidgetReflector.TabIcon");
+	WidgetReflector->InputText = FInputChord(FInputChord(EModifierKey::Shift | EModifierKey::Control, EKeys::W)).GetInputText();
 	WidgetReflector->ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()
 		{

@@ -21,10 +21,10 @@ void SQuickCommandsMenu::OnFilterTextChanged(const FText& Text)
 {
 	FilteredCommands.Empty();
 
+	const UQuickMenuDiscoverySubsystem* DiscoverySubsystem = GEditor->GetEditorSubsystem<UQuickMenuDiscoverySubsystem>();
 	for (const auto& Command : Commands)
 	{
-		FString CommandTitle = Command->Title.Get().ToString();
-		if (Text.IsEmpty() || CommandTitle.Contains(Text.ToString()))
+		if (DiscoverySubsystem->ShouldDisplayCommand(Text.ToString(), Command))
 		{
 			FilteredCommands.Add(Command);
 		}
@@ -269,7 +269,6 @@ void SQuickCommandsMenu::UpdateSelection(int32 Change)
 		// TODO: make this padding nicer or find a better solution.
 		HorizontalBox->InsertSlot(1).Padding(5.0f, 0.0f)[SplitViewWidget.ToSharedRef()];
 	}
-
 }
 bool SQuickCommandsMenu::ShouldShowDescription() const
 {

@@ -4,6 +4,8 @@
 
 #include <Interfaces/IMainFrameModule.h>
 
+#include "QuickMenuHelpers.h"
+
 #define LOCTEXT_NAMESPACE "QuickActions"
 
 TAutoConsoleVariable<FString> CVarQuickActionFilter(TEXT("QuickActions.FilterExtensions"), TEXT(""), TEXT("If set, only extensions with this string in their name will be displayed."));
@@ -11,13 +13,21 @@ TAutoConsoleVariable<FString> CVarQuickActionFilter(TEXT("QuickActions.FilterExt
 TArray<TSharedPtr<FQuickCommandEntry>> UQuickMenuDiscoverySubsystem::GetAllCommands() const
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(UQuickMenuDiscoverySubsystem::GetAllCommands);
-	
+
 	TArray<TSharedPtr<FQuickCommandEntry>> Result;
 
 	GatherCommandsInternal(Result);
 	OnDiscoverCommands.Broadcast(Result);
 
 	return Result;
+}
+bool UQuickMenuDiscoverySubsystem::ShouldDisplayCommand(const FString& InputPattern, const TSharedPtr<FQuickCommandEntry>& Command) const
+{
+	// TODO: Consider using a cache for this?
+	// TODO: Should we consider having keywords?
+
+	const FString& CommandTitle = Command->Title.Get().ToString();
+	return QuickMenuHelpers::StringHasPatternInside(InputPattern, CommandTitle);
 }
 
 void UQuickMenuDiscoverySubsystem::Initialize(FSubsystemCollectionBase& Collection)
@@ -33,7 +43,7 @@ void UQuickMenuDiscoverySubsystem::Deinitialize()
 void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands) const
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(UQuickMenuDiscoverySubsystem::GatherCommandsInternal);
-	
+
 	const FString NameFilterValue = CVarQuickActionFilter.GetValueOnAnyThread();
 
 	TArray<UQuickMenuExtension*> Extensions;

@@ -12,7 +12,7 @@
  *
  */
 UCLASS()
-class SPOTLIGHTSEARCH_API UQuickMenuDiscoverySubsystem : public UEditorSubsystem
+class QUICKMENU_API UQuickMenuDiscoverySubsystem : public UEditorSubsystem
 {
 	GENERATED_BODY()
 

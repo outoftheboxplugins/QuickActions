@@ -10,7 +10,7 @@
  *
  */
 UCLASS(config = Editor, defaultconfig)
-class SPOTLIGHTSEARCH_API UQuickMenuSettings : public UDeveloperSettings
+class QUICKMENU_API UQuickMenuSettings : public UDeveloperSettings
 {
 	GENERATED_BODY()
 

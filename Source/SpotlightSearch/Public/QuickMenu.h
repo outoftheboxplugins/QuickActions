@@ -5,7 +5,7 @@
 #include <LevelEditor.h>
 #include <Modules/ModuleManager.h>
 
-class FSpotlightSearchModule : public IModuleInterface
+class FQuickMenuModule : public IModuleInterface
 {
 private:
 	// Begin IModuleInterface interface

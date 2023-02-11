@@ -1,8 +1,8 @@
 ﻿using UnrealBuildTool;
 
-public class SpotlightSearch : ModuleRules
+public class QuickMenu : ModuleRules
 {
-	public SpotlightSearch(ReadOnlyTargetRules Target) : base(Target)
+	public QuickMenu(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 

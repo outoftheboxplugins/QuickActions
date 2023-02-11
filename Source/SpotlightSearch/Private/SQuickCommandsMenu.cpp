@@ -7,7 +7,7 @@
 #include "Brushes/SlateRoundedBoxBrush.h"
 #include "Styling/StyleColors.h"
 
-#define LOCTEXT_NAMESPACE "FSpotlightSearchModule"
+#define LOCTEXT_NAMESPACE "FQuickMenuModule"
 
 namespace
 {

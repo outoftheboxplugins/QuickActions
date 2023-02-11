@@ -4,9 +4,9 @@
 
 #include <EditorStyleSet.h>
 
-#define LOCTEXT_NAMESPACE "FSpotlightSearchModule"
+#define LOCTEXT_NAMESPACE "FQuickMenuModule"
 
-FQuickMenuCommands::FQuickMenuCommands() : TCommands<FQuickMenuCommands>(TEXT("SpotlightSearch"), LOCTEXT("QuickCommands", "Quick Commands"), NAME_None, FAppStyle::GetAppStyleSetName())
+FQuickMenuCommands::FQuickMenuCommands() : TCommands<FQuickMenuCommands>(TEXT("QuickMenu"), LOCTEXT("QuickCommands", "Quick Commands"), NAME_None, FAppStyle::GetAppStyleSetName())
 {
 }
 

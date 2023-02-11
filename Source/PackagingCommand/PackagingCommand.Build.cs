@@ -29,7 +29,7 @@ public class PackagingCommand : ModuleRules
                 "LevelEditor",
                 "Slate",
                 "SlateCore", 
-                "SpotlightSearch",
+                "QuickMenu",
                 "TurnkeyIO",
                 "UATHelper",
                 "UnrealEd",

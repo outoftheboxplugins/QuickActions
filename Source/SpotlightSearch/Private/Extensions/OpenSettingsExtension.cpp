@@ -43,7 +43,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UOpenSettingsExtension::GetCommands(const
 			TArray<TSharedPtr<ISettingsSection>> AllSections;
 			Category->GetSections(AllSections);
 
-			for (const TSharedPtr<ISettingsSection> Section : AllSections)
+			for (const TSharedPtr<ISettingsSection>& Section : AllSections)
 			{
 				// TODO: When we introduce keywords or matching callbacks all of those values should trigger matches
 				const FName ContainerName = Container->GetName();

@@ -35,18 +35,15 @@ BreakConstructorInitializers: AfterColon
 ColumnLimit: 200 
 IncludeBlocks: Regroup
 IncludeCategories:
-  - Regex: '^<ext/.*\.h>'
-    Priority: 2
-    SortPriority: 0
+  - Regex: '.*\.generated\.h'
+    Priority: 10 
+    SortPriority: 10
   - Regex: '^<.*\.h>'
     Priority: 1
-    SortPriority: 0
-  - Regex: '^<.*'
-    Priority: 2
-    SortPriority: 0
+    SortPriority: 1
   - Regex: '.*'
-    Priority: 3
-    SortPriority: 0
+    Priority: 2
+    SortPriority: 2
 IncludeIsMainRegex: '([-_](test|unittest))?$'
 IncludeIsMainSourceRegex: ''
 IndentCaseBlocks: true

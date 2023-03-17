@@ -26,14 +26,19 @@ private:
 
 private:
 	FReply OnSearchKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent);
+	virtual FReply OnPreviewKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent) override;
 	void CloseWindow();
 	void ConfirmSelection();
 	void UpdateSelection(int32 Change);
+	bool ShouldShowDescription() const;
 
 	virtual bool OnIsActiveChanged(const FWindowActivateEvent& ActivateEvent) override;
 
 	int32 SelectionIndex = 0;
+	TSharedPtr<SHorizontalBox> HorizontalBox;
 	TSharedPtr<SQuickCommandsListView> ListView;
 	TArray<TSharedRef<FQuickCommandEntry>> Commands;
 	TArray<TSharedRef<FQuickCommandEntry>> FilteredCommands;
+	
+	bool bWasClosed = false;
 };

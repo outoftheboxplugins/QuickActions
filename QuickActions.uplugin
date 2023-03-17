@@ -13,14 +13,12 @@
   "CanContainContent": false,
   "Modules": [
     {
-      "Name": "ViewportExtensions",
-      "Type": "Editor",
-      "LoadingPhase": "Default"
-    },
-    {
-      "Name": "SpotlightSearch",
+      "Name": "QuickMenu",
       "Type": "Editor",
       "LoadingPhase": "Default"
     }
+  ],
+  "Plugins": [
+    "GeometryCollectionPlugin"
   ]
 }

@@ -1,8 +1,8 @@
 ﻿using UnrealBuildTool;
 
-public class SpotlightSearch : ModuleRules
+public class QuickMenu : ModuleRules
 {
-	public SpotlightSearch(ReadOnlyTargetRules Target) : base(Target)
+	public QuickMenu(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 
@@ -14,16 +14,21 @@ public class SpotlightSearch : ModuleRules
 				"CoreUObject",
 				"DeveloperSettings",
 				"EditorStyle",
+				"EditorSubsystem", 
 				"Engine",
+				"GeometryCollectionEditor", 
 				"InputCore",
+				"Landscape",
 				"LevelEditor",
 				"MainFrame", 
+				"Projects",
 				"Slate",
 				"SlateCore",
 				"ToolMenus",
 				"ToolWidgets", 
+				"UndoHistoryEditor",
 				"UnrealEd", 
-				"EditorSubsystem",
+				"MergeActors", 
 		});
 	}
 }

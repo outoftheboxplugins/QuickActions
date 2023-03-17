@@ -1,13 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "ToolbarMenuActorUETools.h"
-
 #include <IMergeActorsModule.h>
 
 #include "IMergeActorsTool.h"
+#include "ToolbarMenuActorUEToolsExtension.h"
 
-TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuActorUETools::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuActorUEToolsExtension::GetCommands(const FToolMenuContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 

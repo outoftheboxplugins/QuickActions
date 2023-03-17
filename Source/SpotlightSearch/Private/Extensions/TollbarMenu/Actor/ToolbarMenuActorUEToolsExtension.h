@@ -4,13 +4,13 @@
 
 #include "QuickMenuExtension.h"
 
-#include "ToolbarMenuActorUETools.generated.h"
+#include "ToolbarMenuActorUEToolsExtension.generated.h"
 
 /**
  * Add entries from the main frame toolbar -> Actor menu -> UE Tools section
  */
 UCLASS()
-class UToolbarMenuActorUETools : public UQuickMenuExtension
+class UToolbarMenuActorUEToolsExtension : public UQuickMenuExtension
 {
 	GENERATED_BODY()
 

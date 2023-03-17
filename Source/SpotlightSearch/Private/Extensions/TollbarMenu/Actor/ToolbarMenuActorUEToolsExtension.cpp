@@ -1,5 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
+﻿// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
 
 #include <IMergeActorsModule.h>
 

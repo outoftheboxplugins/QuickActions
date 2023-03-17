@@ -28,6 +28,7 @@ public class QuickMenu : ModuleRules
 				"ToolWidgets", 
 				"UndoHistoryEditor",
 				"UnrealEd", 
+				"MergeActors", 
 		});
 	}
 }

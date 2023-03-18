@@ -3,7 +3,6 @@
 [![Plugin CI](https://github.com/outoftheboxplugins/QuickActions/actions/workflows/plugin-ci.yml/badge.svg)](https://github.com/outoftheboxplugins/QuickActions/actions/workflows/plugin-ci.yml)
 [![License: MIT](https://img.shields.io/github/license/CyberAndrii/steam-totp?label=License)](LICENSE)
 
-
-Add the options from the toolbar `Select` menu inside the Viewport's context menu.
-
-![added all buttons](https://user-images.githubusercontent.com/21221169/199983109-c9019460-ac55-4615-8fde-531ce5e6acfe.png)
+Marketplace (to come)
+[Documentation](http://quickactions.outofthebox-plugins.com/)
+[Issues](https://github.com/outoftheboxplugins/QuickActions-docs/issues)

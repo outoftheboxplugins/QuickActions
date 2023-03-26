@@ -57,15 +57,6 @@ void SQuickCommandsMenu::OnFilterTextChanged(const FText& Text)
 		}
 	}
 
-	// const UQuickMenuDiscoverySubsystem* DiscoverySubsystem = GEditor->GetEditorSubsystem<UQuickMenuDiscoverySubsystem>();
-	// for (const auto& Command : Commands)
-	//{
-	//	if (DiscoverySubsystem->ShouldDisplayCommand(Text.ToString(), Command))
-	//	{
-	//		FilteredCommands.Add(Command);
-	//	}
-	// }
-
 	ListView->RequestListRefresh();
 	UpdateSelection(0);
 }

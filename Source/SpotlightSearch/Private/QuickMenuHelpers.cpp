@@ -1,4 +1,6 @@
-﻿#include "QuickMenuHelpers.h"
+﻿// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
+
+#include "QuickMenuHelpers.h"
 
 namespace
 {
@@ -32,21 +34,4 @@ bool QuickMenuHelpers::IsStartingWith(const FString& Candidate, const FString& S
 bool QuickMenuHelpers::IsCloseTo(const FString& Candidate, const FString& Search)
 {
 	return Candidate.Contains(Search, ESearchCase::IgnoreCase);
-}
-
-bool QuickMenuHelpers::StringHasPatternInside(const FString& Pattern, const FString& String)
-{
-	TArray<TCHAR> PatternElements = Pattern.GetCharArray();
-	for (const TCHAR& Element : PatternElements)
-	{
-		TCHAR LowerChar = FChar::ToLower(Element);
-		TCHAR UpperChar = FChar::ToUpper(Element);
-
-		if (!FindCharInString(LowerChar, String) && !FindCharInString(UpperChar, String))
-		{
-			return false;
-		}
-	}
-
-	return true;
 }

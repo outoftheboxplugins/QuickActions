@@ -20,7 +20,6 @@ public:
 	TMulticastDelegate<void(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands)> OnDiscoverCommands;
 
 	TArray<TSharedPtr<FQuickCommandEntry>> GetAllCommands() const;
-	bool ShouldDisplayCommand(const FString& InputPattern, const TSharedPtr<FQuickCommandEntry>& Command) const;
 
 private:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;

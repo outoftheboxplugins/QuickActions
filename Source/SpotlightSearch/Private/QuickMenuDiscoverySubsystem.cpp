@@ -21,14 +21,6 @@ TArray<TSharedPtr<FQuickCommandEntry>> UQuickMenuDiscoverySubsystem::GetAllComma
 
 	return Result;
 }
-bool UQuickMenuDiscoverySubsystem::ShouldDisplayCommand(const FString& InputPattern, const TSharedPtr<FQuickCommandEntry>& Command) const
-{
-	// TODO: Consider using a cache for this?
-	// TODO: Should we consider having keywords?
-
-	const FString& CommandTitle = Command->Title.Get().ToString();
-	return QuickMenuHelpers::StringHasPatternInside(InputPattern, CommandTitle);
-}
 
 void UQuickMenuDiscoverySubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {

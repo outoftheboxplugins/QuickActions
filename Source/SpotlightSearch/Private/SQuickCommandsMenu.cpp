@@ -4,6 +4,7 @@
 
 #include <Widgets/Layout/SSeparator.h>
 
+#include "QuickMenuHelpers.h"
 #include "QuickMenuStyle.h"
 #include "Styling/StyleColors.h"
 
@@ -21,14 +22,49 @@ void SQuickCommandsMenu::OnFilterTextChanged(const FText& Text)
 {
 	FilteredCommands.Empty();
 
-	const UQuickMenuDiscoverySubsystem* DiscoverySubsystem = GEditor->GetEditorSubsystem<UQuickMenuDiscoverySubsystem>();
-	for (const auto& Command : Commands)
+	TArray<TSharedRef<FQuickCommandEntry>> AvailableCommands = Commands;
+
+	// First get all the abbreviations
+	for (auto It = AvailableCommands.CreateIterator(); It; ++It)
 	{
-		if (DiscoverySubsystem->ShouldDisplayCommand(Text.ToString(), Command))
+		TSharedRef<FQuickCommandEntry> Command = *It;
+		if (QuickMenuHelpers::IsAbbreviation(Command->GetCommandName(), Text.ToString()))
 		{
-			FilteredCommands.Add(Command);
+			FilteredCommands.Add(*It);
+			It.RemoveCurrent();
 		}
 	}
+
+	// Second get the perfect matches
+	for (auto It = AvailableCommands.CreateIterator(); It; ++It)
+	{
+		TSharedRef<FQuickCommandEntry> Command = *It;
+		if (QuickMenuHelpers::IsStartingWith(Command->GetCommandName(), Text.ToString()))
+		{
+			FilteredCommands.Add(*It);
+			It.RemoveCurrent();
+		}
+	}
+
+	// Third get fuzzy entries
+	for (auto It = AvailableCommands.CreateIterator(); It; ++It)
+	{
+		TSharedRef<FQuickCommandEntry> Command = *It;
+		if (QuickMenuHelpers::IsCloseTo(Command->GetCommandName(), Text.ToString()))
+		{
+			FilteredCommands.Add(*It);
+			It.RemoveCurrent();
+		}
+	}
+
+	// const UQuickMenuDiscoverySubsystem* DiscoverySubsystem = GEditor->GetEditorSubsystem<UQuickMenuDiscoverySubsystem>();
+	// for (const auto& Command : Commands)
+	//{
+	//	if (DiscoverySubsystem->ShouldDisplayCommand(Text.ToString(), Command))
+	//	{
+	//		FilteredCommands.Add(Command);
+	//	}
+	// }
 
 	ListView->RequestListRefresh();
 	UpdateSelection(0);

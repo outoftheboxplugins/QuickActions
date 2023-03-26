@@ -10,6 +10,30 @@ namespace
 	}
 } // namespace
 
+bool QuickMenuHelpers::IsAbbreviation(const FString& Candidate, const FString& Search)
+{
+	TArray<FString> Words;
+	Candidate.ParseIntoArray(Words, TEXT(" "), true);
+
+	FString Abbreviation;
+	for (const FString& Word : Words)
+	{
+		Abbreviation.AppendChar(Word[0]);
+	}
+
+	return Abbreviation.Equals(Search, ESearchCase::IgnoreCase);
+}
+
+bool QuickMenuHelpers::IsStartingWith(const FString& Candidate, const FString& Search)
+{
+	return Candidate.StartsWith(Search, ESearchCase::IgnoreCase);
+}
+
+bool QuickMenuHelpers::IsCloseTo(const FString& Candidate, const FString& Search)
+{
+	return Candidate.Contains(Search, ESearchCase::IgnoreCase);
+}
+
 bool QuickMenuHelpers::StringHasPatternInside(const FString& Pattern, const FString& String)
 {
 	TArray<TCHAR> PatternElements = Pattern.GetCharArray();

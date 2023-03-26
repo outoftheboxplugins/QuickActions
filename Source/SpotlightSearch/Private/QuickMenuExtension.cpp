@@ -1,4 +1,4 @@
-﻿// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
+// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
 
 #include "QuickMenuExtension.h"
 
@@ -43,6 +43,10 @@ bool FQuickCommandEntry::IsAllowedToExecute() const
 	}
 
 	return CanExecuteCallback.Execute();
+}
+FString FQuickCommandEntry::GetCommandName() const
+{
+	return Title.Get().ToString();
 }
 
 FQuickSwitchCommandEntry::FQuickSwitchCommandEntry(const TSharedRef<FUICommandInfo>& Command, const TSharedRef<FUICommandList> CommandList, bool bIsEnabled) : FQuickCommandEntry(Command, CommandList)

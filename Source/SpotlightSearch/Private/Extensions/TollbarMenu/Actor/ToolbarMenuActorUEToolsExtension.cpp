@@ -1,9 +1,10 @@
 ﻿// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
 
+#include "ToolbarMenuActorUEToolsExtension.h"
+
 #include <IMergeActorsModule.h>
 
 #include "IMergeActorsTool.h"
-#include "ToolbarMenuActorUEToolsExtension.h"
 
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuActorUEToolsExtension::GetCommands(const FToolMenuContext& Context)
 {

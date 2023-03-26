@@ -2,6 +2,24 @@
 
 #include "QuickMenuSettings.h"
 
+void UQuickMenuSettings::RegisterRecentCommand(const FString& CommandName)
+{
+	// Remove from the list so we can re-add it on top
+	RecentCommands.Remove(CommandName);
+
+	// Always add latest command on top.
+	RecentCommands.EmplaceAt(0, CommandName);
+
+	RecentCommands.SetNum(MaxRecentCommands);
+
+	SaveConfig();
+}
+
+const TArray<FString>& UQuickMenuSettings::GetRecentCommands() const
+{
+	return RecentCommands;
+}
+
 FName UQuickMenuSettings::GetContainerName() const
 {
 	return TEXT("Editor");

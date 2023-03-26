@@ -16,18 +16,25 @@ class QUICKMENU_API UQuickMenuSettings : public UDeveloperSettings
 
 public:
 	// TODO: Spawn widget in the middle of the UE window, not middle of user screen.
-	// TODO: make use of this variable or remove it
-	/**
-	 * @brief Maximum number of entries we will display under the search bar
-	 */
-	UPROPERTY(EditAnywhere, Category = Customization, config)
-	int32 MaxEntriesToShow = 10;
-
 	UPROPERTY(EditAnywhere, Category = Customization, config)
 	bool bIncludeTutorials = true;
 
 	UPROPERTY(EditAnywhere, Category = Customization, config)
 	bool bIncludeSettingSections = true;
+
+	void RegisterRecentCommand(const FString& CommandName);
+	const TArray<FString>& GetRecentCommands() const;
+
+protected:
+	UPROPERTY(EditAnywhere, Category = Customization, config)
+	TArray<FString> RecentCommands;
+
+	/**
+	 * @brief Maximum number of entries we will display under recent commands
+	 */
+	UPROPERTY(EditAnywhere, Category = Customization, config)
+	int32 MaxRecentCommands = 5;
+
 
 private:
 	// Begin UDeveloperSettings interface

@@ -5,6 +5,7 @@
 #include <Widgets/Layout/SSeparator.h>
 
 #include "QuickMenuHelpers.h"
+#include "QuickMenuSettings.h"
 #include "QuickMenuStyle.h"
 #include "Styling/StyleColors.h"
 
@@ -24,36 +25,59 @@ void SQuickCommandsMenu::OnFilterTextChanged(const FText& Text)
 
 	TArray<TSharedRef<FQuickCommandEntry>> AvailableCommands = Commands;
 
-	// First get all the abbreviations
-	for (auto It = AvailableCommands.CreateIterator(); It; ++It)
+	if (Text.IsEmpty())
 	{
-		TSharedRef<FQuickCommandEntry> Command = *It;
-		if (QuickMenuHelpers::IsAbbreviation(Command->GetCommandName(), Text.ToString()))
+		const UQuickMenuSettings* Settings = GetDefault<UQuickMenuSettings>();
+		const TArray<FString>& RecentCommands = Settings->GetRecentCommands();
+
+		for (const FString& Command : RecentCommands)
 		{
-			FilteredCommands.Add(*It);
-			It.RemoveCurrent();
+			const TSharedRef<FQuickCommandEntry>* FoundCommand = AvailableCommands.FindByPredicate(
+				[Command](const TSharedRef<FQuickCommandEntry>& Entry)
+				{
+					return Entry->GetCommandName() == Command;
+				}
+			);
+
+			if (FoundCommand)
+			{
+				FilteredCommands.Emplace(*FoundCommand);
+			}
 		}
 	}
-
-	// Second get the perfect matches
-	for (auto It = AvailableCommands.CreateIterator(); It; ++It)
+	else
 	{
-		TSharedRef<FQuickCommandEntry> Command = *It;
-		if (QuickMenuHelpers::IsStartingWith(Command->GetCommandName(), Text.ToString()))
+		// First get all the abbreviations
+		for (auto It = AvailableCommands.CreateIterator(); It; ++It)
 		{
-			FilteredCommands.Add(*It);
-			It.RemoveCurrent();
+			TSharedRef<FQuickCommandEntry> Command = *It;
+			if (QuickMenuHelpers::IsAbbreviation(Command->GetCommandName(), Text.ToString()))
+			{
+				FilteredCommands.Add(*It);
+				It.RemoveCurrent();
+			}
 		}
-	}
 
-	// Third get fuzzy entries
-	for (auto It = AvailableCommands.CreateIterator(); It; ++It)
-	{
-		TSharedRef<FQuickCommandEntry> Command = *It;
-		if (QuickMenuHelpers::IsCloseTo(Command->GetCommandName(), Text.ToString()))
+		// Second get the perfect matches
+		for (auto It = AvailableCommands.CreateIterator(); It; ++It)
 		{
-			FilteredCommands.Add(*It);
-			It.RemoveCurrent();
+			TSharedRef<FQuickCommandEntry> Command = *It;
+			if (QuickMenuHelpers::IsStartingWith(Command->GetCommandName(), Text.ToString()))
+			{
+				FilteredCommands.Add(*It);
+				It.RemoveCurrent();
+			}
+		}
+
+		// Third get fuzzy entries
+		for (auto It = AvailableCommands.CreateIterator(); It; ++It)
+		{
+			TSharedRef<FQuickCommandEntry> Command = *It;
+			if (QuickMenuHelpers::IsCloseTo(Command->GetCommandName(), Text.ToString()))
+			{
+				FilteredCommands.Add(*It);
+				It.RemoveCurrent();
+			}
 		}
 	}
 
@@ -268,6 +292,9 @@ void SQuickCommandsMenu::ConfirmSelection()
 		return;
 	}
 
+	UQuickMenuSettings* Settings = GetMutableDefault<UQuickMenuSettings>();
+	Settings->RegisterRecentCommand(CurrentCommand->GetCommandName());
+
 	(void)CurrentCommand->ExecuteCallback.ExecuteIfBound();
 	CloseWindow();
 }
@@ -316,13 +343,15 @@ bool SQuickCommandsMenu::OnIsActiveChanged(const FWindowActivateEvent& ActivateE
 
 EActiveTimerReturnType SQuickCommandsMenu::SetFocusPostConstruct(double InCurrentTime, float InDeltaTime)
 {
-	// TODO: Is this function even needed?
 	if (EditableText.IsValid())
 	{
 		FWidgetPath WidgetToFocusPath;
 		FSlateApplication::Get().GeneratePathToWidgetUnchecked(EditableText.ToSharedRef(), WidgetToFocusPath);
 		FSlateApplication::Get().SetKeyboardFocus(WidgetToFocusPath, EFocusCause::SetDirectly);
 		WidgetToFocusPath.GetWindow()->SetWidgetToFocusOnActivate(EditableText);
+
+		OnFilterTextChanged(FText::GetEmpty());
+
 		return EActiveTimerReturnType::Stop;
 	}
 

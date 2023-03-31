@@ -20,7 +20,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuActorUEToolsExtension::GetCom
 		ToolEntry->Title = Tool->GetToolNameText();
 		ToolEntry->Tooltip = Tool->GetTooltipText();
 		ToolEntry->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), Tool->GetIconName());
-		ToolEntry->CanExecuteCallback = TDelegate<bool()>::CreateLambda(
+		ToolEntry->CanExecuteCallback = FCanExecuteCommandDelegate::CreateLambda(
 			[Tool]()
 			{
 				return Tool->CanMergeFromSelection();

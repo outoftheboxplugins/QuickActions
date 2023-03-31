@@ -6,12 +6,15 @@
 
 #include "QuickMenuExtension.generated.h"
 
+using FExecuteCommandDelegate = TDelegate<void()>;
+using FCanExecuteCommandDelegate = TDelegate<bool()>;
+
 struct QUICKMENU_API FQuickCommandEntry
 {
-	// TODO: Check if we need to default the move constructor as well
 	FQuickCommandEntry() = default;
 	FQuickCommandEntry(const TSharedRef<FUICommandInfo>& Command, const TSharedRef<FUICommandList> CommandList);
 	FQuickCommandEntry(const FToolMenuEntry& Block, const FToolMenuContext& Context);
+	
 	virtual ~FQuickCommandEntry() = default;
 
 	TAttribute<FText> Title;
@@ -19,9 +22,8 @@ struct QUICKMENU_API FQuickCommandEntry
 	TAttribute<FText> InputText;
 	TAttribute<FSlateIcon> Icon;
 
-	FSimpleDelegate ExecuteCallback;
-	// TODO: Change this delegate type to something nice like: FCanExecuteAction
-	TDelegate<bool()> CanExecuteCallback;
+	FExecuteCommandDelegate ExecuteCallback;
+	FCanExecuteCommandDelegate CanExecuteCallback;
 
 	bool IsAllowedToExecute() const;
 	FString GetCommandName() const;

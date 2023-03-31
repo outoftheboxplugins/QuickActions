@@ -6,9 +6,18 @@
 #include <LevelEditor.h>
 #include <LevelEditorActions.h>
 
+#include "Interfaces/IPluginManager.h"
+
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuSelectGeometryCollectionExtension::GetCommands(const FToolMenuContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
+
+	IPluginManager& PluginManager = IPluginManager::Get();
+	TSharedPtr<IPlugin> Plugin = PluginManager.FindPlugin(TEXT("GeometryCollectionPlugin"));
+	if (!Plugin->IsEnabled())
+	{
+		return OutCommands;
+	}
 
 	// TODO: Find some icon for all of these
 

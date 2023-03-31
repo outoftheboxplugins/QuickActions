@@ -31,7 +31,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildPackedLevelActorExtensio
 			}
 		}
 	);
-	PackActors->CanExecuteCallback = TDelegate<bool()>::CreateLambda(
+	PackActors->CanExecuteCallback = FCanExecuteCommandDelegate::CreateLambda(
 		[]()
 		{
 			if (const UWorld* World = GEditor->GetEditorWorldContext().World())

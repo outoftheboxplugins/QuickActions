@@ -27,7 +27,7 @@ FQuickCommandEntry::FQuickCommandEntry(const FToolMenuEntry& Block, const FToolM
 	Icon = Block.Icon;
 
 	TSharedPtr<const FUICommandList> OutCommandsList;
-	// TODO: Consider if we should ensure FoundAction similar to the constructor above
+
 	const FUIAction* FoundAction = Block.GetActionForCommand(Context, OutCommandsList);
 	if (ensure(FoundAction))
 	{
@@ -35,6 +35,7 @@ FQuickCommandEntry::FQuickCommandEntry(const FToolMenuEntry& Block, const FToolM
 		ExecuteCallback = FoundAction->ExecuteAction;
 	}
 }
+
 bool FQuickCommandEntry::IsAllowedToExecute() const
 {
 	if (!CanExecuteCallback.IsBound())
@@ -44,16 +45,26 @@ bool FQuickCommandEntry::IsAllowedToExecute() const
 
 	return CanExecuteCallback.Execute();
 }
-FString FQuickCommandEntry::GetCommandName() const
+
+FString FQuickCommandEntry::GetUniqueCommandName() const
 {
 	return Title.Get().ToString();
 }
 
 FQuickSwitchCommandEntry::FQuickSwitchCommandEntry(const TSharedRef<FUICommandInfo>& Command, const TSharedRef<FUICommandList> CommandList, bool bIsEnabled) : FQuickCommandEntry(Command, CommandList)
 {
+	SwitchTitle = Title;
+	
 	const FText ActionPrefix = bIsEnabled ? LOCTEXT("Disable", "Disable:") : LOCTEXT("Enable", "Enable:");
 	Title = FText::Format(INVTEXT("{0} {1}"), ActionPrefix, Title.Get());
+
+	//TODO: Find a better icon for this. Hopefully a custom one.
 	Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), bIsEnabled ? "FBXIcon.ReimportCompareRemoved" : "FBXIcon.ReimportCompareAdd");
+}
+
+FString FQuickSwitchCommandEntry::GetUniqueCommandName() const
+{
+	return SwitchTitle.Get().ToString();
 }
 
 void UQuickMenuExtension::CollectActionsFromMenuSection(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands, const FToolMenuContext& Context, FName MenuName, FName SectionName) const
@@ -78,4 +89,5 @@ void UQuickMenuExtension::CollectActionsFromMenuSection(TArray<TSharedPtr<FQuick
 		}
 	}
 }
+
 #undef LOCTEXT_NAMESPACE

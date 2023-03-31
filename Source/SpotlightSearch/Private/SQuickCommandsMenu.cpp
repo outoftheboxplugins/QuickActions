@@ -35,7 +35,7 @@ void SQuickCommandsMenu::OnFilterTextChanged(const FText& Text)
 			const TSharedRef<FQuickCommandEntry>* FoundCommand = AvailableCommands.FindByPredicate(
 				[Command](const TSharedRef<FQuickCommandEntry>& Entry)
 				{
-					return Entry->GetCommandName() == Command;
+					return Entry->GetUniqueCommandName() == Command;
 				}
 			);
 
@@ -51,7 +51,7 @@ void SQuickCommandsMenu::OnFilterTextChanged(const FText& Text)
 		for (auto It = AvailableCommands.CreateIterator(); It; ++It)
 		{
 			TSharedRef<FQuickCommandEntry> Command = *It;
-			if (QuickMenuHelpers::IsAbbreviation(Command->GetCommandName(), Text.ToString()))
+			if (QuickMenuHelpers::IsAbbreviation(Command->GetUniqueCommandName(), Text.ToString()))
 			{
 				FilteredCommands.Add(*It);
 				It.RemoveCurrent();
@@ -62,7 +62,7 @@ void SQuickCommandsMenu::OnFilterTextChanged(const FText& Text)
 		for (auto It = AvailableCommands.CreateIterator(); It; ++It)
 		{
 			TSharedRef<FQuickCommandEntry> Command = *It;
-			if (QuickMenuHelpers::IsStartingWith(Command->GetCommandName(), Text.ToString()))
+			if (QuickMenuHelpers::IsStartingWith(Command->GetUniqueCommandName(), Text.ToString()))
 			{
 				FilteredCommands.Add(*It);
 				It.RemoveCurrent();
@@ -73,7 +73,7 @@ void SQuickCommandsMenu::OnFilterTextChanged(const FText& Text)
 		for (auto It = AvailableCommands.CreateIterator(); It; ++It)
 		{
 			TSharedRef<FQuickCommandEntry> Command = *It;
-			if (QuickMenuHelpers::IsCloseTo(Command->GetCommandName(), Text.ToString()))
+			if (QuickMenuHelpers::IsCloseTo(Command->GetUniqueCommandName(), Text.ToString()))
 			{
 				FilteredCommands.Add(*It);
 				It.RemoveCurrent();
@@ -293,7 +293,7 @@ void SQuickCommandsMenu::ConfirmSelection()
 	}
 
 	UQuickMenuSettings* Settings = GetMutableDefault<UQuickMenuSettings>();
-	Settings->RegisterRecentCommand(CurrentCommand->GetCommandName());
+	Settings->RegisterRecentCommand(CurrentCommand->GetUniqueCommandName());
 
 	(void)CurrentCommand->ExecuteCallback.ExecuteIfBound();
 	CloseWindow();

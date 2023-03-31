@@ -8,6 +8,7 @@ public:
 	virtual const FName& GetStyleSetName() const override;
 
 	static const FQuickMenuStyle& Get();
+	static void Initialize();
 	static void Shutdown();
 
 	virtual ~FQuickMenuStyle() override;

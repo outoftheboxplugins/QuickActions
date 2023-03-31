@@ -15,11 +15,16 @@ const FName& FQuickMenuStyle::GetStyleSetName() const
 
 const FQuickMenuStyle& FQuickMenuStyle::Get()
 {
+	ensure(Inst.IsValid());
+	return *(Inst.Get());
+}
+
+void FQuickMenuStyle::Initialize()
+{
 	if (!Inst.IsValid())
 	{
 		Inst = TUniquePtr<FQuickMenuStyle>(new FQuickMenuStyle);
 	}
-	return *(Inst.Get());
 }
 
 void FQuickMenuStyle::Shutdown()

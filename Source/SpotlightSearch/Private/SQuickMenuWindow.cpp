@@ -8,7 +8,7 @@
 #include "QuickMenuHelpers.h"
 #include "QuickMenuSettings.h"
 #include "QuickMenuStyle.h"
-#include "Styling/StyleColors.h"
+//#include "Styling/StyleColors.h"
 
 #define LOCTEXT_NAMESPACE "FQuickMenuModule"
 
@@ -316,13 +316,13 @@ void SQuickMenuWindow::UpdateSelection(int32 Change)
 
 	const TSharedPtr<SWidget> SplitViewWidget = CurrentCommand->GetSplitViewWidget();
 
+	// TODO: make this padding nicer or find a better solution.
 	if (HorizontalBox->NumSlots() > 1)
 	{
 		HorizontalBox->RemoveSlot(HorizontalBox->GetSlot(1).GetWidget());
 	}
 	if (SplitViewWidget.IsValid())
 	{
-		// TODO: make this padding nicer or find a better solution.
 		HorizontalBox->InsertSlot(1).Padding(5.0f, 0.0f)[SplitViewWidget.ToSharedRef()];
 	}
 }
@@ -352,6 +352,7 @@ EActiveTimerReturnType SQuickMenuWindow::SetFocusPostConstruct(double InCurrentT
 		FSlateApplication::Get().SetKeyboardFocus(WidgetToFocusPath, EFocusCause::SetDirectly);
 		WidgetToFocusPath.GetWindow()->SetWidgetToFocusOnActivate(EditableText);
 
+		// Trigger a text change to filter the selection for an empty search
 		OnFilterTextChanged(FText::GetEmpty());
 
 		return EActiveTimerReturnType::Stop;
@@ -359,4 +360,5 @@ EActiveTimerReturnType SQuickMenuWindow::SetFocusPostConstruct(double InCurrentT
 
 	return EActiveTimerReturnType::Continue;
 }
+
 #undef LOCTEXT_NAMESPACE

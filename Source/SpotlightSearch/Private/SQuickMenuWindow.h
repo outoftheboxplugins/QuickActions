@@ -79,7 +79,7 @@ private:
 	 */
 	TSharedPtr<SEditableText> EditableText;
 	/**
-	 * @brief TODO
+	 * @brief Layout container to display commands which require a split view
 	 */
 	TSharedPtr<SHorizontalBox> HorizontalBox;
 	/**

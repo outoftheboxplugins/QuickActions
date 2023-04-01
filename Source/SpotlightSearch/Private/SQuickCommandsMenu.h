@@ -2,9 +2,10 @@
 
 #pragma once
 
-#include "SQuickCommandsListView.h"
-
 #include <Widgets/SCompoundWidget.h>
+
+#include "QuickMenuExtension.h"
+#include "SNonFocusingListView.h"
 
 class SQuickCommandsMenu : public SWindow
 {
@@ -36,7 +37,7 @@ private:
 
 	int32 SelectionIndex = 0;
 	TSharedPtr<SHorizontalBox> HorizontalBox;
-	TSharedPtr<SQuickCommandsListView> ListView;
+	TSharedPtr<SNonFocusingListView<TSharedRef<FQuickCommandEntry>>> ListView;
 	TArray<TSharedRef<FQuickCommandEntry>> Commands;
 	TArray<TSharedRef<FQuickCommandEntry>> FilteredCommands;
 	

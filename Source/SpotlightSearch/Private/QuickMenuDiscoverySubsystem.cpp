@@ -4,41 +4,40 @@
 
 #include <Interfaces/IMainFrameModule.h>
 
-#include "QuickMenuHelpers.h"
-
-#define LOCTEXT_NAMESPACE "QuickActions"
+#include "Engine/AssetManager.h"
+#include "LevelEditor.h"
 
 TAutoConsoleVariable<FString> CVarQuickActionFilter(TEXT("QuickActions.FilterExtensions"), TEXT(""), TEXT("If set, only extensions with this string in their name will be displayed."));
 
-TArray<TSharedPtr<FQuickCommandEntry>> UQuickMenuDiscoverySubsystem::GetAllCommands() const
+const TArray<TSharedPtr<FQuickCommandEntry>>& UQuickMenuDiscoverySubsystem::GetAllCommands() const
 {
-	TRACE_CPUPROFILER_EVENT_SCOPE(UQuickMenuDiscoverySubsystem::GetAllCommands);
-
-	TArray<TSharedPtr<FQuickCommandEntry>> Result;
-
-	GatherCommandsInternal(Result);
-	OnDiscoverCommands.Broadcast(Result);
-
-	return Result;
+	return DiscoveredCommands;
 }
 
 void UQuickMenuDiscoverySubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-}
 
-void UQuickMenuDiscoverySubsystem::Deinitialize()
-{
-	Super::Deinitialize();
+	// FLevelEditorModule& LevelEditor = FModuleManager::Get().LoadModuleChecked<FLevelEditorModule>("LevelEditor");
+	// LevelEditor.OnLevelEditorCreated().AddLambda(
+
+
+	IMainFrameModule& MainFrameModule = FModuleManager::LoadModuleChecked<IMainFrameModule>(TEXT("MainFrame"));
+	MainFrameModule.OnMainFrameCreationFinished().AddLambda(
+		[=](TSharedPtr<SWindow>, bool)
+		{
+			GatherCommandsInternal(DiscoveredCommands);
+		}
+	);
 }
 
 void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands) const
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(UQuickMenuDiscoverySubsystem::GatherCommandsInternal);
 
-	const FString NameFilterValue = CVarQuickActionFilter.GetValueOnAnyThread();
-
 	TArray<UQuickMenuExtension*> Extensions;
+
+	const FString NameFilterValue = CVarQuickActionFilter.GetValueOnAnyThread();
 	for (TObjectIterator<UClass> It; It; ++It)
 	{
 		const UClass* CurrentClass = (*It);
@@ -71,11 +70,4 @@ void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<TSharedPtr<FQui
 	{
 		OutCommands.Append(Extension->GetCommands(Context));
 	}
-	PopulateMenuEntries(OutCommands);
 }
-
-void UQuickMenuDiscoverySubsystem::PopulateMenuEntries(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands) const
-{
-}
-
-#undef LOCTEXT_NAMESPACE

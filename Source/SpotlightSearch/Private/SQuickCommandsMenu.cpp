@@ -4,6 +4,7 @@
 
 #include <Widgets/Layout/SSeparator.h>
 
+#include "QuickMenuDiscoverySubsystem.h"
 #include "QuickMenuHelpers.h"
 #include "QuickMenuSettings.h"
 #include "QuickMenuStyle.h"
@@ -87,7 +88,7 @@ void SQuickCommandsMenu::OnFilterTextChanged(const FText& Text)
 
 void SQuickCommandsMenu::Construct(const FArguments& InArgs)
 {
-	UQuickMenuDiscoverySubsystem* DiscoverySubsystem = GEditor->GetEditorSubsystem<UQuickMenuDiscoverySubsystem>();
+	const UQuickMenuDiscoverySubsystem* DiscoverySubsystem = GEditor->GetEditorSubsystem<UQuickMenuDiscoverySubsystem>();
 	TArray<TSharedPtr<FQuickCommandEntry>> AllEntries = DiscoverySubsystem->GetAllCommands();
 	for (const TSharedPtr<FQuickCommandEntry>& Entry : AllEntries)
 	{
@@ -157,7 +158,7 @@ void SQuickCommandsMenu::Construct(const FArguments& InArgs)
 				+ SHorizontalBox::Slot()
 				.Padding(5.0f, 0.0f)
 				[
-					SAssignNew(ListView, SQuickCommandsListView)
+					SAssignNew(ListView, SNonFocusingListView<TSharedRef<FQuickCommandEntry>>)
 					.ListItemsSource(&FilteredCommands)
 					.OnGenerateRow(this, &SQuickCommandsMenu::MakeShowWidget)
 					.ScrollbarVisibility(EVisibility::Collapsed)

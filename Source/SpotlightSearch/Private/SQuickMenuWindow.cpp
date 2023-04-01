@@ -1,13 +1,12 @@
 ﻿// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
 
-#include "SQuickCommandsMenu.h"
-
 #include <Widgets/Layout/SSeparator.h>
 
 #include "QuickMenuDiscoverySubsystem.h"
 #include "QuickMenuHelpers.h"
 #include "QuickMenuSettings.h"
 #include "QuickMenuStyle.h"
+#include "SQuickMenuWindow.h"
 #include "Styling/StyleColors.h"
 
 #define LOCTEXT_NAMESPACE "FQuickMenuModule"
@@ -20,7 +19,7 @@ namespace
 	}
 } // namespace
 
-void SQuickCommandsMenu::OnFilterTextChanged(const FText& Text)
+void SQuickMenuWindow::OnFilterTextChanged(const FText& Text)
 {
 	FilteredCommands.Empty();
 
@@ -86,7 +85,7 @@ void SQuickCommandsMenu::OnFilterTextChanged(const FText& Text)
 	UpdateSelection(0);
 }
 
-void SQuickCommandsMenu::Construct(const FArguments& InArgs)
+void SQuickMenuWindow::Construct(const FArguments& InArgs)
 {
 	const UQuickMenuDiscoverySubsystem* DiscoverySubsystem = GEditor->GetEditorSubsystem<UQuickMenuDiscoverySubsystem>();
 	TArray<TSharedPtr<FQuickCommandEntry>> AllEntries = DiscoverySubsystem->GetAllCommands();
@@ -131,8 +130,8 @@ void SQuickCommandsMenu::Construct(const FArguments& InArgs)
 			.VAlign(VAlign_Center)
 			[
 				SAssignNew(EditableText, SEditableText)
-				.OnTextChanged(this, &SQuickCommandsMenu::OnFilterTextChanged)
-				.OnKeyDownHandler(this, &SQuickCommandsMenu::OnSearchKeyDown)
+				.OnTextChanged(this, &SQuickMenuWindow::OnFilterTextChanged)
+				.OnKeyDownHandler(this, &SQuickMenuWindow::OnSearchKeyDown)
 				.Style(&FQuickMenuStyle::Get().GetWidgetStyle<FEditableTextStyle>("ActionMenuSearchTextStyle"))
 			]
 		]
@@ -160,7 +159,7 @@ void SQuickCommandsMenu::Construct(const FArguments& InArgs)
 				[
 					SAssignNew(ListView, SNonFocusingListView<TSharedRef<FQuickCommandEntry>>)
 					.ListItemsSource(&FilteredCommands)
-					.OnGenerateRow(this, &SQuickCommandsMenu::MakeShowWidget)
+					.OnGenerateRow(this, &SQuickMenuWindow::MakeShowWidget)
 					.ScrollbarVisibility(EVisibility::Collapsed)
 					.IsFocusable(false)
 				]
@@ -169,10 +168,10 @@ void SQuickCommandsMenu::Construct(const FArguments& InArgs)
 	]);
 	// clang-format on
 
-	RegisterActiveTimer(0.0f, FWidgetActiveTimerDelegate::CreateSP(this, &SQuickCommandsMenu::SetFocusPostConstruct));
+	RegisterActiveTimer(0.0f, FWidgetActiveTimerDelegate::CreateSP(this, &SQuickMenuWindow::SetFocusPostConstruct));
 }
 
-TSharedRef<ITableRow> SQuickCommandsMenu::MakeShowWidget(TSharedRef<FQuickCommandEntry> Selection, const TSharedRef<STableViewBase>& OwnerTable)
+TSharedRef<ITableRow> SQuickMenuWindow::MakeShowWidget(TSharedRef<FQuickCommandEntry> Selection, const TSharedRef<STableViewBase>& OwnerTable)
 {
 	const bool bCanExecute = Selection->IsAllowedToExecute();
 
@@ -235,7 +234,7 @@ TSharedRef<ITableRow> SQuickCommandsMenu::MakeShowWidget(TSharedRef<FQuickComman
 	// clang-format on
 }
 
-FReply SQuickCommandsMenu::OnSearchKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
+FReply SQuickMenuWindow::OnSearchKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
 {
 	if (InKeyEvent.GetKey() == EKeys::Down)
 	{
@@ -251,7 +250,7 @@ FReply SQuickCommandsMenu::OnSearchKeyDown(const FGeometry& MyGeometry, const FK
 	return FReply::Unhandled();
 }
 
-FReply SQuickCommandsMenu::OnPreviewKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
+FReply SQuickMenuWindow::OnPreviewKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent)
 {
 	if (InKeyEvent.GetKey() == EKeys::Enter)
 	{
@@ -267,7 +266,7 @@ FReply SQuickCommandsMenu::OnPreviewKeyDown(const FGeometry& MyGeometry, const F
 	return SWindow::OnPreviewKeyDown(MyGeometry, InKeyEvent);
 }
 
-void SQuickCommandsMenu::CloseWindow()
+void SQuickMenuWindow::CloseWindow()
 {
 	// TODO: Prevents this from getting called twice, maybe we should investigate how we can avoid the double call instead.
 	if (bWasClosed)
@@ -279,7 +278,7 @@ void SQuickCommandsMenu::CloseWindow()
 	RequestDestroyWindow();
 }
 
-void SQuickCommandsMenu::ConfirmSelection()
+void SQuickMenuWindow::ConfirmSelection()
 {
 	if (FilteredCommands.IsEmpty())
 	{
@@ -300,7 +299,7 @@ void SQuickCommandsMenu::ConfirmSelection()
 	CloseWindow();
 }
 
-void SQuickCommandsMenu::UpdateSelection(int32 Change)
+void SQuickMenuWindow::UpdateSelection(int32 Change)
 {
 	if (FilteredCommands.IsEmpty())
 	{
@@ -325,14 +324,14 @@ void SQuickCommandsMenu::UpdateSelection(int32 Change)
 		HorizontalBox->InsertSlot(1).Padding(5.0f, 0.0f)[SplitViewWidget.ToSharedRef()];
 	}
 }
-bool SQuickCommandsMenu::ShouldShowDescription() const
+bool SQuickMenuWindow::ShouldShowDescription() const
 {
 	// TODO: Also create a setting for this.
 	const bool bIsAltPressed = FSlateApplication::Get().GetModifierKeys().IsAltDown();
 	return bIsAltPressed;
 }
 
-bool SQuickCommandsMenu::OnIsActiveChanged(const FWindowActivateEvent& ActivateEvent)
+bool SQuickMenuWindow::OnIsActiveChanged(const FWindowActivateEvent& ActivateEvent)
 {
 	if (ActivateEvent.GetActivationType() == FWindowActivateEvent::EA_Deactivate)
 	{
@@ -342,7 +341,7 @@ bool SQuickCommandsMenu::OnIsActiveChanged(const FWindowActivateEvent& ActivateE
 	return SWindow::OnIsActiveChanged(ActivateEvent);
 }
 
-EActiveTimerReturnType SQuickCommandsMenu::SetFocusPostConstruct(double InCurrentTime, float InDeltaTime)
+EActiveTimerReturnType SQuickMenuWindow::SetFocusPostConstruct(double InCurrentTime, float InDeltaTime)
 {
 	if (EditableText.IsValid())
 	{

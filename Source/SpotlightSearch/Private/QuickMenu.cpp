@@ -6,7 +6,7 @@
 
 #include "QuickMenuCommands.h"
 #include "QuickMenuStyle.h"
-#include "SQuickCommandsMenu.h"
+#include "SQuickMenuWindow.h"
 
 #define LOCTEXT_NAMESPACE "FQuickMenuModule"
 
@@ -37,7 +37,7 @@ void FQuickMenuModule::RegisterQuickCommands()
 		FExecuteAction::CreateLambda(
 			[this]
 			{
-				const TSharedRef<SQuickCommandsMenu> ClassPickerDialog = SNew(SQuickCommandsMenu);
+				const TSharedRef<SQuickMenuWindow> ClassPickerDialog = SNew(SQuickMenuWindow);
 				FSlateApplication::Get().AddWindow(ClassPickerDialog);
 			}
 		)

@@ -1,4 +1,6 @@
-﻿// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
+// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
+
+#include "SQuickMenuWindow.h"
 
 #include <Widgets/Layout/SSeparator.h>
 
@@ -6,7 +8,6 @@
 #include "QuickMenuHelpers.h"
 #include "QuickMenuSettings.h"
 #include "QuickMenuStyle.h"
-#include "SQuickMenuWindow.h"
 #include "Styling/StyleColors.h"
 
 #define LOCTEXT_NAMESPACE "FQuickMenuModule"
@@ -23,7 +24,15 @@ void SQuickMenuWindow::OnFilterTextChanged(const FText& Text)
 {
 	FilteredCommands.Empty();
 
-	TArray<TSharedRef<FQuickCommandEntry>> AvailableCommands = Commands;
+	TArray<FQuickMenuItem> Commands;
+	const UQuickMenuDiscoverySubsystem* DiscoverySubsystem = GEditor->GetEditorSubsystem<UQuickMenuDiscoverySubsystem>();
+	TArray<TSharedPtr<FQuickCommandEntry>> AllEntries = DiscoverySubsystem->GetAllCommands();
+	for (const TSharedPtr<FQuickCommandEntry>& Entry : AllEntries)
+	{
+		Commands.Emplace(Entry.ToSharedRef());
+	}
+
+	TArray<FQuickMenuItem> AvailableCommands = Commands;
 
 	if (Text.IsEmpty())
 	{
@@ -32,8 +41,8 @@ void SQuickMenuWindow::OnFilterTextChanged(const FText& Text)
 
 		for (const FString& Command : RecentCommands)
 		{
-			const TSharedRef<FQuickCommandEntry>* FoundCommand = AvailableCommands.FindByPredicate(
-				[Command](const TSharedRef<FQuickCommandEntry>& Entry)
+			const FQuickMenuItem* FoundCommand = AvailableCommands.FindByPredicate(
+				[Command](const FQuickMenuItem& Entry)
 				{
 					return Entry->GetUniqueCommandName() == Command;
 				}
@@ -50,7 +59,7 @@ void SQuickMenuWindow::OnFilterTextChanged(const FText& Text)
 		// First get all the abbreviations
 		for (auto It = AvailableCommands.CreateIterator(); It; ++It)
 		{
-			TSharedRef<FQuickCommandEntry> Command = *It;
+			FQuickMenuItem Command = *It;
 			if (QuickMenuHelpers::IsAbbreviation(Command->GetUniqueCommandName(), Text.ToString()))
 			{
 				FilteredCommands.Add(*It);
@@ -61,7 +70,7 @@ void SQuickMenuWindow::OnFilterTextChanged(const FText& Text)
 		// Second get the perfect matches
 		for (auto It = AvailableCommands.CreateIterator(); It; ++It)
 		{
-			TSharedRef<FQuickCommandEntry> Command = *It;
+			FQuickMenuItem Command = *It;
 			if (QuickMenuHelpers::IsStartingWith(Command->GetUniqueCommandName(), Text.ToString()))
 			{
 				FilteredCommands.Add(*It);
@@ -72,7 +81,7 @@ void SQuickMenuWindow::OnFilterTextChanged(const FText& Text)
 		// Third get fuzzy entries
 		for (auto It = AvailableCommands.CreateIterator(); It; ++It)
 		{
-			TSharedRef<FQuickCommandEntry> Command = *It;
+			FQuickMenuItem Command = *It;
 			if (QuickMenuHelpers::IsCloseTo(Command->GetUniqueCommandName(), Text.ToString()))
 			{
 				FilteredCommands.Add(*It);
@@ -87,13 +96,6 @@ void SQuickMenuWindow::OnFilterTextChanged(const FText& Text)
 
 void SQuickMenuWindow::Construct(const FArguments& InArgs)
 {
-	const UQuickMenuDiscoverySubsystem* DiscoverySubsystem = GEditor->GetEditorSubsystem<UQuickMenuDiscoverySubsystem>();
-	TArray<TSharedPtr<FQuickCommandEntry>> AllEntries = DiscoverySubsystem->GetAllCommands();
-	for (const TSharedPtr<FQuickCommandEntry>& Entry : AllEntries)
-	{
-		Commands.Emplace(Entry.ToSharedRef());
-	}
-
 	// clang-format off
 	SWindow::Construct(SWindow::FArguments()
 	.Style(&FAppStyle::Get().GetWidgetStyle<FWindowStyle>("NotificationWindow"))
@@ -157,9 +159,9 @@ void SQuickMenuWindow::Construct(const FArguments& InArgs)
 				+ SHorizontalBox::Slot()
 				.Padding(5.0f, 0.0f)
 				[
-					SAssignNew(ListView, SNonFocusingListView<TSharedRef<FQuickCommandEntry>>)
+					SAssignNew(ListView, SNonFocusingListView<FQuickMenuItem>)
 					.ListItemsSource(&FilteredCommands)
-					.OnGenerateRow(this, &SQuickMenuWindow::MakeShowWidget)
+					.OnGenerateRow(this, &SQuickMenuWindow::MakeCommandListItem)
 					.ScrollbarVisibility(EVisibility::Collapsed)
 					.IsFocusable(false)
 				]
@@ -171,12 +173,12 @@ void SQuickMenuWindow::Construct(const FArguments& InArgs)
 	RegisterActiveTimer(0.0f, FWidgetActiveTimerDelegate::CreateSP(this, &SQuickMenuWindow::SetFocusPostConstruct));
 }
 
-TSharedRef<ITableRow> SQuickMenuWindow::MakeShowWidget(TSharedRef<FQuickCommandEntry> Selection, const TSharedRef<STableViewBase>& OwnerTable)
+TSharedRef<ITableRow> SQuickMenuWindow::MakeCommandListItem(FQuickMenuItem Selection, const TSharedRef<STableViewBase>& OwnerTable)
 {
 	const bool bCanExecute = Selection->IsAllowedToExecute();
 
 	// clang-format off
-	return SNew(STableRow<TSharedRef<FQuickCommandEntry>>, OwnerTable)
+	return SNew(STableRow<FQuickMenuItem>, OwnerTable)
 			.Style(&FQuickMenuStyle::Get().GetWidgetStyle<FTableRowStyle>("ActionMenuRow"))
 			.IsEnabled_Lambda([bCanExecute](){return bCanExecute;})
 			.ToolTipText(Selection->Tooltip)
@@ -286,7 +288,7 @@ void SQuickMenuWindow::ConfirmSelection()
 		return;
 	}
 
-	const TSharedRef<FQuickCommandEntry>& CurrentCommand = FilteredCommands[SelectionIndex];
+	const FQuickMenuItem& CurrentCommand = FilteredCommands[SelectionIndex];
 	if (!CurrentCommand->IsAllowedToExecute())
 	{
 		return;
@@ -308,7 +310,7 @@ void SQuickMenuWindow::UpdateSelection(int32 Change)
 
 	SelectionIndex = PositiveModulo(SelectionIndex + Change, FilteredCommands.Num());
 
-	const TSharedRef<FQuickCommandEntry>& CurrentCommand = FilteredCommands[SelectionIndex];
+	const FQuickMenuItem& CurrentCommand = FilteredCommands[SelectionIndex];
 	ListView->RequestNavigateToItem(CurrentCommand);
 	ListView->SetSelection(CurrentCommand);
 

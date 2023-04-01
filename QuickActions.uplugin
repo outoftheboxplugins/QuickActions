@@ -1,6 +1,7 @@
 {
   "FileVersion": 3,
-  "VersionName": "0.1",
+  "VersionName": "1.0",
+	"EngineVersion": "5.1",
   "FriendlyName": "QuickActions",
   "Description": "Adds productivity tools to developers such as spotlight search, extended viewport options and much more.",
   "Category": "Editor",

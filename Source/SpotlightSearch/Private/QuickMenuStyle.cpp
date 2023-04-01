@@ -31,7 +31,11 @@ void FQuickMenuStyle::Initialize()
 
 void FQuickMenuStyle::Shutdown()
 {
-	Inst.Reset();
+	if (Inst.IsValid())
+	{
+		FSlateStyleRegistry::UnRegisterSlateStyle(*Inst.Get());
+		Inst.Reset();
+	}
 }
 
 FQuickMenuStyle::FQuickMenuStyle() : FSlateStyleSet(StyleName)
@@ -56,9 +60,4 @@ FQuickMenuStyle::FQuickMenuStyle() : FSlateStyleSet(StyleName)
 	}
 
 	FSlateStyleRegistry::RegisterSlateStyle(*this);
-}
-
-FQuickMenuStyle::~FQuickMenuStyle()
-{
-	FSlateStyleRegistry::UnRegisterSlateStyle(*this);
 }

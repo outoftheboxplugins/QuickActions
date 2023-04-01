@@ -7,9 +7,9 @@
   "Category": "Editor",
   "CreatedBy": "Out-of-the-Box Plugins",
   "CreatedByURL": "https://outofthebox-plugins.com",
-  "DocsURL": "",
-  "MarketplaceURL": "",
-  "SupportURL": "",
+  "DocsURL": "http://quickactions.outofthebox-plugins.com/",
+  "MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/01e9d950f52648ee96e9b01711df283e",
+  "SupportURL": "https://github.com/outoftheboxplugins/QuickActions-docs/issues",
   "EnabledByDefault": true,
   "CanContainContent": false,
   "Modules": [

@@ -6,10 +6,9 @@ void UQuickMenuSettings::RegisterRecentCommand(const FString& CommandName)
 {
 	// Remove from the list so we can re-add it on top
 	RecentCommands.Remove(CommandName);
-
-	// Always add latest command on top.
 	RecentCommands.EmplaceAt(0, CommandName);
 
+	// Prevent the array from storing more items than the user intended
 	RecentCommands.SetNum(MaxRecentCommands);
 
 	SaveConfig();

@@ -4,9 +4,6 @@
 
 #include <Interfaces/IMainFrameModule.h>
 
-#include "Engine/AssetManager.h"
-#include "LevelEditor.h"
-
 TAutoConsoleVariable<FString> CVarQuickActionFilter(TEXT("QuickActions.FilterExtensions"), TEXT(""), TEXT("If set, only extensions with this string in their name will be displayed."));
 
 const TArray<TSharedPtr<FQuickCommandEntry>>& UQuickMenuDiscoverySubsystem::GetAllCommands() const
@@ -18,17 +15,13 @@ void UQuickMenuDiscoverySubsystem::Initialize(FSubsystemCollectionBase& Collecti
 {
 	Super::Initialize(Collection);
 
-	// FLevelEditorModule& LevelEditor = FModuleManager::Get().LoadModuleChecked<FLevelEditorModule>("LevelEditor");
-	// LevelEditor.OnLevelEditorCreated().AddLambda(
-
-
 	IMainFrameModule& MainFrameModule = FModuleManager::LoadModuleChecked<IMainFrameModule>(TEXT("MainFrame"));
-	MainFrameModule.OnMainFrameCreationFinished().AddLambda(
-		[=](TSharedPtr<SWindow>, bool)
-		{
-			GatherCommandsInternal(DiscoveredCommands);
-		}
-	);
+	MainFrameModule.OnMainFrameCreationFinished().AddUObject(this, &UQuickMenuDiscoverySubsystem::OnMainFrameReady);
+}
+
+void UQuickMenuDiscoverySubsystem::OnMainFrameReady(TSharedPtr<SWindow> InRootWindow, bool bIsNewProjectWindow)
+{
+	GatherCommandsInternal(DiscoveredCommands);
 }
 
 void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands) const
@@ -63,6 +56,7 @@ void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<TSharedPtr<FQui
 	IMainFrameModule& MainFrameModule = FModuleManager::Get().LoadModuleChecked<IMainFrameModule>("MainFrame");
 	const TSharedPtr<FUICommandList> MainFrameCommands = MainFrameModule.GetMainFrameCommandBindings();
 
+	// TODO: This should be based on what menu/tab we have currently open
 	FToolMenuContext Context;
 	Context.AppendCommandList(MainFrameCommands);
 

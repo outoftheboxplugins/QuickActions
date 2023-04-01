@@ -27,7 +27,10 @@ private:
 	// Begin UEditorSubsystem interface
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	// End UEditorSubsystem interface
-
+	/**
+	 * @brief Callback executed when the MainFrame initialization process is finished.
+	 */
+	void OnMainFrameReady(TSharedPtr<SWindow> InRootWindow, bool bIsNewProjectWindow);
 	/**
 	 * @brief Loops through all the Extensions to gather all available commands
 	 * @param OutCommands Resulting list of all commands

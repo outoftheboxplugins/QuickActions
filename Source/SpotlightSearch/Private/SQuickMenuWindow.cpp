@@ -82,6 +82,7 @@ void SQuickMenuWindow::Construct(const FArguments& InArgs)
 			.BorderImage(FAppStyle::GetBrush("Docking.Tab.ContentAreaBrush"))
 			.Padding(1.0)
 			[
+				// TODO: The horizontal box is needed for split view widgets, currently this solution is horrible, needs to be refactored 
 				SAssignNew(HorizontalBox, SHorizontalBox)
 				+ SHorizontalBox::Slot()
 				.Padding(5.0f, 0.0f)

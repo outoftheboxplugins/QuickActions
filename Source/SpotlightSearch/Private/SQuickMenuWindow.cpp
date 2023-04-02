@@ -173,9 +173,10 @@ void SQuickMenuWindow::OnFilterTextChanged(const FText& Text)
 	}
 	else
 	{
-		GetAbbreviationsCommands(AvailableCommands, FilteredCommands);
-		GetPerfectMatchesCommands(AvailableCommands, FilteredCommands);
-		GetFuzzyMatchesCommands(AvailableCommands, FilteredCommands);
+		const FString& FilterText = Text.ToString();
+		GetAbbreviationsCommands(AvailableCommands, FilteredCommands, FilterText);
+		GetPerfectMatchesCommands(AvailableCommands, FilteredCommands, FilterText);
+		GetFuzzyMatchesCommands(AvailableCommands, FilteredCommands, FilterText);
 	}
 
 	ListView->RequestListRefresh();

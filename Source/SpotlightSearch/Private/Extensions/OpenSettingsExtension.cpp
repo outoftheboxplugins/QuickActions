@@ -1,4 +1,5 @@
 ﻿// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
+// Contributed by: fpwong (https://twitter.com/funcpwong) in BenUI(https://twitter.com/_benui)'s discord
 
 #include "OpenSettingsExtension.h"
 

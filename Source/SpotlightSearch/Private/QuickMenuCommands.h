@@ -2,6 +2,9 @@
 
 #pragma once
 
+/**
+ * @brief Class that holds all quick menu commands.
+ */
 class FQuickMenuCommands : public TCommands<FQuickMenuCommands>
 {
 public:
@@ -11,5 +14,8 @@ public:
 	virtual void RegisterCommands() override;
 	// End TCommands interface
 
+	/**
+	 * @brief Spawns the spotlight search (Quick Menu) window.
+	 */
 	TSharedPtr<FUICommandInfo> SummonQuickCommands;
 };

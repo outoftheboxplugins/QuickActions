@@ -4,41 +4,22 @@
 
 #include <Interfaces/IMainFrameModule.h>
 
-#include "QuickMenuHelpers.h"
-
-#define LOCTEXT_NAMESPACE "QuickActions"
-
 TAutoConsoleVariable<FString> CVarQuickActionFilter(TEXT("QuickActions.FilterExtensions"), TEXT(""), TEXT("If set, only extensions with this string in their name will be displayed."));
 
-TArray<TSharedPtr<FQuickCommandEntry>> UQuickMenuDiscoverySubsystem::GetAllCommands() const
+TArray<TSharedRef<FQuickCommandEntry>> UQuickMenuDiscoverySubsystem::GetAllCommands() const
 {
-	TRACE_CPUPROFILER_EVENT_SCOPE(UQuickMenuDiscoverySubsystem::GetAllCommands);
-
-	TArray<TSharedPtr<FQuickCommandEntry>> Result;
-
-	GatherCommandsInternal(Result);
-	OnDiscoverCommands.Broadcast(Result);
-
-	return Result;
+	TArray<TSharedRef<FQuickCommandEntry>> DiscoveredCommands;
+	GatherCommandsInternal(DiscoveredCommands);
+	return DiscoveredCommands;
 }
 
-void UQuickMenuDiscoverySubsystem::Initialize(FSubsystemCollectionBase& Collection)
-{
-	Super::Initialize(Collection);
-}
-
-void UQuickMenuDiscoverySubsystem::Deinitialize()
-{
-	Super::Deinitialize();
-}
-
-void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands) const
+void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<TSharedRef<FQuickCommandEntry>>& OutCommands) const
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(UQuickMenuDiscoverySubsystem::GatherCommandsInternal);
 
-	const FString NameFilterValue = CVarQuickActionFilter.GetValueOnAnyThread();
-
 	TArray<UQuickMenuExtension*> Extensions;
+
+	const FString NameFilterValue = CVarQuickActionFilter.GetValueOnAnyThread();
 	for (TObjectIterator<UClass> It; It; ++It)
 	{
 		const UClass* CurrentClass = (*It);
@@ -64,18 +45,17 @@ void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<TSharedPtr<FQui
 	IMainFrameModule& MainFrameModule = FModuleManager::Get().LoadModuleChecked<IMainFrameModule>("MainFrame");
 	const TSharedPtr<FUICommandList> MainFrameCommands = MainFrameModule.GetMainFrameCommandBindings();
 
+	// TODO: This should be based on what menu/tab we have currently open
 	FToolMenuContext Context;
 	Context.AppendCommandList(MainFrameCommands);
 
 	for (UQuickMenuExtension* Extension : Extensions)
 	{
-		OutCommands.Append(Extension->GetCommands(Context));
+		// TODO: Fix conversion from SharedPtr to SharedRef
+		const TArray<TSharedPtr<FQuickCommandEntry>>& ExtensionCommands = Extension->GetCommands(Context);
+		for (const TSharedPtr<FQuickCommandEntry>& Command : ExtensionCommands)
+		{
+			OutCommands.Add(Command.ToSharedRef());
+		}
 	}
-	PopulateMenuEntries(OutCommands);
 }
-
-void UQuickMenuDiscoverySubsystem::PopulateMenuEntries(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands) const
-{
-}
-
-#undef LOCTEXT_NAMESPACE

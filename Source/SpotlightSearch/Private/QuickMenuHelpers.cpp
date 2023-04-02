@@ -2,15 +2,7 @@
 
 #include "QuickMenuHelpers.h"
 
-namespace
-{
-	bool FindCharInString(const TCHAR& InChar, const FString& String)
-	{
-		int32 FoundIndex;
-		String.FindChar(InChar, FoundIndex);
-		return FoundIndex != INDEX_NONE;
-	}
-} // namespace
+#include "Algo/LevenshteinDistance.h"
 
 bool QuickMenuHelpers::IsAbbreviation(const FString& Candidate, const FString& Search)
 {
@@ -26,12 +18,15 @@ bool QuickMenuHelpers::IsAbbreviation(const FString& Candidate, const FString& S
 	return Abbreviation.Equals(Search, ESearchCase::IgnoreCase);
 }
 
-bool QuickMenuHelpers::IsStartingWith(const FString& Candidate, const FString& Search)
-{
-	return Candidate.StartsWith(Search, ESearchCase::IgnoreCase);
-}
-
-bool QuickMenuHelpers::IsCloseTo(const FString& Candidate, const FString& Search)
+bool QuickMenuHelpers::IsPotentialMatchTo(const FString& Candidate, const FString& Search)
 {
 	return Candidate.Contains(Search, ESearchCase::IgnoreCase);
+}
+
+float QuickMenuHelpers::GetMatchPercentage(const FString& Candidate, const FString& Search)
+{
+	const float WorstCase = FMath::Max3(Candidate.Len(), Search.Len(), 1);
+	const float Score = 1.0f - (Algo::LevenshteinDistance(Search.ToLower(), Candidate.ToLower()) / WorstCase);
+
+	return Score * 100.0f;
 }

@@ -9,7 +9,7 @@
 #include "QuickMenuDiscoverySubsystem.generated.h"
 
 /**
- *
+ * Keeps a cached list of available commands up-to-date at all times to be used by any possible consumers.
  */
 UCLASS()
 class QUICKMENU_API UQuickMenuDiscoverySubsystem : public UEditorSubsystem
@@ -17,15 +17,16 @@ class QUICKMENU_API UQuickMenuDiscoverySubsystem : public UEditorSubsystem
 	GENERATED_BODY()
 
 public:
-	TMulticastDelegate<void(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands)> OnDiscoverCommands;
-
-	TArray<TSharedPtr<FQuickCommandEntry>> GetAllCommands() const;
+	/**
+	 * @brief Gets an up-to-date list of all currently available commands
+	 * @return List of Commands available
+	 */
+	TArray<TSharedRef<FQuickCommandEntry>> GetAllCommands() const;
 
 private:
-	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-	virtual void Deinitialize() override;
-
-	void GatherCommandsInternal(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands) const;
-
-	void PopulateMenuEntries(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands) const;
+	/**
+	 * @brief Loops through all the Extensions to gather all available commands
+	 * @param OutCommands Resulting list of all commands
+	 */
+	void GatherCommandsInternal(TArray<TSharedRef<FQuickCommandEntry>>& OutCommands) const;
 };

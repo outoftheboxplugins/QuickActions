@@ -1,4 +1,6 @@
-﻿#include "QuickMenuStyle.h"
+﻿// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
+
+#include "QuickMenuStyle.h"
 
 #include "Interfaces/IPluginManager.h"
 #include "Styling/SlateStyleRegistry.h"
@@ -15,16 +17,25 @@ const FName& FQuickMenuStyle::GetStyleSetName() const
 
 const FQuickMenuStyle& FQuickMenuStyle::Get()
 {
+	ensure(Inst.IsValid());
+	return *(Inst.Get());
+}
+
+void FQuickMenuStyle::Initialize()
+{
 	if (!Inst.IsValid())
 	{
 		Inst = TUniquePtr<FQuickMenuStyle>(new FQuickMenuStyle);
 	}
-	return *(Inst.Get());
 }
 
 void FQuickMenuStyle::Shutdown()
 {
-	Inst.Reset();
+	if (Inst.IsValid())
+	{
+		FSlateStyleRegistry::UnRegisterSlateStyle(*Inst.Get());
+		Inst.Reset();
+	}
 }
 
 FQuickMenuStyle::FQuickMenuStyle() : FSlateStyleSet(StyleName)
@@ -49,9 +60,4 @@ FQuickMenuStyle::FQuickMenuStyle() : FSlateStyleSet(StyleName)
 	}
 
 	FSlateStyleRegistry::RegisterSlateStyle(*this);
-}
-
-FQuickMenuStyle::~FQuickMenuStyle()
-{
-	FSlateStyleRegistry::UnRegisterSlateStyle(*this);
 }

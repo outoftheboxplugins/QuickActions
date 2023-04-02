@@ -30,7 +30,7 @@ bool QuickMenuHelperMatchTests::RunTest(const FString& Parameters)
 	auto TestPattern = [this](const FString& Candidate, const FString& Search, bool bExpectedResult)
 	{
 		const FString TextName = FString::Printf(TEXT("{ %s, %s } -> %s"), *Candidate, *Search, *LexToString(bExpectedResult));
-		TestTrue(*TextName, QuickMenuHelpers::IsMatchTo(Candidate, Search) == bExpectedResult);
+		TestTrue(*TextName, QuickMenuHelpers::IsPotentialMatchTo(Candidate, Search) == bExpectedResult);
 	};
 
 	TestPattern("Widget Reflector", "WR", false);

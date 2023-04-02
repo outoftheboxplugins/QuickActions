@@ -18,7 +18,7 @@ bool QuickMenuHelpers::IsAbbreviation(const FString& Candidate, const FString& S
 	return Abbreviation.Equals(Search, ESearchCase::IgnoreCase);
 }
 
-bool QuickMenuHelpers::IsMatchTo(const FString& Candidate, const FString& Search)
+bool QuickMenuHelpers::IsPotentialMatchTo(const FString& Candidate, const FString& Search)
 {
 	return Candidate.Contains(Search, ESearchCase::IgnoreCase);
 }

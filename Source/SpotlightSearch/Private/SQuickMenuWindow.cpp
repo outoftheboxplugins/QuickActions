@@ -196,17 +196,17 @@ void SQuickMenuWindow::GetRecentCommands(TArray<FQuickMenuItem>& AvailableAction
 			continue;
 		}
 
-		const FQuickMenuItem* FoundCommand = AvailableActions.FindByPredicate(
+		const int32 CommandIndex = AvailableActions.IndexOfByPredicate(
 			[Command](const FQuickMenuItem& Entry)
 			{
 				return Entry->GetUniqueCommandName() == Command;
 			}
 		);
 
-		if (FoundCommand)
+		if (CommandIndex != INDEX_NONE)
 		{
-			OutResult.Emplace(*FoundCommand);
-			AvailableActions.Remove(*FoundCommand);
+			OutResult.Emplace(AvailableActions[CommandIndex]);
+			AvailableActions.RemoveAt(CommandIndex);
 		}
 	}
 }
@@ -229,7 +229,7 @@ void SQuickMenuWindow::GetPerfectMatchesCommands(TArray<FQuickMenuItem>& Availab
 	for (auto It = AvailableActions.CreateIterator(); It; ++It)
 	{
 		const FQuickMenuItem& Command = *It;
-		if (QuickMenuHelpers::IsMatchTo(Command->GetUniqueCommandName(), FilterText))
+		if (QuickMenuHelpers::IsPotentialMatchTo(Command->GetUniqueCommandName(), FilterText))
 		{
 			OutResult.Add(*It);
 			It.RemoveCurrent();

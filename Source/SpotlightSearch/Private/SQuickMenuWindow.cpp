@@ -213,7 +213,7 @@ void SQuickMenuWindow::GetAbbreviationsCommands(TArray<FQuickMenuItem>& Availabl
 		const FQuickMenuItem& Command = *It;
 		if (QuickMenuHelpers::IsAbbreviation(Command->GetUniqueCommandName(), FilterText))
 		{
-			FilteredCommands.Add(*It);
+			OutResult.Add(*It);
 			It.RemoveCurrent();
 		}
 	}
@@ -226,7 +226,7 @@ void SQuickMenuWindow::GetPerfectMatchesCommands(TArray<FQuickMenuItem>& Availab
 		const FQuickMenuItem& Command = *It;
 		if (QuickMenuHelpers::IsMatchTo(Command->GetUniqueCommandName(), FilterText))
 		{
-			FilteredCommands.Add(*It);
+			OutResult.Add(*It);
 			It.RemoveCurrent();
 		}
 	}
@@ -234,14 +234,25 @@ void SQuickMenuWindow::GetPerfectMatchesCommands(TArray<FQuickMenuItem>& Availab
 
 void SQuickMenuWindow::GetFuzzyMatchesCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem> OutResult, const FString& FilterText)
 {
+	const UQuickMenuSettings* Settings = GetDefault<UQuickMenuSettings>();
+	const float MinimumMatchPercentage = Settings->FuzzySearchMatchPercentage;
+
+	TMap<FQuickMenuItem, float> GoodMatches;
 	for (auto It = AvailableActions.CreateIterator(); It; ++It)
 	{
 		const FQuickMenuItem& Command = *It;
-		if (QuickMenuHelpers::IsCloseTo(Command->GetUniqueCommandName(), FilterText))
+		const float MatchScore = QuickMenuHelpers::GetMatchPercentage(Command->GetUniqueCommandName(), FilterText);
+		if (MatchScore > MinimumMatchPercentage)
 		{
-			FilteredCommands.Add(*It);
+			GoodMatches.Emplace(Command, MatchScore);
 			It.RemoveCurrent();
 		}
+	}
+
+	GoodMatches.ValueSort(TGreater<float>());
+	for (const auto& Match : GoodMatches)
+	{
+		OutResult.Emplace(Match.Key);
 	}
 }
 

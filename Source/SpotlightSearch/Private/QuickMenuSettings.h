@@ -26,6 +26,11 @@ public:
 	UPROPERTY(EditAnywhere, Category = Customization, config)
 	bool bIncludeSettingSections = true;
 	/**
+	 * @brief Matching percentage required for an entry to show up as a fuzzy search.
+	 */
+	UPROPERTY(EditAnywhere, Category = Customization, config, meta = (UIMin = "0.0", UIMax = "100.0"))
+	float FuzzySearchMatchPercentage = 75.0f;
+	/**
 	 * @brief Registers a command on top of the Recent Commands list and saves the config.
 	 * @param CommandName Unique name used to identify the command that was executed
 	 */

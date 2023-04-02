@@ -6,5 +6,5 @@ namespace QuickMenuHelpers
 {
 	bool IsAbbreviation(const FString& Candidate, const FString& Search);
 	bool IsMatchTo(const FString& Candidate, const FString& Search);
-	bool IsCloseTo(const FString& Candidate, const FString& Search);
+	float GetMatchPercentage(const FString& Candidate, const FString& Search);
 }; // namespace QuickMenuHelpers

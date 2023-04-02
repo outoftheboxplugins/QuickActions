@@ -8,9 +8,11 @@
 #include "QuickMenuHelpers.h"
 #include "QuickMenuSettings.h"
 #include "QuickMenuStyle.h"
-//#include "Styling/StyleColors.h"
 
 #define LOCTEXT_NAMESPACE "FQuickMenuModule"
+
+// TODO: Show this menu in the middle of the Unreal screen instead of middle of the monitor
+// TODO: Reorder functions in here to match the header file order
 
 namespace
 {
@@ -181,7 +183,6 @@ TSharedRef<ITableRow> SQuickMenuWindow::MakeCommandListItem(FQuickMenuItem Selec
 	return SNew(STableRow<FQuickMenuItem>, OwnerTable)
 			.Style(&FQuickMenuStyle::Get().GetWidgetStyle<FTableRowStyle>("ActionMenuRow"))
 			.IsEnabled_Lambda([bCanExecute](){return bCanExecute;})
-			.ToolTipText(Selection->Tooltip)
 			[
 				SNew(SHorizontalBox)
 
@@ -326,6 +327,7 @@ void SQuickMenuWindow::UpdateSelection(int32 Change)
 		HorizontalBox->InsertSlot(1).Padding(5.0f, 0.0f)[SplitViewWidget.ToSharedRef()];
 	}
 }
+
 bool SQuickMenuWindow::ShouldShowDescription() const
 {
 	// TODO: Also create a setting for this.

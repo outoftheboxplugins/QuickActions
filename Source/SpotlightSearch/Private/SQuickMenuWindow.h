@@ -22,12 +22,6 @@ public:
 	 */
 	void Construct(const FArguments& InArgs);
 
-	/**
-	 * @brief Callback executed when the filter textbox content is changed
-	 * @param Text current text we should filter for
-	 */
-	void OnFilterTextChanged(const FText& Text);
-
 private:
 	// Begin SWindow interface.
 	virtual bool OnIsActiveChanged(const FWindowActivateEvent& ActivateEvent) override;
@@ -38,18 +32,20 @@ private:
 	 * @brief Used to focus the filter textbox immediately following construction
 	 */
 	EActiveTimerReturnType SetFocusPostConstruct(double InCurrentTime, float InDeltaTime);
-
 	/**
 	 * TODO: Research if this and OnPreviewKeyDown can be merged together
 	 * @brief Callback executed when a key is pressed while the textbox if focused
 	 */
 	FReply OnSearchKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent);
-
+	/**
+	 * @brief Callback executed when the filter textbox content is changed
+	 * @param Text current text we should filter for
+	 */
+	void OnFilterTextChanged(const FText& Text);
 	/**
 	 * @brief Generates the entry for a ListView based on a QuickCommandEntry
 	 */
 	TSharedRef<ITableRow> MakeCommandListItem(FQuickMenuItem Selection, const TSharedRef<STableViewBase>& OwnerTable);
-
 	/**
 	 * @brief Runs the currently selected command if it can be executed
 	 */
@@ -69,7 +65,6 @@ private:
 	 * @brief Closes this dialog window making sure the destroy gets trigger only once.
 	 */
 	void CloseWindow();
-
 	/**
 	 * @brief Index of the currently selected command in the list.
 	 */

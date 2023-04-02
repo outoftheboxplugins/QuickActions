@@ -10,14 +10,14 @@ using FExecuteCommandDelegate = TDelegate<void()>;
 using FCanExecuteCommandDelegate = TDelegate<bool()>;
 
 /**
- * @brief Base class for all entries displayed in the quick commands menu 
+ * @brief Base class for all entries displayed in the quick commands menu
  */
 struct QUICKMENU_API FQuickCommandEntry
 {
 	FQuickCommandEntry() = default;
 	FQuickCommandEntry(const TSharedRef<FUICommandInfo>& Command, const TSharedRef<FUICommandList> CommandList);
 	FQuickCommandEntry(const FToolMenuEntry& Block, const FToolMenuContext& Context);
-	
+
 	virtual ~FQuickCommandEntry() = default;
 
 	/**
@@ -57,7 +57,7 @@ struct QUICKMENU_API FQuickCommandEntry
 	 * @return Unique identifier for this command
 	 */
 	virtual FString GetUniqueCommandName() const;
-	
+
 	/**
 	 * @brief Allows derived classes to construct an additional widget to be displayed in a split view when the command is highlighted
 	 * @return The Widget to display in a split view or nullptr
@@ -66,7 +66,7 @@ struct QUICKMENU_API FQuickCommandEntry
 };
 
 /**
- * @brief Class specialized in displaying simple on/off toggle switches as commands 
+ * @brief Class specialized in displaying simple on/off toggle switches as commands
  */
 struct QUICKMENU_API FQuickSwitchCommandEntry : FQuickCommandEntry
 {
@@ -76,17 +76,17 @@ private:
 	// Begin FQuickCommandEntry interface
 	virtual FString GetUniqueCommandName() const override;
 	// End FQuickCommandEntry interface
-	
+
 	/**
 	 * @brief Original Title of the switch command so we can have a consistent name even if the switch is flipped
-	 * @example "Enable: High Quality Shadows" and "Disable: High Quality Shadows" should have the same Switch Tite: "High Quality Shadows" 
+	 * @example "Enable: High Quality Shadows" and "Disable: High Quality Shadows" should have the same Switch Tite: "High Quality Shadows"
 	 */
 	TAttribute<FText> SwitchTitle;
 };
 
-/** 
-  * Aids in finding QuickAction menu entries when we are collecting them in a composition pattern
-  */
+/**
+ * Aids in finding QuickAction menu entries when we are collecting them in a composition pattern
+ */
 UCLASS(Abstract, Blueprintable)
 class QUICKMENU_API UQuickMenuExtension : public UObject
 {
@@ -107,12 +107,12 @@ public:
 	virtual int32 GetPriority() const { return 0; }
 	/**
 	 * @brief Determines if we want or not to display the actions found by this collector
-	 * @return true if we want to show them, false otherwise 
+	 * @return true if we want to show them, false otherwise
 	 */
 	virtual bool ShouldShow() const { return true; }
 
 protected:
-	//TODO: Should we consider moving this to a helper class since it doesn't use any member functions/variables?
+	// TODO: Should we consider moving this to a helper class since it doesn't use any member functions/variables?
 	/**
 	 * @brief Automatically collects the commands from a menu section
 	 * @param OutCommands Commands generated from the menu section

@@ -162,76 +162,85 @@ FReply SQuickMenuWindow::OnSearchKeyDown(const FGeometry& MyGeometry, const FKey
 
 void SQuickMenuWindow::OnFilterTextChanged(const FText& Text)
 {
-	FilteredCommands.Empty();
-
-	TArray<FQuickMenuItem> Commands;
 	const UQuickMenuDiscoverySubsystem* DiscoverySubsystem = GEditor->GetEditorSubsystem<UQuickMenuDiscoverySubsystem>();
-	TArray<TSharedPtr<FQuickCommandEntry>> AllEntries = DiscoverySubsystem->GetAllCommands();
-	for (const TSharedPtr<FQuickCommandEntry>& Entry : AllEntries)
-	{
-		Commands.Emplace(Entry.ToSharedRef());
-	}
+	TArray<FQuickMenuItem> AvailableCommands = DiscoverySubsystem->GetAllCommands();
 
-	TArray<FQuickMenuItem> AvailableCommands = Commands;
+	FilteredCommands.Empty();
 
 	if (Text.IsEmpty())
 	{
-		const UQuickMenuSettings* Settings = GetDefault<UQuickMenuSettings>();
-		const TArray<FString>& RecentCommands = Settings->GetRecentCommands();
-
-		for (const FString& Command : RecentCommands)
-		{
-			const FQuickMenuItem* FoundCommand = AvailableCommands.FindByPredicate(
-				[Command](const FQuickMenuItem& Entry)
-				{
-					return Entry->GetUniqueCommandName() == Command;
-				}
-			);
-
-			if (FoundCommand)
-			{
-				FilteredCommands.Emplace(*FoundCommand);
-			}
-		}
+		GetRecentCommands(AvailableCommands, FilteredCommands);
 	}
 	else
 	{
-		// First get all the abbreviations
-		for (auto It = AvailableCommands.CreateIterator(); It; ++It)
-		{
-			FQuickMenuItem Command = *It;
-			if (QuickMenuHelpers::IsAbbreviation(Command->GetUniqueCommandName(), Text.ToString()))
-			{
-				FilteredCommands.Add(*It);
-				It.RemoveCurrent();
-			}
-		}
-
-		// Second get the perfect matches
-		for (auto It = AvailableCommands.CreateIterator(); It; ++It)
-		{
-			FQuickMenuItem Command = *It;
-			if (QuickMenuHelpers::IsStartingWith(Command->GetUniqueCommandName(), Text.ToString()))
-			{
-				FilteredCommands.Add(*It);
-				It.RemoveCurrent();
-			}
-		}
-
-		// Third get fuzzy entries
-		for (auto It = AvailableCommands.CreateIterator(); It; ++It)
-		{
-			FQuickMenuItem Command = *It;
-			if (QuickMenuHelpers::IsCloseTo(Command->GetUniqueCommandName(), Text.ToString()))
-			{
-				FilteredCommands.Add(*It);
-				It.RemoveCurrent();
-			}
-		}
+		GetAbbreviationsCommands(AvailableCommands, FilteredCommands);
+		GetPerfectMatchesCommands(AvailableCommands, FilteredCommands);
+		GetFuzzyMatchesCommands(AvailableCommands, FilteredCommands);
 	}
 
 	ListView->RequestListRefresh();
 	UpdateSelection(0);
+}
+
+void SQuickMenuWindow::GetRecentCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem> OutResult)
+{
+	const UQuickMenuSettings* Settings = GetDefault<UQuickMenuSettings>();
+	const TArray<FString>& RecentCommands = Settings->GetRecentCommands();
+
+	for (const FString& Command : RecentCommands)
+	{
+		const FQuickMenuItem* FoundCommand = AvailableActions.FindByPredicate(
+			[Command](const FQuickMenuItem& Entry)
+			{
+				return Entry->GetUniqueCommandName() == Command;
+			}
+		);
+
+		if (FoundCommand)
+		{
+			OutResult.Emplace(*FoundCommand);
+			AvailableActions.Remove(*FoundCommand);
+		}
+	}
+}
+
+void SQuickMenuWindow::GetAbbreviationsCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem> OutResult, const FString& FilterText)
+{
+	for (auto It = AvailableActions.CreateIterator(); It; ++It)
+	{
+		const FQuickMenuItem& Command = *It;
+		if (QuickMenuHelpers::IsAbbreviation(Command->GetUniqueCommandName(), FilterText))
+		{
+			FilteredCommands.Add(*It);
+			It.RemoveCurrent();
+		}
+	}
+}
+
+void SQuickMenuWindow::GetPerfectMatchesCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem> OutResult, const FString& FilterText)
+{
+	for (auto It = AvailableActions.CreateIterator(); It; ++It)
+	{
+		const FQuickMenuItem& Command = *It;
+		if (QuickMenuHelpers::IsStartingWith(Command->GetUniqueCommandName(), FilterText))
+		{
+			FilteredCommands.Add(*It);
+			It.RemoveCurrent();
+		}
+	}
+}
+
+void SQuickMenuWindow::GetFuzzyMatchesCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem> OutResult, const FString& FilterText)
+{
+	for (auto It = AvailableActions.CreateIterator(); It; ++It)
+	{
+		const FQuickMenuItem& Command = *It;
+		if (QuickMenuHelpers::IsCloseTo(Command->GetUniqueCommandName(), FilterText))
+		{
+			FilteredCommands.Add(*It);
+			It.RemoveCurrent();
+		}
+	}
 }
 
 TSharedRef<ITableRow> SQuickMenuWindow::MakeCommandListItem(FQuickMenuItem Selection, const TSharedRef<STableViewBase>& OwnerTable)

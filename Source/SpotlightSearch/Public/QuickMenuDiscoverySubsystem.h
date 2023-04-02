@@ -21,7 +21,7 @@ public:
 	 * @brief Gets an up-to-date list of all currently available commands
 	 * @return List of Commands available
 	 */
-	const TArray<TSharedPtr<FQuickCommandEntry>>& GetAllCommands() const;
+	const TArray<TSharedRef<FQuickCommandEntry>>& GetAllCommands() const;
 
 private:
 	// Begin UEditorSubsystem interface
@@ -35,9 +35,9 @@ private:
 	 * @brief Loops through all the Extensions to gather all available commands
 	 * @param OutCommands Resulting list of all commands
 	 */
-	void GatherCommandsInternal(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands) const;
+	void GatherCommandsInternal(TArray<TSharedRef<FQuickCommandEntry>>& OutCommands) const;
 	/**
 	 * @brief Cached array of all commands we discovered on startup so menu spawn time are lower
 	 */
-	TArray<TSharedPtr<FQuickCommandEntry>> DiscoveredCommands;
+	TArray<TSharedRef<FQuickCommandEntry>> DiscoveredCommands;
 };

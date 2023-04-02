@@ -27,7 +27,6 @@ private:
 	virtual bool OnIsActiveChanged(const FWindowActivateEvent& ActivateEvent) override;
 	virtual FReply OnPreviewKeyDown(const FGeometry& MyGeometry, const FKeyEvent& InKeyEvent) override;
 	// End SWindow interface.
-
 	/**
 	 * @brief Used to focus the filter textbox immediately following construction
 	 */
@@ -42,6 +41,33 @@ private:
 	 * @param Text current text we should filter for
 	 */
 	void OnFilterTextChanged(const FText& Text);
+	/**
+	 * @brief Filters out the recently ran commands from AvailableActions and constructs a list of them in OutResult
+	 * @param AvailableActions Input list we will remove the matching commands from
+	 * @param OutResult Output list we will add the matching commands to
+	 */
+	void GetRecentCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem> OutResult);
+	/**
+	 * @brief Filters out the commands with matching abbreviations from AvailableActions and constructs a list of them in OutResult
+	 * @param AvailableActions Input list we will remove the matching commands from
+	 * @param OutResult Output list we will add the matching commands to
+	 * @param FilterText String we will use to perform to perform the filtering
+	 */
+	void GetAbbreviationsCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem> OutResult, const FString& FilterText);
+	/**
+	 * @brief Filters out the commands with perfect matches from AvailableActions and constructs a list of them in OutResult
+	 * @param AvailableActions Input list we will remove the matching commands from
+	 * @param OutResult Output list we will add the matching commands to
+	 * @param FilterText String we will use to perform to perform the filtering
+	 */
+	void GetPerfectMatchesCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem> OutResult, const FString& FilterText);
+	/**
+	 * @brief Filters out the commands with fuzzy matches from AvailableActions and constructs a list of them in OutResult
+	 * @param AvailableActions Input list we will remove the matching commands from
+	 * @param OutResult Output list we will add the matching commands to
+	 * @param FilterText String we will use to perform to perform the filtering
+	 */
+	void GetFuzzyMatchesCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem> OutResult, const FString& FilterText);
 	/**
 	 * @brief Generates the entry for a ListView based on a QuickCommandEntry
 	 */

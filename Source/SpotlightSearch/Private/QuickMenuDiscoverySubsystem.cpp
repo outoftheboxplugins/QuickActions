@@ -6,7 +6,7 @@
 
 TAutoConsoleVariable<FString> CVarQuickActionFilter(TEXT("QuickActions.FilterExtensions"), TEXT(""), TEXT("If set, only extensions with this string in their name will be displayed."));
 
-const TArray<TSharedPtr<FQuickCommandEntry>>& UQuickMenuDiscoverySubsystem::GetAllCommands() const
+const TArray<TSharedRef<FQuickCommandEntry>>& UQuickMenuDiscoverySubsystem::GetAllCommands() const
 {
 	return DiscoveredCommands;
 }
@@ -24,7 +24,7 @@ void UQuickMenuDiscoverySubsystem::OnMainFrameReady(TSharedPtr<SWindow> InRootWi
 	GatherCommandsInternal(DiscoveredCommands);
 }
 
-void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands) const
+void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<TSharedRef<FQuickCommandEntry>>& OutCommands) const
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(UQuickMenuDiscoverySubsystem::GatherCommandsInternal);
 
@@ -62,6 +62,11 @@ void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<TSharedPtr<FQui
 
 	for (UQuickMenuExtension* Extension : Extensions)
 	{
-		OutCommands.Append(Extension->GetCommands(Context));
+		// TODO: Fix conversion from SharedPtr to SharedRef
+		const TArray<TSharedPtr<FQuickCommandEntry>>& ExtensionCommands = Extension->GetCommands(Context);
+		for (const TSharedPtr<FQuickCommandEntry>& Command : ExtensionCommands)
+		{
+			OutCommands.Add(Command.ToSharedRef());
+		}
 	}
 }

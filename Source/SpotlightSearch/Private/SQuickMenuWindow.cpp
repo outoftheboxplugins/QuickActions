@@ -184,13 +184,18 @@ void SQuickMenuWindow::OnFilterTextChanged(const FText& Text)
 	UpdateSelection(0);
 }
 
-void SQuickMenuWindow::GetRecentCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem> OutResult)
+void SQuickMenuWindow::GetRecentCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem>& OutResult)
 {
 	const UQuickMenuSettings* Settings = GetDefault<UQuickMenuSettings>();
 	const TArray<FString>& RecentCommands = Settings->GetRecentCommands();
 
 	for (const FString& Command : RecentCommands)
 	{
+		if (Command.IsEmpty())
+		{
+			continue;
+		}
+
 		const FQuickMenuItem* FoundCommand = AvailableActions.FindByPredicate(
 			[Command](const FQuickMenuItem& Entry)
 			{
@@ -206,7 +211,7 @@ void SQuickMenuWindow::GetRecentCommands(TArray<FQuickMenuItem>& AvailableAction
 	}
 }
 
-void SQuickMenuWindow::GetAbbreviationsCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem> OutResult, const FString& FilterText)
+void SQuickMenuWindow::GetAbbreviationsCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem>& OutResult, const FString& FilterText)
 {
 	for (auto It = AvailableActions.CreateIterator(); It; ++It)
 	{
@@ -219,7 +224,7 @@ void SQuickMenuWindow::GetAbbreviationsCommands(TArray<FQuickMenuItem>& Availabl
 	}
 }
 
-void SQuickMenuWindow::GetPerfectMatchesCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem> OutResult, const FString& FilterText)
+void SQuickMenuWindow::GetPerfectMatchesCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem>& OutResult, const FString& FilterText)
 {
 	for (auto It = AvailableActions.CreateIterator(); It; ++It)
 	{
@@ -232,7 +237,7 @@ void SQuickMenuWindow::GetPerfectMatchesCommands(TArray<FQuickMenuItem>& Availab
 	}
 }
 
-void SQuickMenuWindow::GetFuzzyMatchesCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem> OutResult, const FString& FilterText)
+void SQuickMenuWindow::GetFuzzyMatchesCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem>& OutResult, const FString& FilterText)
 {
 	const UQuickMenuSettings* Settings = GetDefault<UQuickMenuSettings>();
 	const float MinimumMatchPercentage = Settings->FuzzySearchMatchPercentage;

@@ -45,26 +45,31 @@ bool FQuickCommandEntry::IsAllowedToExecute() const
 
 	return CanExecuteCallback.Execute();
 }
+FString FQuickCommandEntry::GetCommandName() const
+{
+	return Title.Get().ToString();
+}
 
 FString FQuickCommandEntry::GetUniqueCommandName() const
 {
-	return Title.Get().ToString();
+	return FMD5::HashAnsiString(*GetCommandName());
 }
 
 FQuickSwitchCommandEntry::FQuickSwitchCommandEntry(const TSharedRef<FUICommandInfo>& Command, const TSharedRef<FUICommandList> CommandList, bool bIsEnabled) : FQuickCommandEntry(Command, CommandList)
 {
 	SwitchTitle = Title;
-	
+
 	const FText ActionPrefix = bIsEnabled ? LOCTEXT("Disable", "Disable:") : LOCTEXT("Enable", "Enable:");
 	Title = FText::Format(INVTEXT("{0} {1}"), ActionPrefix, Title.Get());
 
-	//TODO: Find a better icon for this. Hopefully a custom one.
+	// TODO: Find a better icon for this. Hopefully a custom one.
 	Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), bIsEnabled ? "FBXIcon.ReimportCompareRemoved" : "FBXIcon.ReimportCompareAdd");
 }
 
 FString FQuickSwitchCommandEntry::GetUniqueCommandName() const
 {
-	return SwitchTitle.Get().ToString();
+	const FString UniqueSwitchTitle = SwitchTitle.Get().ToString();
+	return FMD5::HashAnsiString(*UniqueSwitchTitle);
 }
 
 void UQuickMenuExtension::CollectActionsFromMenuSection(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands, const FToolMenuContext& Context, FName MenuName, FName SectionName) const

@@ -21,23 +21,12 @@ public:
 	 * @brief Gets an up-to-date list of all currently available commands
 	 * @return List of Commands available
 	 */
-	const TArray<TSharedRef<FQuickCommandEntry>>& GetAllCommands() const;
+	TArray<TSharedRef<FQuickCommandEntry>> GetAllCommands() const;
 
 private:
-	// Begin UEditorSubsystem interface
-	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-	// End UEditorSubsystem interface
-	/**
-	 * @brief Callback executed when the MainFrame initialization process is finished.
-	 */
-	void OnMainFrameReady(TSharedPtr<SWindow> InRootWindow, bool bIsNewProjectWindow);
 	/**
 	 * @brief Loops through all the Extensions to gather all available commands
 	 * @param OutCommands Resulting list of all commands
 	 */
 	void GatherCommandsInternal(TArray<TSharedRef<FQuickCommandEntry>>& OutCommands) const;
-	/**
-	 * @brief Cached array of all commands we discovered on startup so menu spawn time are lower
-	 */
-	TArray<TSharedRef<FQuickCommandEntry>> DiscoveredCommands;
 };

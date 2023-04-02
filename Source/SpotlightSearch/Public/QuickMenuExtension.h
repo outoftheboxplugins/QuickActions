@@ -53,11 +53,14 @@ struct QUICKMENU_API FQuickCommandEntry
 	 */
 	bool IsAllowedToExecute() const;
 	/**
+	 * @brief Name to be displayed for this command's menu entry
+	 */
+	FString GetCommandName() const;
+	/**
 	 * @brief Creates a unique identifier for this command, persistent across multiple menu instances and editor launches
 	 * @return Unique identifier for this command
 	 */
 	virtual FString GetUniqueCommandName() const;
-
 	/**
 	 * @brief Allows derived classes to construct an additional widget to be displayed in a split view when the command is highlighted
 	 * @return The Widget to display in a split view or nullptr

@@ -6,22 +6,11 @@
 
 TAutoConsoleVariable<FString> CVarQuickActionFilter(TEXT("QuickActions.FilterExtensions"), TEXT(""), TEXT("If set, only extensions with this string in their name will be displayed."));
 
-const TArray<TSharedRef<FQuickCommandEntry>>& UQuickMenuDiscoverySubsystem::GetAllCommands() const
+TArray<TSharedRef<FQuickCommandEntry>> UQuickMenuDiscoverySubsystem::GetAllCommands() const
 {
-	return DiscoveredCommands;
-}
-
-void UQuickMenuDiscoverySubsystem::Initialize(FSubsystemCollectionBase& Collection)
-{
-	Super::Initialize(Collection);
-
-	IMainFrameModule& MainFrameModule = FModuleManager::LoadModuleChecked<IMainFrameModule>(TEXT("MainFrame"));
-	MainFrameModule.OnMainFrameCreationFinished().AddUObject(this, &UQuickMenuDiscoverySubsystem::OnMainFrameReady);
-}
-
-void UQuickMenuDiscoverySubsystem::OnMainFrameReady(TSharedPtr<SWindow> InRootWindow, bool bIsNewProjectWindow)
-{
+	TArray<TSharedRef<FQuickCommandEntry>> DiscoveredCommands;
 	GatherCommandsInternal(DiscoveredCommands);
+	return DiscoveredCommands;
 }
 
 void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<TSharedRef<FQuickCommandEntry>>& OutCommands) const

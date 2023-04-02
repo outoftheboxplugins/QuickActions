@@ -26,12 +26,13 @@ bool QuickMenuHelpers::IsAbbreviation(const FString& Candidate, const FString& S
 	return Abbreviation.Equals(Search, ESearchCase::IgnoreCase);
 }
 
-bool QuickMenuHelpers::IsStartingWith(const FString& Candidate, const FString& Search)
+bool QuickMenuHelpers::IsMatchTo(const FString& Candidate, const FString& Search)
 {
-	return Candidate.StartsWith(Search, ESearchCase::IgnoreCase);
+	return Candidate.Contains(Search, ESearchCase::IgnoreCase);
 }
 
 bool QuickMenuHelpers::IsCloseTo(const FString& Candidate, const FString& Search)
 {
+	// TODO: Implement fuzzy search algo
 	return Candidate.Contains(Search, ESearchCase::IgnoreCase);
 }

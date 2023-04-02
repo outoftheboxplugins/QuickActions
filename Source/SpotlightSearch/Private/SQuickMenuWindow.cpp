@@ -224,7 +224,7 @@ void SQuickMenuWindow::GetPerfectMatchesCommands(TArray<FQuickMenuItem>& Availab
 	for (auto It = AvailableActions.CreateIterator(); It; ++It)
 	{
 		const FQuickMenuItem& Command = *It;
-		if (QuickMenuHelpers::IsStartingWith(Command->GetUniqueCommandName(), FilterText))
+		if (QuickMenuHelpers::IsMatchTo(Command->GetUniqueCommandName(), FilterText))
 		{
 			FilteredCommands.Add(*It);
 			It.RemoveCurrent();

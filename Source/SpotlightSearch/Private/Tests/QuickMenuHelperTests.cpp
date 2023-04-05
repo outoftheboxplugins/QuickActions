@@ -1,4 +1,6 @@
-﻿#include "Misc/AutomationTest.h"
+﻿// Copyright Out-of-the-Box Plugins 2018-2022. All Rights Reserved.
+
+#include "Misc/AutomationTest.h"
 #include "QuickMenuHelpers.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(QuickMenuHelperAbbreviationTests, "QuickActions.QuickMenuHelper.AbbreviationTests", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)

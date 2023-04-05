@@ -1,4 +1,6 @@
-﻿using UnrealBuildTool;
+﻿// Copyright Out-of-the-Box Plugins 2018-2022. All Rights Reserved.
+
+using UnrealBuildTool;
 
 public class QuickMenu : ModuleRules
 {

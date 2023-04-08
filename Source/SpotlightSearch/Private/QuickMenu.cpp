@@ -1,4 +1,4 @@
-﻿// Copyright Out-of-the-Box Plugins 2018-2022. All Rights Reserved.
+// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
 
 #include "QuickMenu.h"
 
@@ -8,7 +8,7 @@
 #include "QuickMenuStyle.h"
 #include "SQuickMenuWindow.h"
 
-#define LOCTEXT_NAMESPACE "FQuickMenuModule"
+#define LOCTEXT_NAMESPACE "QuickMenuModule"
 
 void FQuickMenuModule::StartupModule()
 {

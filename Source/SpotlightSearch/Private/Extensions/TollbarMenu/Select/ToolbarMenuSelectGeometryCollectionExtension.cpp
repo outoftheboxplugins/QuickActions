@@ -13,8 +13,8 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuSelectGeometryCollectionExten
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	IPluginManager& PluginManager = IPluginManager::Get();
-	TSharedPtr<IPlugin> Plugin = PluginManager.FindPlugin(TEXT("GeometryCollectionPlugin"));
-	if (!Plugin->IsEnabled())
+	const TSharedPtr<IPlugin> Plugin = PluginManager.FindPlugin(TEXT("GeometryCollectionPlugin"));
+	if (!Plugin->IsEnabled() || !FGeometryCollectionSelectionCommands::IsRegistered())
 	{
 		return OutCommands;
 	}

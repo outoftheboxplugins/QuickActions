@@ -10,7 +10,7 @@
 
 #define LOCTEXT_NAMESPACE "QuickActions"
 
-TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuFileOpenExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuFileOpenExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 

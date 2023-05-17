@@ -2,11 +2,11 @@
 
 #include "ToolbarMenuWindowGetContentExtension.h"
 
-TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuWindowGetContentExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuWindowGetContentExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	CollectActionsFromMenuSection(OutCommands, Context, "MainFrame.MainMenu.Window", "GetContent");
-	
+
 	return OutCommands;
 }

@@ -2,7 +2,7 @@
 
 #include "ToolbarMenuToolsProgrammingExtension.h"
 
-TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsProgrammingExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsProgrammingExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
@@ -17,7 +17,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsProgrammingExtension::Ge
 			continue;
 		}
 
-		const TSharedPtr<FQuickCommandEntry> BlockCommand = MakeShared<FQuickCommandEntry>(Block, Context);
+		const TSharedPtr<FQuickCommandEntry> BlockCommand = MakeShared<FQuickCommandEntry>(Block, Context.ToolMenuContext);
 		OutCommands.Emplace(BlockCommand);
 	}
 

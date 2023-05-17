@@ -21,7 +21,7 @@ namespace
 
 } // namespace
 
-TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLightingExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLightingExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 

@@ -9,7 +9,7 @@
 #include "Styling/SlateIconFinder.h"
 #include "Toolkits/GlobalEditorCommonCommands.h"
 
-TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuActorAssetOptionsExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuActorAssetOptionsExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 

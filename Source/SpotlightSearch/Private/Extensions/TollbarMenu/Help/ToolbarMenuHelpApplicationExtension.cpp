@@ -2,7 +2,7 @@
 
 #include "ToolbarMenuHelpApplicationExtension.h"
 
-TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuHelpApplicationExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuHelpApplicationExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 

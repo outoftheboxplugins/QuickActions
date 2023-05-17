@@ -14,6 +14,6 @@ class UToolbarMenuBuildPackedLevelActorExtension : public UQuickMenuExtension
 {
 	GENERATED_BODY()
 
-	virtual TArray<TSharedPtr<FQuickCommandEntry>> GetCommands(const FToolMenuContext& Context) override;
+	virtual TArray<TSharedPtr<FQuickCommandEntry>> GetCommands(const FQuickCommandContext& Context) override;
 	virtual bool ShouldShow() const override;
 };

@@ -5,7 +5,7 @@
 #include <LevelEditor.h>
 #include <LevelEditorActions.h>
 
-TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuSelectSkeletalMeshesExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuSelectSkeletalMeshesExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 

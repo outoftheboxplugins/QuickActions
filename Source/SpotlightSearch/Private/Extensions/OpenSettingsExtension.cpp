@@ -13,7 +13,7 @@
 
 // TODO: Check if the Container.IsValid and Category.IsValid are really necessary
 
-TArray<TSharedPtr<FQuickCommandEntry>> UOpenSettingsExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UOpenSettingsExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(UOpenSettingsExtension::GetCommands);
 

@@ -8,7 +8,7 @@
 #include "LevelInstance/LevelInstanceSubsystem.h"
 #include "Settings/EditorExperimentalSettings.h"
 
-TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildPackedLevelActorExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildPackedLevelActorExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 

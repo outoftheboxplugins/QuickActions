@@ -6,7 +6,7 @@
 
 #include "IMergeActorsTool.h"
 
-TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuActorUEToolsExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuActorUEToolsExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 

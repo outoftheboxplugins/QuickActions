@@ -1,4 +1,4 @@
-﻿// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
+// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
 
 #include "QuickMenuDiscoverySubsystem.h"
 
@@ -46,8 +46,8 @@ void UQuickMenuDiscoverySubsystem::GatherCommandsInternal(TArray<TSharedRef<FQui
 	const TSharedPtr<FUICommandList> MainFrameCommands = MainFrameModule.GetMainFrameCommandBindings();
 
 	// TODO: This should be based on what menu/tab we have currently open
-	FToolMenuContext Context;
-	Context.AppendCommandList(MainFrameCommands);
+	FQuickCommandContext Context;
+	Context.ToolMenuContext.AppendCommandList(MainFrameCommands);
 
 	for (UQuickMenuExtension* Extension : Extensions)
 	{

@@ -2,7 +2,7 @@
 
 #include "ReflectionFunctionsExtension.h"
 
-TArray<TSharedPtr<FQuickCommandEntry>> UReflectionFunctionsExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UReflectionFunctionsExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(UReflectionFunctionsExtension::GetCommands);
 

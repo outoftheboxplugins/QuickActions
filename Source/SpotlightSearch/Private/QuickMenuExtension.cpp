@@ -95,4 +95,9 @@ void UQuickMenuExtension::CollectActionsFromMenuSection(TArray<TSharedPtr<FQuick
 	}
 }
 
+void UQuickMenuExtension::CollectActionsFromMenuSection(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands, const FQuickCommandContext& Context, FName MenuName, FName SectionName) const
+{
+	CollectActionsFromMenuSection(OutCommands, Context.ToolMenuContext, MenuName, SectionName);
+}
+
 #undef LOCTEXT_NAMESPACE

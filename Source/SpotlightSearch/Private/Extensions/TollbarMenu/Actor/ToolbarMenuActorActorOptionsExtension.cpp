@@ -2,7 +2,7 @@
 
 #include "ToolbarMenuActorActorOptionsExtension.h"
 
-TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuActorActorOptionsExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuActorActorOptionsExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 

@@ -4,7 +4,7 @@
 
 #include <LevelEditor.h>
 
-TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsInstrumentationExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsInstrumentationExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 

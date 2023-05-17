@@ -2,7 +2,7 @@
 
 #include "ToolbarMenuToolsToolsExtension.h"
 
-TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsToolsExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsToolsExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 	constexpr int32 NumFindInBlueprintsTabs = 4;

@@ -4,7 +4,7 @@
 
 #include "Styling/SlateIconFinder.h"
 
-TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuWindowLogExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuWindowLogExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 

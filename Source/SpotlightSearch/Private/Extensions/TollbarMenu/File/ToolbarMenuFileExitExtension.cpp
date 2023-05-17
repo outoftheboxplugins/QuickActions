@@ -2,7 +2,7 @@
 
 #include "ToolbarMenuFileExitExtension.h"
 
-TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuFileExitExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuFileExitExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 

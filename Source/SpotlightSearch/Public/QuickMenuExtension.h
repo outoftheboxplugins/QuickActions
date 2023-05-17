@@ -88,6 +88,17 @@ private:
 };
 
 /**
+ * Contains information about the context in which the extension should gather (what menus are open, what did the user search for).
+ */
+struct FQuickCommandContext
+{
+	/**
+	 * @brief Contains information about what menus the user has control over to know where we should gather information from.
+	 */
+	FToolMenuContext ToolMenuContext;
+};
+
+/**
  * Aids in finding QuickAction menu entries when we are collecting them in a composition pattern
  */
 UCLASS(Abstract, Blueprintable)
@@ -101,7 +112,7 @@ public:
 	 * @param Context Context we are building the list in (TODO: Document this parameter better)
 	 * @return List of the commands generated
 	 */
-	virtual TArray<TSharedPtr<FQuickCommandEntry>> GetCommands(const FToolMenuContext& Context) { return {}; }
+	virtual TArray<TSharedPtr<FQuickCommandEntry>> GetCommands(const FQuickCommandContext& Context) { return {}; }
 	/**
 	 * @brief Determines the order in which the commands found by this extension will be placed in the list
 	 * @note Bigger priority will be show before. Lower priority will show up after
@@ -124,4 +135,5 @@ protected:
 	 * @param SectionName Name of the section we want to collect the actions from
 	 */
 	void CollectActionsFromMenuSection(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands, const FToolMenuContext& Context, FName MenuName, FName SectionName) const;
+	void CollectActionsFromMenuSection(TArray<TSharedPtr<FQuickCommandEntry>>& OutCommands, const FQuickCommandContext& Context, FName MenuName, FName SectionName) const;
 };

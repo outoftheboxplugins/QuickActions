@@ -6,7 +6,7 @@
 
 #define LOCTEXT_NAMESPACE "QuickActions"
 
-TArray<TSharedPtr<FQuickCommandEntry>> UHdiTutorialsExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UHdiTutorialsExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(UHdiTutorialsExtension::GetCommands);
 

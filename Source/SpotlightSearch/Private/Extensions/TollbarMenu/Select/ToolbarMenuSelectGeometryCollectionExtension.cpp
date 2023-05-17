@@ -8,7 +8,7 @@
 
 #include "Interfaces/IPluginManager.h"
 
-TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuSelectGeometryCollectionExtension::GetCommands(const FToolMenuContext& Context)
+TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuSelectGeometryCollectionExtension::GetCommands(const FQuickCommandContext& Context)
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 

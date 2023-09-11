@@ -21,7 +21,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UReflectionFunctionsExtension::GetCommand
 				FunctionEntry->Tooltip = FText::FromString(Function->GetDesc());
 				FunctionEntry->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "Kismet.AllClasses.FunctionIcon");
 				FunctionEntry->ExecuteCallback = FSimpleDelegate::CreateLambda(
-					[=]()
+					[=, this]()
 					{
 						ProcessEvent(Function, nullptr);
 					}

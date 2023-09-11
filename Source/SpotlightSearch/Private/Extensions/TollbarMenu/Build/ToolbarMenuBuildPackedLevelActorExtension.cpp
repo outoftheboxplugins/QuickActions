@@ -3,10 +3,8 @@
 #include "ToolbarMenuBuildPackedLevelActorExtension.h"
 
 #include <LevelEditor.h>
-#include <LevelEditorActions.h>
-
-#include "LevelInstance/LevelInstanceSubsystem.h"
-#include "Settings/EditorExperimentalSettings.h"
+#include <PackedLevelActorUtils.h>
+#include <Settings/EditorExperimentalSettings.h>
 
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildPackedLevelActorExtension::GetCommands(const FQuickCommandContext& Context)
 {
@@ -22,26 +20,16 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildPackedLevelActorExtensio
 	PackActors->ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()
 		{
-			if (const UWorld* World = GEditor->GetEditorWorldContext().World())
-			{
-				if (ULevelInstanceSubsystem* LevelInstanceSubsystem = World->GetSubsystem<ULevelInstanceSubsystem>())
-				{
-					LevelInstanceSubsystem->PackAllLoadedActors();
-				}
-			}
+			UE_LOG(LogTemp, Warning, TEXT("FPackedLevelActorUtils::PackAllLoadedActors is not DLL exported."))
+			//FPackedLevelActorUtils::PackAllLoadedActors();
 		}
 	);
 	PackActors->CanExecuteCallback = FCanExecuteCommandDelegate::CreateLambda(
 		[]()
 		{
-			if (const UWorld* World = GEditor->GetEditorWorldContext().World())
-			{
-				if (const ULevelInstanceSubsystem* LevelInstanceSubsystem = World->GetSubsystem<ULevelInstanceSubsystem>())
-				{
-					return LevelInstanceSubsystem->CanPackAllLoadedActors();
-				}
-			}
-			return false;
+			UE_LOG(LogTemp, Warning, TEXT("FPackedLevelActorUtils::CanPack is not DLL exported."))
+			//return FPackedLevelActorUtils::CanPack();
+			return true;
 		}
 	);
 	OutCommands.Emplace(PackActors);

@@ -31,6 +31,7 @@ public class QuickMenu : ModuleRules
 				"UndoHistoryEditor",
 				"UnrealEd", 
 				"MergeActors", 
+				"LevelInstanceEditor", 
 		});
 	}
 }

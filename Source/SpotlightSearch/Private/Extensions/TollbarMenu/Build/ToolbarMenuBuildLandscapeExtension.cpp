@@ -17,24 +17,6 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLandscapeExtension::GetC
 	BuildAllLandscape->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "LevelEditor.LandscapeMode", "LevelEditor.LandscapeMode.Small");
 	OutCommands.Emplace(BuildAllLandscape);
 
-	const TSharedPtr<FQuickCommandEntry> BuildGITextures = MakeShared<FQuickCommandEntry>();
-	BuildGITextures->Title = NSLOCTEXT("LandscapeEditor", "BuildGITexturesOnly", "Build GI Textures Only");
-	BuildGITextures->Tooltip = NSLOCTEXT("LandscapeEditor", "BuildGIBakedTextures ", "Build GI baked base color textures");
-	BuildGITextures->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "PlacementBrowser.Icons.Lights");
-	BuildGITextures->ExecuteCallback = FSimpleDelegate::CreateLambda(
-		[]()
-		{
-			if (const UWorld* World = GEditor->GetEditorWorldContext().World())
-			{
-				if (ULandscapeSubsystem* LandscapeSubsystem = World->GetSubsystem<ULandscapeSubsystem>())
-				{
-					LandscapeSubsystem->BuildGIBakedTextures();
-				}
-			}
-		}
-	);
-	OutCommands.Emplace(BuildGITextures);
-
 	const TSharedPtr<FQuickCommandEntry> BuildGrassMaps = MakeShared<FQuickCommandEntry>();
 	BuildGrassMaps->Title = NSLOCTEXT("LandscapeEditor", "BuildGrassMapsOnly", "Build Grass Maps Only");
 	BuildGrassMaps->Tooltip = NSLOCTEXT("LandscapeEditor", "BuildLandscapeGrassMaps", "Build landscape grass maps");

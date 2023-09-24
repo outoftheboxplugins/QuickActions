@@ -13,6 +13,7 @@ public class QuickMenu : ModuleRules
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {
+				"ApplicationCore",
 				"CoreUObject",
 				"DeveloperSettings",
 				"EditorStyle",

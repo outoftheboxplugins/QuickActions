@@ -19,6 +19,17 @@ const TArray<FString>& UQuickMenuSettings::GetRecentCommands() const
 	return RecentCommands;
 }
 
+void UQuickMenuSettings::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+
+	const FName PropertyName = PropertyChangedEvent.Property ? PropertyChangedEvent.MemberProperty->GetFName() : NAME_None;
+	if (PropertyName == GET_MEMBER_NAME_CHECKED(UQuickMenuSettings, WindowSize))
+	{
+		OnWindowSizeChanged.Broadcast(WindowSize);
+	}
+}
+
 FName UQuickMenuSettings::GetContainerName() const
 {
 	return TEXT("Editor");

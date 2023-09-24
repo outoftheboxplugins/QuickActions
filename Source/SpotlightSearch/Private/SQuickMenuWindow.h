@@ -48,6 +48,10 @@ private:
 	 */
 	void GetRecentCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem>& OutResult);
 	/**
+	 * Callback executed when the QuickMenu settings -> WindowSize property is changed
+	 */
+	void OnWindowSizeSettingsChanged(FVector2D NewSize);
+	/**
 	 * @brief Filters out the commands with matching abbreviations from AvailableActions and constructs a list of them in OutResult
 	 * @param AvailableActions Input list we will remove the matching commands from
 	 * @param OutResult Output list we will add the matching commands to

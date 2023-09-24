@@ -8,6 +8,7 @@
 #include "QuickMenuHelpers.h"
 #include "QuickMenuSettings.h"
 #include "QuickMenuStyle.h"
+#include "HAL/PlatformApplicationMisc.h"
 
 #define LOCTEXT_NAMESPACE "FQuickMenuModule"
 
@@ -23,12 +24,13 @@ namespace
 
 void SQuickMenuWindow::Construct(const FArguments& InArgs)
 {
+	UQuickMenuSettings* Settings = GetMutableDefault<UQuickMenuSettings>();
+
 	// clang-format off
 	SWindow::Construct(SWindow::FArguments()
 	.Style(&FAppStyle::Get().GetWidgetStyle<FWindowStyle>("NotificationWindow"))
 	.CreateTitleBar(false)
-	.SizingRule(ESizingRule::FixedSize)
-	.ClientSize(FVector2D(680.f, 430.f))
+	.ClientSize(Settings->WindowSize)
 	.SupportsMaximize(false)
 	.SupportsMinimize(false)
 	.IsPopupWindow(true)
@@ -98,6 +100,8 @@ void SQuickMenuWindow::Construct(const FArguments& InArgs)
 		]
 	]);
 	// clang-format on
+
+	Settings->OnWindowSizeChanged.AddSP(this, &SQuickMenuWindow::OnWindowSizeSettingsChanged); 
 
 	RegisterActiveTimer(0.0f, FWidgetActiveTimerDelegate::CreateSP(this, &SQuickMenuWindow::SetFocusPostConstruct));
 }
@@ -218,6 +222,21 @@ void SQuickMenuWindow::GetRecentCommands(TArray<FQuickMenuItem>& AvailableAction
 			AvailableActions.RemoveAt(CommandIndex);
 		}
 	}
+}
+
+void SQuickMenuWindow::OnWindowSizeSettingsChanged(FVector2D NewSize)
+{
+	const float DPIScale = FPlatformApplicationMisc::GetDPIScaleFactorAtPoint(0, 0);
+	const FVector2D ScaledSize = GetWindowSizeFromClientSize(NewSize * DPIScale, DPIScale);
+	Resize(ScaledSize);
+
+	const FSlateRect AutoCenterRect = FSlateApplicationBase::Get().GetPreferredWorkArea();
+
+	const FVector2D DisplayTopLeft( AutoCenterRect.Left, AutoCenterRect.Top );
+	const FVector2D DisplaySize( AutoCenterRect.Right - AutoCenterRect.Left, AutoCenterRect.Bottom - AutoCenterRect.Top );
+
+	const FVector2D ScreenCenter = DisplayTopLeft + (DisplaySize - ScaledSize) * 0.5f;
+	MoveWindowTo(ScreenCenter);
 }
 
 void SQuickMenuWindow::GetAbbreviationsCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem>& OutResult, const FString& FilterText)

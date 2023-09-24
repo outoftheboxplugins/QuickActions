@@ -36,6 +36,11 @@ public:
 	UPROPERTY(EditAnywhere, Category = Customization, config, meta = (UIMin = "0.0", UIMax = "100.0"))
 	float FuzzySearchMatchPercentage = 75.0f;
 	/**
+	 * @brief Matching percentage required for an entry to show up as a fuzzy search.
+	 */
+	UPROPERTY(EditAnywhere, Category = Customization, config)
+	FVector2D WindowSize = FVector2D(680.f, 430.f);
+	/**
 	 * @brief Registers a command on top of the Recent Commands list and saves the config.
 	 * @param CommandName Unique name used to identify the command that was executed
 	 */
@@ -46,7 +51,10 @@ public:
 	 * @return Ordered list of the most recent ran commands
 	 */
 	const TArray<FString>& GetRecentCommands() const;
-
+	/**
+	 * @brief Callback executed when the WindowSize property is changed
+	 */
+	TMulticastDelegate<void(FVector2D NewSize)> OnWindowSizeChanged;
 protected:
 	/**
 	 * @brief Recently executed commands
@@ -62,6 +70,7 @@ protected:
 
 private:
 	// Begin UDeveloperSettings interface
+	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
 	virtual FName GetContainerName() const override;
 	virtual FName GetCategoryName() const override;
 	virtual FName GetSectionName() const override;

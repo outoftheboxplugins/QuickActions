@@ -73,9 +73,17 @@ private:
 	 */
 	TSharedRef<ITableRow> MakeCommandListItem(FQuickMenuItem Selection, const TSharedRef<STableViewBase>& OwnerTable);
 	/**
-	 * @brief Runs the currently selected command if it can be executed
+	 * @brief Callback executed when an item in the list is clicked with the mouse
+	 */
+	void OnItemClicked(FQuickMenuItem QuickCommandEntry);
+	/**
+	 * @brief Trys to execute the currently hovered (arrow key selection) command 
 	 */
 	void ConfirmSelection();
+	/**
+	 * @brief Validates a command can be executed and if the test passes, runs the command
+	 */
+	void TryExecuteCommand(const FQuickMenuItem& CurrentCommand);
 	/**
 	 * @brief Moves the current selection up for down based on the input
 	 * @param Change the number of entries we should move up (negative values) or down (positive values)

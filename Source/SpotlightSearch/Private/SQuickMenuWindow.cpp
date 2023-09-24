@@ -92,6 +92,7 @@ void SQuickMenuWindow::Construct(const FArguments& InArgs)
 					.OnGenerateRow(this, &SQuickMenuWindow::MakeCommandListItem)
 					.ScrollbarVisibility(EVisibility::Collapsed)
 					.IsFocusable(false)
+					.OnMouseButtonClick(this, &SQuickMenuWindow::OnItemClicked)
 				]
 			]
 		]
@@ -323,15 +324,13 @@ TSharedRef<ITableRow> SQuickMenuWindow::MakeCommandListItem(FQuickMenuItem Selec
 	// clang-format on
 }
 
-void SQuickMenuWindow::ConfirmSelection()
+void SQuickMenuWindow::OnItemClicked(FQuickMenuItem QuickCommandEntry)
 {
-	if (FilteredCommands.IsEmpty())
-	{
-		// No entries to go through
-		return;
-	}
+	TryExecuteCommand(QuickCommandEntry);
+}
 
-	const FQuickMenuItem& CurrentCommand = FilteredCommands[SelectionIndex];
+void SQuickMenuWindow::TryExecuteCommand(const FQuickMenuItem& CurrentCommand)
+{
 	if (!CurrentCommand->IsAllowedToExecute())
 	{
 		return;
@@ -342,6 +341,18 @@ void SQuickMenuWindow::ConfirmSelection()
 
 	(void)CurrentCommand->ExecuteCallback.ExecuteIfBound();
 	CloseWindow();
+}
+
+void SQuickMenuWindow::ConfirmSelection()
+{
+	if (FilteredCommands.IsEmpty())
+	{
+		// No entries to go through
+		return;
+	}
+
+	const FQuickMenuItem& CurrentCommand = FilteredCommands[SelectionIndex];
+	TryExecuteCommand(CurrentCommand);
 }
 
 void SQuickMenuWindow::UpdateSelection(int32 Change)

@@ -169,9 +169,17 @@ void SQuickMenuWindow::OnFilterTextChanged(const FText& Text)
 
 	FilteredCommands.Empty();
 
-	if (Text.IsEmpty())
+	if(Text.IsEmpty())
 	{
-		GetRecentCommands(AvailableCommands, FilteredCommands);
+		const UQuickMenuSettings* Settings = GetDefault<UQuickMenuSettings>();
+		if(Settings->bShowAllOptionsWhenEmpty)
+		{
+			FilteredCommands = AvailableCommands;
+		}
+		else
+		{
+			GetRecentCommands(AvailableCommands, FilteredCommands);
+		}
 	}
 	else
 	{

@@ -16,6 +16,11 @@ class QUICKMENU_API UQuickMenuSettings : public UDeveloperSettings
 
 public:
 	/**
+	 * @brief Display all the possible commands instead of recent commands when no input is given 
+	 */
+	UPROPERTY(EditAnywhere, Category = Customization, config)
+	bool bShowAllOptionsWhenEmpty = false;
+	/**
 	 * @brief Includes How-do-I tutorials from Mathew Wadstein inside the entries
 	 */
 	UPROPERTY(EditAnywhere, Category = Customization, config)

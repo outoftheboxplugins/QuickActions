@@ -7,7 +7,7 @@
 #include "ToolbarMenuTraceExtension.generated.h"
 
 /**
- * 
+ * Add entries from the footer Trace menu
  */
 UCLASS()
 class QUICKMENU_API UToolbarMenuTraceExtension : public UQuickMenuExtension

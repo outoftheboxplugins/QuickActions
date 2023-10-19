@@ -5,6 +5,15 @@
 #include "IUATHelperModule.h"
 #include "MessageLogModule.h"
 
+/*
+ * @Note: The only reason this file seems complicated
+ * is because everything's UnrealInsight launcher related
+ * is in private directories and unnaccessible from outside
+ * We've just copied everything relevant here
+ *
+ * At the end of the day, it's just launching a process
+ */
+
 class FLogMessageOnGameThreadTask
 {
 public:

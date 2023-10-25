@@ -33,6 +33,8 @@ public class QuickMenu : ModuleRules
 				"UnrealEd", 
 				"MergeActors", 
 				"LevelInstanceEditor", 
+				"UATHelper", 
+				"MessageLog",
 		});
 	}
 }

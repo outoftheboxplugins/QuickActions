@@ -6,7 +6,9 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuFileExitExtension::GetCommand
 {
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
-	CollectActionsFromMenuSection(OutCommands, Context, "MainFrame.MainTabMenu.File", "Exit");	
-	
+#if !PLATFORM_MAC // Handled by app's menu in menu bar
+	CollectActionsFromMenuSection(OutCommands, Context, "MainFrame.MainTabMenu.File", "Exit");
+#endif
+
 	return OutCommands;
 }

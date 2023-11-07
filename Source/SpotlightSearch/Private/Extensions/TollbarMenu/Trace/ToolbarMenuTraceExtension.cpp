@@ -32,7 +32,7 @@ public:
 		FMessageLogModule& MessageLogModule = FModuleManager::LoadModuleChecked<FMessageLogModule>("MessageLog");
 		if (!MessageLogModule.IsRegisteredLogListing(LogListingName))
 		{
-			MessageLogModule.RegisterLogListing(LogListingName, NSLOCTEXT("InsightsEditor", "UnrealInsights", "Unreal Insights"));
+			MessageLogModule.RegisterLogListing(LogListingName, NSLOCTEXT("FUnrealInsightsLauncher", "UnrealInsights", "Unreal Insights"));
 		}
 	
 		FMessageLog ReportMessageLog(LogListingName);
@@ -52,42 +52,42 @@ private:
 
 static void StartUnrealInsights(const FString& Path, const FString& Parameters);
 
+static FString GetInsightsApplicationPath() // Copied from UnrealInsightsLauncher since it's private
+{
+	FString Path = FPlatformProcess::GenerateApplicationPath(TEXT("UnrealInsights"), EBuildConfiguration::Development);
+	return FPaths::ConvertRelativePathToFull(Path);
+}
+
 static void TryBuildUnrealInsightsExe(const FString& Path, const FString& LaunchParameters)
 {
 	UE_LOG(LogTemp, Log, TEXT("Could not find the Unreal Insights executable: %s. Attempting to build UnrealInsights."), *Path);
 
 	FString Arguments;
 #if PLATFORM_WINDOWS
-	FText PlatformName = NSLOCTEXT("InsightsEditor", "PlatformName_Windows", "Windows");
+	FText PlatformName = NSLOCTEXT("FUnrealInsightsLauncher", "PlatformName_Windows", "Windows");
 	Arguments = TEXT("BuildTarget -Target=UnrealInsights -Platform=Win64");
 #elif PLATFORM_MAC
-	FText PlatformName = LOCTEXT("PlatformName_Mac", "Mac");
+	FText PlatformName = NSLOCTEXT("FUnrealInsightsLauncher", "PlatformName_Mac", "Mac");
 	Arguments = TEXT("BuildTarget -Target=UnrealInsights -Platform=Mac");
 #elif PLATFORM_LINUX
-	FText PlatformName = LOCTEXT("PlatformName_Linux", "Linux");
+	FText PlatformName = NSLOCTEXT("FUnrealInsightsLauncher", "PlatformName_Linux", "Linux");
 	Arguments = TEXT("BuildTarget -Target=UnrealInsights -Platform=Linux");
 #endif
 
-	IUATHelperModule::Get().CreateUatTask(Arguments, PlatformName, NSLOCTEXT("InsightsEditor", "BuildingUnrealInsights", "Building Unreal Insights"),
-		NSLOCTEXT("InsightsEditor", "BuildUnrealInsightsTask", "Build Unreal Insights Task"), FAppStyle::GetBrush(TEXT("MainFrame.CookContent")), nullptr, [Path, LaunchParameters](FString Result, double Time)
+	IUATHelperModule::Get().CreateUatTask(Arguments, PlatformName, NSLOCTEXT("FUnrealInsightsLauncher", "BuildingUnrealInsights", "Building Unreal Insights"),
+		NSLOCTEXT("FUnrealInsightsLauncher", "BuildUnrealInsightsTask", "Build Unreal Insights Task"), FAppStyle::GetBrush(TEXT("MainFrame.CookContent")), nullptr, [Path, LaunchParameters](FString Result, double Time)
 		{
 			if (Result.Equals(TEXT("Completed")))
 			{
 #if PLATFORM_MAC
 				// On Mac we genereate the path again so that it includes the newly built executable.
 				FString NewPath = GetInsightsApplicationPath();
-				this->StartUnrealInsights(NewPath, LaunchParameters);
+				StartUnrealInsights(NewPath, LaunchParameters);
 #else
 				StartUnrealInsights(Path, LaunchParameters);
 #endif
 			}
 		});
-}
-
-static FString GetInsightsApplicationPath() // Copied from UnrealInsightsLauncher since it's private
-{
-	FString Path = FPlatformProcess::GenerateApplicationPath(TEXT("UnrealInsights"), EBuildConfiguration::Development);
-	return FPaths::ConvertRelativePathToFull(Path);
 }
 
 static void StartUnrealInsights(const FString& Path, const FString& Parameters = TEXT(""))
@@ -117,7 +117,7 @@ static void StartUnrealInsights(const FString& Path, const FString& Parameters =
 	}
 	else
 	{
-		const FText	MessageBoxTextFmt = NSLOCTEXT("InsightsEditor", "ExecutableNotFound_TextFmt", "Could not start Unreal Insights executable at path: {0}");
+		const FText	MessageBoxTextFmt = NSLOCTEXT("FUnrealInsightsLauncher", "ExecutableNotFound_TextFmt", "Could not start Unreal Insights executable at path: {0}");
 		const FText MessageBoxText = FText::Format(MessageBoxTextFmt, FText::FromString(Path));
 		TGraphTask<FLogMessageOnGameThreadTask>::CreateTask().ConstructAndDispatchWhenReady(MessageBoxText);
 	}
@@ -128,8 +128,8 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuTraceExtension::GetCommands(c
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	const TSharedPtr<FQuickCommandEntry> UnrealInsight = MakeShared<FQuickCommandEntry>();
-	UnrealInsight->Title = NSLOCTEXT("InsightsEditor", "OpenInsightsLabel", "Unreal Insights (Session Browser)");
-	UnrealInsight->Tooltip = NSLOCTEXT("InsightsEditor", "OpenInsightsTooltip", "Launch the Unreal Insights Session Browser.");
+	UnrealInsight->Title = NSLOCTEXT("FUnrealInsightsLauncher", "OpenInsightsLabel", "Unreal Insights (Session Browser)");
+	UnrealInsight->Tooltip = NSLOCTEXT("FUnrealInsightsLauncher", "OpenInsightsTooltip", "Launch the Unreal Insights Session Browser.");
 	UnrealInsight->Icon = FSlateIcon("EditorTraceUtilitiesStyle", "Icons.UnrealInsights.Menu");
 	UnrealInsight->ExecuteCallback = FSimpleDelegate::CreateLambda(
 		[]()

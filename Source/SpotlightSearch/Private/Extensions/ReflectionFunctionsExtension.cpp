@@ -20,13 +20,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UReflectionFunctionsExtension::GetCommand
 				FunctionEntry->Title = FText::FromString(Function->GetName());
 				FunctionEntry->Tooltip = FText::FromString(Function->GetDesc());
 				FunctionEntry->Icon = FSlateIcon(FAppStyle::GetAppStyleSetName(), "Kismet.AllClasses.FunctionIcon");
-				FunctionEntry->ExecuteCallback = FSimpleDelegate::CreateLambda(
-					[=]()
-					{
-						ProcessEvent(Function, nullptr);
-					}
-				);
-
+				FunctionEntry->ExecuteCallback = FSimpleDelegate::CreateUObject(this, &UObject::ProcessEvent, Function, static_cast<void*>(nullptr));
 				OutCommands.Add(FunctionEntry);
 			}
 		}

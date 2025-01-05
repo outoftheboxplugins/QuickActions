@@ -1,15 +1,15 @@
 {
 	"FileVersion": 3,
+	"EngineVersion": "5.5",
 	"VersionName": "1.0",
-	"EngineVersion": "5.4",
 	"FriendlyName": "QuickActions",
 	"Description": "Adds productivity tools to developers such as spotlight search, extended viewport options and much more.",
 	"Category": "Editor",
 	"CreatedBy": "Out-of-the-Box Plugins",
 	"CreatedByURL": "https://outofthebox-plugins.com",
-	"DocsURL": "https://quickactions.outofthebox-plugins.com/",
+	"DocsURL": "https://outofthebox-plugins.notion.site/Quick-Actions-28b7a364109441779f11d1e6f5f75658",
 	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/01e9d950f52648ee96e9b01711df283e",
-	"SupportURL": "https://github.com/outoftheboxplugins/QuickActions-docs/issues",
+	"SupportURL": "https://discord.gg/2cD5MwB",
 	"EnabledByDefault": true,
 	"CanContainContent": false,
 	"Modules": 

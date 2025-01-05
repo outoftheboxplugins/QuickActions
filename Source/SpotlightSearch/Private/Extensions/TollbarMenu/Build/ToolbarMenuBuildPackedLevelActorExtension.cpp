@@ -36,8 +36,3 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildPackedLevelActorExtensio
 
 	return OutCommands;
 }
-
-bool UToolbarMenuBuildPackedLevelActorExtension::ShouldShow() const
-{
-	return GetDefault<UEditorExperimentalSettings>()->bPackedLevelActor;
-}

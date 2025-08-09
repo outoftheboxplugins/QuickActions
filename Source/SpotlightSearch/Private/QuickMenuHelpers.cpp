@@ -20,7 +20,23 @@ bool QuickMenuHelpers::IsAbbreviation(const FString& Candidate, const FString& S
 
 bool QuickMenuHelpers::IsPotentialMatchTo(const FString& Candidate, const FString& Search)
 {
-	return Candidate.Contains(Search, ESearchCase::IgnoreCase);
+	TArray<FString> Words;
+	Search.ParseIntoArray(Words, TEXT(" "));
+
+	if (Words.IsEmpty())
+	{
+		return false;
+	}
+
+	for (const FString& Word : Words)
+	{
+		if (!Candidate.Contains(Word, ESearchCase::IgnoreCase))
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 float QuickMenuHelpers::GetMatchPercentage(const FString& Candidate, const FString& Search)

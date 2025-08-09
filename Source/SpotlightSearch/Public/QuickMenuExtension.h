@@ -36,7 +36,10 @@ struct QUICKMENU_API FQuickCommandEntry
 	 * @brief Icon displayed as the entry icon in the command list
 	 */
 	TAttribute<FSlateIcon> Icon;
-
+	/**
+	 * @brief Override the standard Icon above with a complety custom widget
+	 */
+	TAttribute<TSharedPtr<SWidget>> CustomIconWidget;
 	/**
 	 * @brief Callback executed when we want to execute this action
 	 */
@@ -46,6 +49,10 @@ struct QUICKMENU_API FQuickCommandEntry
 	 * @note If the callback is not bound, we are always allowed to execute the action
 	 */
 	FCanExecuteCommandDelegate CanExecuteCallback;
+	/**
+	 * @brief Callback executed when the entry is initialized by the list view
+	 */
+	FSimpleDelegate OnEntryInitialized;
 
 	/**
 	 * @brief Evaluates the current command state to determine if we are allowed to execute the command now.

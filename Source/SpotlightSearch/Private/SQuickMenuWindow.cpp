@@ -24,7 +24,12 @@ namespace
 
 void SQuickMenuWindow::Construct(const FArguments& InArgs)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(SQuickMenuWindow::Construct);
+
 	UQuickMenuSettings* Settings = GetMutableDefault<UQuickMenuSettings>();
+
+	const UQuickMenuDiscoverySubsystem* DiscoverySubsystem = GEditor->GetEditorSubsystem<UQuickMenuDiscoverySubsystem>();
+	AvailableCommands = DiscoverySubsystem->GetAllCommands();
 
 	// clang-format off
 	SWindow::Construct(SWindow::FArguments()
@@ -92,6 +97,7 @@ void SQuickMenuWindow::Construct(const FArguments& InArgs)
 					SAssignNew(ListView, SNonFocusingListView<FQuickMenuItem>)
 					.ListItemsSource(&FilteredCommands)
 					.OnGenerateRow(this, &SQuickMenuWindow::MakeCommandListItem)
+					.OnEntryInitialized(this, &SQuickMenuWindow::OnEntryInitialized)
 					.ScrollbarVisibility(EVisibility::Collapsed)
 					.IsFocusable(false)
 					.OnMouseButtonClick(this, &SQuickMenuWindow::OnItemClicked)
@@ -168,9 +174,9 @@ FReply SQuickMenuWindow::OnSearchKeyDown(const FGeometry& MyGeometry, const FKey
 
 void SQuickMenuWindow::OnFilterTextChanged(const FText& Text)
 {
-	const UQuickMenuDiscoverySubsystem* DiscoverySubsystem = GEditor->GetEditorSubsystem<UQuickMenuDiscoverySubsystem>();
-	TArray<FQuickMenuItem> AvailableCommands = DiscoverySubsystem->GetAllCommands();
+	TRACE_CPUPROFILER_EVENT_SCOPE(SQuickMenuWindow::OnFilterTextChanged);
 
+	TArray<FQuickMenuItem> LocalCommands = AvailableCommands;
 	FilteredCommands.Empty();
 
 	if(Text.IsEmpty())
@@ -178,19 +184,19 @@ void SQuickMenuWindow::OnFilterTextChanged(const FText& Text)
 		const UQuickMenuSettings* Settings = GetDefault<UQuickMenuSettings>();
 		if(Settings->bShowAllOptionsWhenEmpty)
 		{
-			FilteredCommands = AvailableCommands;
+			FilteredCommands = LocalCommands;
 		}
 		else
 		{
-			GetRecentCommands(AvailableCommands, FilteredCommands);
+			GetRecentCommands(LocalCommands, FilteredCommands);
 		}
 	}
 	else
 	{
 		const FString& FilterText = Text.ToString();
-		GetAbbreviationsCommands(AvailableCommands, FilteredCommands, FilterText);
-		GetPerfectMatchesCommands(AvailableCommands, FilteredCommands, FilterText);
-		GetFuzzyMatchesCommands(AvailableCommands, FilteredCommands, FilterText);
+		GetAbbreviationsCommands(LocalCommands, FilteredCommands, FilterText);
+		GetPerfectMatchesCommands(LocalCommands, FilteredCommands, FilterText);
+		GetFuzzyMatchesCommands(LocalCommands, FilteredCommands, FilterText);
 	}
 
 	ListView->RequestListRefresh();
@@ -199,6 +205,8 @@ void SQuickMenuWindow::OnFilterTextChanged(const FText& Text)
 
 void SQuickMenuWindow::GetRecentCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem>& OutResult)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(SQuickMenuWindow::GetRecentCommands);
+
 	const UQuickMenuSettings* Settings = GetDefault<UQuickMenuSettings>();
 	const TArray<FString>& RecentCommands = Settings->GetRecentCommands();
 
@@ -239,7 +247,7 @@ void SQuickMenuWindow::OnWindowSizeSettingsChanged(FVector2D NewSize)
 	MoveWindowTo(ScreenCenter);
 }
 
-void SQuickMenuWindow::GetAbbreviationsCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem>& OutResult, const FString& FilterText)
+void SQuickMenuWindow::GetAbbreviationsCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem>& OutResult, const FString& FilterText) const
 {
 	for (auto It = AvailableActions.CreateIterator(); It; ++It)
 	{
@@ -252,7 +260,7 @@ void SQuickMenuWindow::GetAbbreviationsCommands(TArray<FQuickMenuItem>& Availabl
 	}
 }
 
-void SQuickMenuWindow::GetPerfectMatchesCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem>& OutResult, const FString& FilterText)
+void SQuickMenuWindow::GetPerfectMatchesCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem>& OutResult, const FString& FilterText) const
 {
 	for (auto It = AvailableActions.CreateIterator(); It; ++It)
 	{
@@ -265,7 +273,7 @@ void SQuickMenuWindow::GetPerfectMatchesCommands(TArray<FQuickMenuItem>& Availab
 	}
 }
 
-void SQuickMenuWindow::GetFuzzyMatchesCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem>& OutResult, const FString& FilterText)
+void SQuickMenuWindow::GetFuzzyMatchesCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem>& OutResult, const FString& FilterText) const
 {
 	const UQuickMenuSettings* Settings = GetDefault<UQuickMenuSettings>();
 	const float MinimumMatchPercentage = Settings->FuzzySearchMatchPercentage;
@@ -289,9 +297,24 @@ void SQuickMenuWindow::GetFuzzyMatchesCommands(TArray<FQuickMenuItem>& Available
 	}
 }
 
+void SQuickMenuWindow::OnEntryInitialized(TSharedRef<FQuickCommandEntry> QuickCommandEntry, const TSharedRef<ITableRow>& TableRow)
+{
+	QuickCommandEntry->OnEntryInitialized.ExecuteIfBound();
+}
+
 TSharedRef<ITableRow> SQuickMenuWindow::MakeCommandListItem(FQuickMenuItem Selection, const TSharedRef<STableViewBase>& OwnerTable)
 {
 	const bool bCanExecute = Selection->IsAllowedToExecute();
+
+	TSharedPtr<SWidget> Icon;
+	if (Selection->CustomIconWidget.IsSet())
+	{
+		Icon = Selection->CustomIconWidget.Get();
+	}
+	else
+	{
+		Icon = SNew(SImage).Image(Selection->Icon.Get().GetIcon());
+	}
 
 	// clang-format off
 	return SNew(STableRow<FQuickMenuItem>, OwnerTable)
@@ -310,8 +333,7 @@ TSharedRef<ITableRow> SQuickMenuWindow::MakeCommandListItem(FQuickMenuItem Selec
 					.WidthOverride(30)
 					.HeightOverride(30)
 					[
-						SNew(SImage)
-						.Image(Selection->Icon.Get().GetIcon())
+						Icon.ToSharedRef()
 					]
 				]
 

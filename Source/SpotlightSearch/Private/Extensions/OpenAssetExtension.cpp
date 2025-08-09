@@ -33,7 +33,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UOpenAssetExtension::GetCommands(const FQ
 
 		TSharedRef<SBox> IconBox = MakeShared<SBox>();
 		OpenAsset->CustomIconWidget = IconBox;
-		OpenAsset->OnItemScrolledIntoView = FSimpleDelegate::CreateSPLambda(IconBox, [WeakBox = IconBox.ToWeakPtr(), AssetData]()
+		OpenAsset->OnEntryInitialized = FSimpleDelegate::CreateSPLambda(IconBox, [WeakBox = IconBox.ToWeakPtr(), AssetData]()
 		{
 			auto Box = WeakBox.Pin();
 			TSharedRef<FAssetThumbnail> AssetThumbnail = MakeShared<FAssetThumbnail>(AssetData, 64, 64, UThumbnailManager::Get().GetSharedThumbnailPool());
@@ -54,7 +54,7 @@ TArray<TSharedPtr<FQuickCommandEntry>> UOpenAssetExtension::GetCommands(const FQ
 
 int32 UOpenAssetExtension::GetPriority() const
 {
-	return -200;
+	return 200;
 }
 
 bool UOpenAssetExtension::ShouldShow() const

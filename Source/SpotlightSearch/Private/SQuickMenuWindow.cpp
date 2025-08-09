@@ -299,7 +299,7 @@ void SQuickMenuWindow::GetFuzzyMatchesCommands(TArray<FQuickMenuItem>& Available
 
 void SQuickMenuWindow::OnEntryInitialized(TSharedRef<FQuickCommandEntry> QuickCommandEntry, const TSharedRef<ITableRow>& TableRow)
 {
-	QuickCommandEntry->OnItemScrolledIntoView.ExecuteIfBound();
+	QuickCommandEntry->OnEntryInitialized.ExecuteIfBound();
 }
 
 TSharedRef<ITableRow> SQuickMenuWindow::MakeCommandListItem(FQuickMenuItem Selection, const TSharedRef<STableViewBase>& OwnerTable)

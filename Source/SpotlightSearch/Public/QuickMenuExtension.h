@@ -49,8 +49,10 @@ struct QUICKMENU_API FQuickCommandEntry
 	 * @note If the callback is not bound, we are always allowed to execute the action
 	 */
 	FCanExecuteCommandDelegate CanExecuteCallback;
-
-	FSimpleDelegate OnItemScrolledIntoView;
+	/**
+	 * @brief Callback executed when the entry is initialized by the list view
+	 */
+	FSimpleDelegate OnEntryInitialized;
 
 	/**
 	 * @brief Evaluates the current command state to determine if we are allowed to execute the command now.

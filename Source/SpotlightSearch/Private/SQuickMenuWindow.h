@@ -72,9 +72,12 @@ private:
 	 * @param FilterText String we will use to perform to perform the filtering
 	 */
 	void GetFuzzyMatchesCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem>& OutResult, const FString& FilterText) const;
-
+	/**
+	 * @brief Callback executed when a command entry is initialized by the ListView
+	 * @param QuickCommandEntry The command entry that was initialized
+	 * @param TableRow The row that was initialized in the ListView
+	 */
 	void OnEntryInitialized(TSharedRef<FQuickCommandEntry> QuickCommandEntry, const TSharedRef<ITableRow>& TableRow);
-
 	/**
 	 * @brief Generates the entry for a ListView based on a QuickCommandEntry
 	 */
@@ -122,6 +125,9 @@ private:
 	 * @brief ListView containing all the commands available after filtering
 	 */
 	TSharedPtr<SNonFocusingListView<FQuickMenuItem>> ListView;
+	/**
+	 * @brief List of all commands available to the users before filtering (fetched only once during construction)
+	 */
 	TArray<FQuickMenuItem> AvailableCommands;
 	/**
 	 * @brief List of commands available to the users after filtering

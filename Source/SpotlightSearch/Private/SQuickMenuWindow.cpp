@@ -92,6 +92,7 @@ void SQuickMenuWindow::Construct(const FArguments& InArgs)
 					SAssignNew(ListView, SNonFocusingListView<FQuickMenuItem>)
 					.ListItemsSource(&FilteredCommands)
 					.OnGenerateRow(this, &SQuickMenuWindow::MakeCommandListItem)
+					.OnEntryInitialized(this, &SQuickMenuWindow::OnEntryInitialized)
 					.ScrollbarVisibility(EVisibility::Collapsed)
 					.IsFocusable(false)
 					.OnMouseButtonClick(this, &SQuickMenuWindow::OnItemClicked)
@@ -289,10 +290,14 @@ void SQuickMenuWindow::GetFuzzyMatchesCommands(TArray<FQuickMenuItem>& Available
 	}
 }
 
+void SQuickMenuWindow::OnEntryInitialized(TSharedRef<FQuickCommandEntry> QuickCommandEntry, const TSharedRef<ITableRow>& TableRow)
+{
+	QuickCommandEntry->OnItemScrolledIntoView.ExecuteIfBound();
+}
+
 TSharedRef<ITableRow> SQuickMenuWindow::MakeCommandListItem(FQuickMenuItem Selection, const TSharedRef<STableViewBase>& OwnerTable)
 {
 	const bool bCanExecute = Selection->IsAllowedToExecute();
-
 
 	TSharedPtr<SWidget> Icon;
 	if (Selection->CustomIconWidget.IsSet())

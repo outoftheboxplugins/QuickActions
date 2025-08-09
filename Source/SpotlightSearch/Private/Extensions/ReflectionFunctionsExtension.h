@@ -21,6 +21,7 @@ class UReflectionFunctionsExtension : public UQuickMenuExtension
 	GENERATED_BODY()
 
 	virtual TArray<TSharedPtr<FQuickCommandEntry>> GetCommands(const FQuickCommandContext& Context) override;
+	virtual bool ShouldShow() const override;
 
 	// Example tooltip
 	UFUNCTION(meta = (QuickActionEntry))

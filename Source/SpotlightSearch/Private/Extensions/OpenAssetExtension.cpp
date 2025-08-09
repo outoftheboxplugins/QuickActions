@@ -20,29 +20,32 @@ TArray<TSharedPtr<FQuickCommandEntry>> UOpenAssetExtension::GetCommands(const FQ
 	IAssetRegistry* AssetRegistry = IAssetRegistry::Get();
 	AssetRegistry->GetAllAssets(AllAssets, true);
 
+	AllAssets.RemoveAll([](const FAssetData& AssetData)
+	{
+		return AssetData.PackageName.ToString().StartsWith(TEXT("/Engine"));
+	});
+
 	for (const auto& AssetData : AllAssets)
 	{
-		FAssetToolsModule& AssetToolsModule = FModuleManager::LoadModuleChecked<FAssetToolsModule>(TEXT("AssetTools"));
-		TWeakPtr<IAssetTypeActions> AssetTypeActions = AssetToolsModule.Get().GetAssetTypeActionsForClass(AssetData.GetClass());
-
-		if (!AssetTypeActions.Pin() || !AssetTypeActions.Pin()->SupportsOpenedMethod(EAssetTypeActivationOpenedMethod::Edit))
-		{
-			continue;
-		}
-
 		TSharedPtr<FQuickCommandEntry> OpenAsset = MakeShared<FQuickCommandEntry>();
 		OpenAsset->Title = FText::Format(LOCTEXT("OpenAsset", "Open {0}"), FText::FromName(AssetData.AssetName));
 		OpenAsset->Tooltip = FText::Format(LOCTEXT("OpenAssetTip", "Open the editor for {0}"), FText::FromName(AssetData.PackagePath));
 
-		TSharedRef<FAssetThumbnail> AssetThumbnail = MakeShared<FAssetThumbnail>(AssetData, 64, 64, UThumbnailManager::Get().GetSharedThumbnailPool());
-		TSharedRef<SWidget> ThumbnailWidget = AssetThumbnail->MakeThumbnailWidget();
-		OpenAsset->CustomIconWidget = ThumbnailWidget;
-		
+		TSharedRef<SBox> IconBox = MakeShared<SBox>();
+		OpenAsset->CustomIconWidget = IconBox;
+		OpenAsset->OnItemScrolledIntoView = FSimpleDelegate::CreateSPLambda(IconBox, [WeakBox = IconBox.ToWeakPtr(), AssetData]()
+		{
+			auto Box = WeakBox.Pin();
+			TSharedRef<FAssetThumbnail> AssetThumbnail = MakeShared<FAssetThumbnail>(AssetData, 64, 64, UThumbnailManager::Get().GetSharedThumbnailPool());
+			TSharedRef<SWidget> ThumbnailWidget = AssetThumbnail->MakeThumbnailWidget();
+			WeakBox.Pin()->SetContent(ThumbnailWidget);
+		});
+
 		OpenAsset->ExecuteCallback = FSimpleDelegate::CreateLambda([AssetData]()
 		{
 			GEditor->GetEditorSubsystem<UAssetEditorSubsystem>()->OpenEditorForAsset(AssetData.ToSoftObjectPath());
 		});
-		
+
 		OutCommands.Add(OpenAsset);
 	}
 

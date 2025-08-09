@@ -72,6 +72,9 @@ private:
 	 * @param FilterText String we will use to perform to perform the filtering
 	 */
 	void GetFuzzyMatchesCommands(TArray<FQuickMenuItem>& AvailableActions, TArray<FQuickMenuItem>& OutResult, const FString& FilterText);
+
+	void OnEntryInitialized(TSharedRef<FQuickCommandEntry> QuickCommandEntry, const TSharedRef<ITableRow>& TableRow);
+
 	/**
 	 * @brief Generates the entry for a ListView based on a QuickCommandEntry
 	 */

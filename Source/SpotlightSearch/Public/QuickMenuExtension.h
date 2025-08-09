@@ -50,6 +50,8 @@ struct QUICKMENU_API FQuickCommandEntry
 	 */
 	FCanExecuteCommandDelegate CanExecuteCallback;
 
+	FSimpleDelegate OnItemScrolledIntoView;
+
 	/**
 	 * @brief Evaluates the current command state to determine if we are allowed to execute the command now.
 	 * @return true if we can execute the command now, false otherwise

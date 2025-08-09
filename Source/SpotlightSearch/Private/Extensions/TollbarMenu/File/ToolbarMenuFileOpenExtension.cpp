@@ -23,8 +23,8 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuFileOpenExtension::GetCommand
 	const TSharedPtr<FQuickCommandEntry> NewLevel = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().NewLevel.ToSharedRef(), LevelEditorCommands);
 	OutCommands.Emplace(NewLevel);
 
-	const TSharedPtr<FQuickCommandEntry> OpenLevel = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().OpenLevel.ToSharedRef(), LevelEditorCommands);
-	OutCommands.Emplace(OpenLevel);
+	//const TSharedPtr<FQuickCommandEntry> OpenLevel = MakeShared<FQuickCommandEntry>(FLevelEditorCommands::Get().OpenLevel.ToSharedRef(), LevelEditorCommands);
+	//OutCommands.Emplace(OpenLevel);
 
 	const FMainMRUFavoritesList& MRUFavorites = *MainFrameModule.GetMRUFavoritesList();
 	const int32 NumRecent = FMath::Min(MRUFavorites.GetNumItems(), FLevelEditorCommands::Get().OpenRecentFileCommands.Num());

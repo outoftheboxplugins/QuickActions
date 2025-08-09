@@ -44,6 +44,10 @@ bool QuickMenuHelperMatchTests::RunTest(const FString& Parameters)
 	TestPattern("Widget Reflector", "Widget Reflector", true);
 	TestPattern("Widget Reflector", "Wwidget rrflector", false);
 
+	TestPattern("BP_PlayerCharacter", "BP_ Character", true);
+	TestPattern("BP_PlayerCharacter", "BP_Character", false);
+	TestPattern("BP_PlayerCharacter", "BP Player", true);
+
 	return true;
 }
 

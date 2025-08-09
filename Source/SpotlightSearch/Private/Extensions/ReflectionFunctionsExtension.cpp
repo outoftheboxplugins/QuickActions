@@ -29,12 +29,6 @@ TArray<TSharedPtr<FQuickCommandEntry>> UReflectionFunctionsExtension::GetCommand
 	return OutCommands;
 }
 
-bool UReflectionFunctionsExtension::ShouldShow() const
-{
-	// This is just an example and slows down the searching, so we disable it by default.
-	return false;
-}
-
 void UReflectionFunctionsExtension::ExampleFunction()
 {
 	UE_LOG(LogTemp, Log, TEXT("Example function executed"));

@@ -26,6 +26,9 @@ void SQuickMenuWindow::Construct(const FArguments& InArgs)
 {
 	UQuickMenuSettings* Settings = GetMutableDefault<UQuickMenuSettings>();
 
+	const UQuickMenuDiscoverySubsystem* DiscoverySubsystem = GEditor->GetEditorSubsystem<UQuickMenuDiscoverySubsystem>();
+	AvailableCommands = DiscoverySubsystem->GetAllCommands();
+
 	// clang-format off
 	SWindow::Construct(SWindow::FArguments()
 	.Style(&FAppStyle::Get().GetWidgetStyle<FWindowStyle>("NotificationWindow"))
@@ -169,9 +172,6 @@ FReply SQuickMenuWindow::OnSearchKeyDown(const FGeometry& MyGeometry, const FKey
 
 void SQuickMenuWindow::OnFilterTextChanged(const FText& Text)
 {
-	const UQuickMenuDiscoverySubsystem* DiscoverySubsystem = GEditor->GetEditorSubsystem<UQuickMenuDiscoverySubsystem>();
-	TArray<FQuickMenuItem> AvailableCommands = DiscoverySubsystem->GetAllCommands();
-
 	FilteredCommands.Empty();
 
 	if(Text.IsEmpty())

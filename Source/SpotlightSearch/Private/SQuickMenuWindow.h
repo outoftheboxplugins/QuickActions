@@ -122,6 +122,7 @@ private:
 	 * @brief ListView containing all the commands available after filtering
 	 */
 	TSharedPtr<SNonFocusingListView<FQuickMenuItem>> ListView;
+	TArray<FQuickMenuItem> AvailableCommands;
 	/**
 	 * @brief List of commands available to the users after filtering
 	 */

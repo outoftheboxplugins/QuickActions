@@ -31,6 +31,11 @@ public:
 	UPROPERTY(EditAnywhere, Category = Customization, config)
 	bool bIncludeSettingSections = true;
 	/**
+	 * @brief Includes shortcuts to open specific assets inside the entries
+	 */
+	UPROPERTY(EditAnywhere, Category = Customization, config)
+	bool bIncludeAssets = true;
+	/**
 	 * @brief Matching percentage required for an entry to show up as a fuzzy search.
 	 */
 	UPROPERTY(EditAnywhere, Category = Customization, config, meta = (UIMin = "0.0", UIMax = "100.0"))

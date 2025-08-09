@@ -293,6 +293,17 @@ TSharedRef<ITableRow> SQuickMenuWindow::MakeCommandListItem(FQuickMenuItem Selec
 {
 	const bool bCanExecute = Selection->IsAllowedToExecute();
 
+
+	TSharedPtr<SWidget> Icon;
+	if (Selection->CustomIconWidget.IsSet())
+	{
+		Icon = Selection->CustomIconWidget.Get();
+	}
+	else
+	{
+		Icon = SNew(SImage).Image(Selection->Icon.Get().GetIcon());
+	}
+
 	// clang-format off
 	return SNew(STableRow<FQuickMenuItem>, OwnerTable)
 			.Style(&FQuickMenuStyle::Get().GetWidgetStyle<FTableRowStyle>("ActionMenuRow"))
@@ -310,8 +321,7 @@ TSharedRef<ITableRow> SQuickMenuWindow::MakeCommandListItem(FQuickMenuItem Selec
 					.WidthOverride(30)
 					.HeightOverride(30)
 					[
-						SNew(SImage)
-						.Image(Selection->Icon.Get().GetIcon())
+						Icon.ToSharedRef()
 					]
 				]
 

@@ -36,7 +36,10 @@ struct QUICKMENU_API FQuickCommandEntry
 	 * @brief Icon displayed as the entry icon in the command list
 	 */
 	TAttribute<FSlateIcon> Icon;
-
+	/**
+	 * @brief Override the standard Icon above with a complety custom widget
+	 */
+	TAttribute<TSharedPtr<SWidget>> CustomIconWidget;
 	/**
 	 * @brief Callback executed when we want to execute this action
 	 */

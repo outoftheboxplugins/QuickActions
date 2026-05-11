@@ -10,6 +10,8 @@
 
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuSelectGeometryCollectionExtension::GetCommands(const FQuickCommandContext& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UToolbarMenuSelectGeometryCollectionExtension::GetCommands);
+
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	IPluginManager& PluginManager = IPluginManager::Get();

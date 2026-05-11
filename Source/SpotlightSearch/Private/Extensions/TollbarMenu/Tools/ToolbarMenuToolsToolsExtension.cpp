@@ -4,6 +4,8 @@
 
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsToolsExtension::GetCommands(const FQuickCommandContext& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UToolbarMenuToolsToolsExtension::GetCommands);
+
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 	constexpr int32 NumFindInBlueprintsTabs = 4;
 	for (int32 FindIdx = 0; FindIdx < NumFindInBlueprintsTabs; FindIdx++)

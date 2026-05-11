@@ -8,6 +8,8 @@
 
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuEditEditExtension::GetCommands(const FQuickCommandContext& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UToolbarMenuEditEditExtension::GetCommands);
+
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	const FLevelEditorModule& LevelEditorModule = FModuleManager::Get().LoadModuleChecked<FLevelEditorModule>("LevelEditor");

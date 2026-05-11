@@ -6,6 +6,8 @@
 
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsInstrumentationExtension::GetCommands(const FQuickCommandContext& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UToolbarMenuToolsInstrumentationExtension::GetCommands);
+
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	const TSharedPtr<FQuickCommandEntry> BlueprintDebugger = MakeShared<FQuickCommandEntry>();

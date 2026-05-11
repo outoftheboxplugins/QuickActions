@@ -7,6 +7,8 @@
 
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuSelectHierarchyExtension::GetCommands(const FQuickCommandContext& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UToolbarMenuSelectHierarchyExtension::GetCommands);
+
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	// TODO: Find some icon for all of these

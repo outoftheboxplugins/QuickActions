@@ -8,6 +8,8 @@
 
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuEditConfigurationExtension::GetCommands(const FQuickCommandContext& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UToolbarMenuEditConfigurationExtension::GetCommands);
+
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	TSharedPtr<FQuickCommandEntry> OpenEditorPreferences = MakeShared<FQuickCommandEntry>();

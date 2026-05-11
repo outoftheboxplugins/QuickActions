@@ -6,6 +6,8 @@
 
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuWindowLogExtension::GetCommands(const FQuickCommandContext& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UToolbarMenuWindowLogExtension::GetCommands);
+
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	const TSharedPtr<FQuickCommandEntry> DeviceOutputLog = MakeShared<FQuickCommandEntry>();

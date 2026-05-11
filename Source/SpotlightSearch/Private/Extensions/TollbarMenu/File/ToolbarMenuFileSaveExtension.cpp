@@ -7,6 +7,8 @@
 
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuFileSaveExtension::GetCommands(const FQuickCommandContext& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UToolbarMenuFileSaveExtension::GetCommands);
+
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	CollectActionsFromMenuSection(OutCommands, Context, "MainFrame.MainMenu.File", "FileSave");	

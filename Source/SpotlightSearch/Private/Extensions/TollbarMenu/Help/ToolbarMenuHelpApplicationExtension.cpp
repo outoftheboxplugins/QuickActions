@@ -4,6 +4,8 @@
 
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuHelpApplicationExtension::GetCommands(const FQuickCommandContext& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UToolbarMenuHelpApplicationExtension::GetCommands);
+
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	CollectActionsFromMenuSection(OutCommands, Context, "MainFrame.MainMenu.Help", "HelpApplication");	

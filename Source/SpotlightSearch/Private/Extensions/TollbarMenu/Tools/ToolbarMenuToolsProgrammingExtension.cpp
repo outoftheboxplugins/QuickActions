@@ -4,6 +4,8 @@
 
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuToolsProgrammingExtension::GetCommands(const FQuickCommandContext& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UToolbarMenuToolsProgrammingExtension::GetCommands);
+
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	UToolMenus* ToolMenus = UToolMenus::Get();

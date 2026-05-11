@@ -8,6 +8,8 @@
 
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuWindowLevelEditorExtension::GetCommands(const FQuickCommandContext& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UToolbarMenuWindowLevelEditorExtension::GetCommands);
+
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	const TSharedPtr<FQuickCommandEntry> CameraShakePreviewer = MakeShared<FQuickCommandEntry>();

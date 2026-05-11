@@ -1,4 +1,4 @@
-// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
+﻿// Copyright Out-of-the-Box Plugins 2018-2023. All Rights Reserved.
 
 #include "ToolbarMenuTraceExtension.h"
 
@@ -125,6 +125,8 @@ static void StartUnrealInsights(const FString& Path, const FString& Parameters =
 
 TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuTraceExtension::GetCommands(const FQuickCommandContext& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(UToolbarMenuTraceExtension::GetCommands);
+
 	TArray<TSharedPtr<FQuickCommandEntry>> OutCommands;
 
 	const TSharedPtr<FQuickCommandEntry> UnrealInsight = MakeShared<FQuickCommandEntry>();

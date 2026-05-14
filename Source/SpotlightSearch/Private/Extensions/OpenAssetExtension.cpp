@@ -35,6 +35,8 @@ TArray<TSharedPtr<FQuickCommandEntry>> UOpenAssetExtension::GetCommands(const FQ
 		OpenAsset->CustomIconWidget = IconBox;
 		OpenAsset->OnEntryInitialized = FSimpleDelegate::CreateSPLambda(IconBox, [WeakBox = IconBox.ToWeakPtr(), AssetData]()
 		{
+			TRACE_CPUPROFILER_EVENT_SCOPE(UOpenAssetExtension::GetCommands_Thumbnails)
+
 			auto Box = WeakBox.Pin();
 			TSharedRef<FAssetThumbnail> AssetThumbnail = MakeShared<FAssetThumbnail>(AssetData, 64, 64, UThumbnailManager::Get().GetSharedThumbnailPool());
 			TSharedRef<SWidget> ThumbnailWidget = AssetThumbnail->MakeThumbnailWidget();

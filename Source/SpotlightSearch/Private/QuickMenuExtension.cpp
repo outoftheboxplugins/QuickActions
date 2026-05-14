@@ -29,7 +29,7 @@ FQuickCommandEntry::FQuickCommandEntry(const FToolMenuEntry& Block, const FToolM
 	TSharedPtr<const FUICommandList> OutCommandsList;
 
 	const FUIAction* FoundAction = Block.GetActionForCommand(Context, OutCommandsList);
-	if (ensure(FoundAction))
+	if (FoundAction)
 	{
 		CanExecuteCallback = FoundAction->CanExecuteAction;
 		ExecuteCallback = FoundAction->ExecuteAction;

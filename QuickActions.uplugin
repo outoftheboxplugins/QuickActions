@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineVersion": "5.5",
+	"EngineVersion": "5.8",
 	"VersionName": "",
 	"FriendlyName": "QuickActions",
 	"Description": "Adds productivity tools to developers such as spotlight search, extended viewport options and much more.",

@@ -2,6 +2,7 @@
 
 #include "ToolbarMenuBuildLandscapeExtension.h"
 
+#include <LandscapeEditTypes.h>
 #include <LandscapeSubsystem.h>
 #include <LevelEditor.h>
 #include <LevelEditorActions.h>
@@ -30,7 +31,11 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLandscapeExtension::GetC
 			{
 				if (ULandscapeSubsystem* LandscapeSubsystem = World->GetSubsystem<ULandscapeSubsystem>())
 				{
+#if ENGINE_MAJOR_VERSION > 5 || (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 8)
+					LandscapeSubsystem->BuildGrassMaps(UE::Landscape::EBuildFlags::WriteFinalLog);
+#else
 					LandscapeSubsystem->BuildGrassMaps();
+#endif
 				}
 			}
 		}
@@ -48,7 +53,11 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLandscapeExtension::GetC
 			{
 				if (ULandscapeSubsystem* LandscapeSubsystem = World->GetSubsystem<ULandscapeSubsystem>())
 				{
+#if ENGINE_MAJOR_VERSION > 5 || (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 8)
+					LandscapeSubsystem->BuildPhysicalMaterial(UE::Landscape::EBuildFlags::WriteFinalLog);
+#else
 					LandscapeSubsystem->BuildPhysicalMaterial();
+#endif
 				}
 			}
 		}
@@ -66,7 +75,11 @@ TArray<TSharedPtr<FQuickCommandEntry>> UToolbarMenuBuildLandscapeExtension::GetC
 			{
 				if (ULandscapeSubsystem* LandscapeSubsystem = World->GetSubsystem<ULandscapeSubsystem>())
 				{
+#if ENGINE_MAJOR_VERSION > 5 || (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 8)
+					LandscapeSubsystem->BuildNanite(UE::Landscape::EBuildFlags::WriteFinalLog);
+#else
 					LandscapeSubsystem->BuildNanite();
+#endif
 				}
 			}
 		}
